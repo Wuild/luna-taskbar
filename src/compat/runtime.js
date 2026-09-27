@@ -1,3 +1,4 @@
+import {_, formatText, ngettext} from '../i18n.js';
 import {PanelHover} from './panelHover.js';
 import {WeatherApplet} from './weatherApplet.js';
 import {performAppAction} from './appInteractions.js';
@@ -65,7 +66,7 @@ export default class TaskbarRuntime extends Extension {
         this._bar = new TaskbarSurface({
             name: 'luna-taskbar', style_class: 'luna-taskbar', reactive: true,
             clip_to_allocation: true,
-            accessible_name: 'Luna - Taskbar taskbar',
+            accessible_name: _('Luna - Taskbar taskbar'),
             layout_manager: new Clutter.BinLayout(),
         });
         this._background = new St.Widget({style_class: 'luna-taskbar-surface',
@@ -109,7 +110,7 @@ export default class TaskbarRuntime extends Extension {
         this._searchPanel = new SearchPanel(this._settings);
         this._syncSearchShortcut();
         this._searchButton = new St.Button({style_class: 'luna-taskbar-button luna-taskbar-search-button',
-            can_focus: true, accessible_name: 'Search', x_expand: false,
+            can_focus: true, accessible_name: _('Search'), x_expand: false,
             visible: this._settings.get_boolean('show-search-button') && this._settings.get_boolean('search-panel-enabled'),
             child: new St.Icon({icon_name: 'edit-find-symbolic', icon_size: this._settings.get_int('app-icon-size')})});
         this._connect(this._searchPanel.actor, 'notify::visible', () => {
@@ -138,7 +139,7 @@ export default class TaskbarRuntime extends Extension {
         this._systemBox.hide();
         this._showDesktopButton = new St.Button({
             style_class: 'luna-taskbar-show-desktop', can_focus: true,
-            accessible_name: 'Show desktop', button_mask: St.ButtonMask.ONE,
+            accessible_name: _('Show desktop'), button_mask: St.ButtonMask.ONE,
             // The divider expands inside the button, not across the taskbar.
             x_expand: false,
             y_expand: true, y_align: Clutter.ActorAlign.FILL,
@@ -190,19 +191,19 @@ export default class TaskbarRuntime extends Extension {
             this._panelBridge.weatherApplet = this._weather;
         }
         this._appletEditor = new AppletEditor(this._content, this._settings, () => [
-            {id: 'overview', label: this._arcMenuActive ? 'Overview' : 'Start', actor: this._launcher},
-            {id: 'search', label: 'Search', actor: this._searchButton},
-            ...(this._weather ? [{id: 'weather', label: 'Weather', actor: this._weather.actor, system: true}] : []),
-            {id: 'workspaces', label: 'Workspaces', actor: this._workspaceSwitcher.actor},
-            {id: 'appbar', label: 'App bar', actor: this._appStrip.actor},
-            ...(this._trayDrawer ? [{id: 'tray', label: 'Application tray', actor: this._trayDrawer.actor, system: true}] : []),
+            {id: 'overview', label: this._arcMenuActive ? _('Overview') : _('Start'), actor: this._launcher},
+            {id: 'search', label: _('Search'), actor: this._searchButton},
+            ...(this._weather ? [{id: 'weather', label: _('Weather'), actor: this._weather.actor, system: true}] : []),
+            {id: 'workspaces', label: _('Workspaces'), actor: this._workspaceSwitcher.actor},
+            {id: 'appbar', label: _('App bar'), actor: this._appStrip.actor},
+            ...(this._trayDrawer ? [{id: 'tray', label: _('Application tray'), actor: this._trayDrawer.actor, system: true}] : []),
             ...[...this._panelBridge._records.values()]
                 .filter(record => !record.isTray &&
                     !(record.role === 'dateMenu' && this._panelBridge._systemPanel?._combinedButton))
                 .map(record => ({id: record.role, actor: record.actor, system: record.role !== 'ArcMenu',
-                    label: {ArcMenu: 'ArcMenu', dateMenu: 'Clock', quickSettings: this._panelBridge._systemPanel?._combinedButton ? 'System and clock' : 'System controls',
-                        screenSharing: 'Screen sharing', screenRecording: 'Screen recording'}[record.role] ?? record.role})),
-            {id: 'showDesktop', label: 'Show desktop', actor: this._showDesktopButton},
+                    label: {ArcMenu: 'ArcMenu', dateMenu: _('Clock'), quickSettings: this._panelBridge._systemPanel?._combinedButton ? _('System and clock') : _('System controls'),
+                        screenSharing: _('Screen sharing'), screenRecording: _('Screen recording')}[record.role] ?? record.role})),
+            {id: 'showDesktop', label: _('Show desktop'), actor: this._showDesktopButton},
         ], () => {
             this._preview.hide();
             this._weather?.menu.close();
@@ -393,7 +394,7 @@ export default class TaskbarRuntime extends Extension {
             this._desktopRestore = null;
             if (live.has(focused))
                 Main.activateWindow(focused);
-            this._showDesktopButton.accessible_name = 'Show desktop';
+            this._showDesktopButton.accessible_name = _('Show desktop');
             return;
         }
         const windows = [...live].filter(window =>
@@ -403,7 +404,7 @@ export default class TaskbarRuntime extends Extension {
         } : null;
         for (const window of windows)
             window.minimize();
-        this._showDesktopButton.accessible_name = windows.length ? 'Restore windows' : 'Show desktop';
+        this._showDesktopButton.accessible_name = windows.length ? _('Restore windows') : _('Show desktop');
     }
 
     _updateLauncher() {
@@ -788,8 +789,8 @@ export default class TaskbarRuntime extends Extension {
         for (const {window, windows, app, button, indicator, badge} of this._buttons.values()) {
             const focused = windows.some(candidate => candidate.appears_focused);
             button.accessible_name = windows.length > 1
-                ? `${appLabel(app, window)} — ${windows.length} windows`
-                : window?.get_title() || app?.get_name() || 'Window';
+                ? formatText(ngettext('%s — %d window', '%s — %d windows', windows.length), appLabel(app, window), windows.length)
+                : window?.get_title() || app?.get_name() || _('Window');
             const enabled = this._settings.get_boolean('notification-badges');
             const state = enabled ? this._badges?.getState(app) : null;
             const count = state?.count ?? 0;

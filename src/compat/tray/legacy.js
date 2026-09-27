@@ -1,3 +1,4 @@
+import {_} from '../../i18n.js';
 import Clutter from 'gi://Clutter';
 import Shell from 'gi://Shell';
 import St from 'gi://St';
@@ -22,7 +23,7 @@ export class LegacyTray {
             const button = new St.Bin({
                 style_class: 'luna-taskbar-tray-button', reactive: true,
                 track_hover: true, can_focus: true,
-                accessible_name: icon.title || icon.wm_class || 'Tray application',
+                accessible_name: icon.title || icon.wm_class || _('Tray application'),
                 child: icon,
             });
             button._lunaTaskbarTrayKey = `xembed:${icon.wm_class || icon.title || 'application'}`;

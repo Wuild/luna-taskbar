@@ -1,3 +1,4 @@
+import {_, formatText} from '../i18n.js';
 import Clutter from 'gi://Clutter';
 import GLib from 'gi://GLib';
 import St from 'gi://St';
@@ -56,7 +57,7 @@ export class WorkspaceSwitcher {
             content.add_child(new St.Widget({style_class: 'luna-taskbar-workspace-stand',
                 x_align: Clutter.ActorAlign.CENTER}));
             const button = new St.Button({child: content, can_focus: true, track_hover: true,
-                accessible_name: `Workspace ${i + 1}`, style_class: 'luna-taskbar-workspace-button'});
+                accessible_name: formatText(_("Workspace %s"), i + 1), style_class: 'luna-taskbar-workspace-button'});
             button.connect('clicked', () => {
                 if (this.editing()) return;
                 const workspace = global.workspace_manager.get_workspace_by_index(i);
@@ -75,7 +76,7 @@ export class WorkspaceSwitcher {
         const active = global.workspace_manager.get_active_workspace_index();
         this.actor.get_children().forEach((button, index) => {
             button.checked = index === active;
-            button.accessible_name = `Workspace ${index + 1}${button.checked ? ', current' : ''}`;
+            button.accessible_name = formatText(_("Workspace %s%s"), index + 1, button.checked ? ', current' : '');
         });
     }
     destroy() { for (const [object, id] of this.signals) object.disconnect(id); this.actor.destroy(); }

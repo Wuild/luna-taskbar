@@ -1,3 +1,4 @@
+import {_} from './i18n.js';
 import Adw from 'gi://Adw';
 import Gio from 'gi://Gio';
 import {ExtensionPreferences} from 'resource:///org/gnome/Shell/Extensions/js/extensions/prefs.js';
@@ -20,16 +21,16 @@ export default class LunaTaskbarPreferences extends ExtensionPreferences {
         const navigation = new SettingsNavigation(window);
         // Kept for the preferences smoke harness; UI code does not depend on this property.
         Object.assign(window, {_settingsNavigation: navigation});
-        window.title = 'Luna - Taskbar';
+        window.title = _('Luna - Taskbar');
         const pages = [
-            ['Taskbar', 'preferences-desktop-display-symbolic', taskbar],
-            ['Interactions', 'input-mouse-symbolic', interactions],
-            ['App Bar', 'view-app-grid-symbolic', appbar],
-            ['Start Menu', 'start-here-symbolic', startMenu],
-            ['Search and Overview', 'system-search-symbolic', search],
-            ['System Tray', 'preferences-system-symbolic', systray],
-            ['Panels', 'view-grid-symbolic', panels],
-            ['General', 'preferences-system-symbolic', general],
+            [_('Taskbar'), 'preferences-desktop-display-symbolic', taskbar],
+            [_('Interactions'), 'input-mouse-symbolic', interactions],
+            [_('App Bar'), 'view-app-grid-symbolic', appbar],
+            [_('Start Menu'), 'start-here-symbolic', startMenu],
+            [_('Search and Overview'), 'system-search-symbolic', search],
+            [_('System Tray'), 'preferences-system-symbolic', systray],
+            [_('Panels'), 'view-grid-symbolic', panels],
+            [_('General'), 'preferences-system-symbolic', general],
         ] as const;
         for (const [title, icon_name, populate] of pages) {
             const page = new Adw.PreferencesPage({title, icon_name});

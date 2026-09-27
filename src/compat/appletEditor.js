@@ -1,3 +1,4 @@
+import {_, formatText} from '../i18n.js';
 import Clutter from 'gi://Clutter';
 import GLib from 'gi://GLib';
 import St from 'gi://St';
@@ -76,11 +77,11 @@ export class AppletEditor {
                 style_class: 'luna-taskbar-edit-handle-content'});
             content.add_child(new St.Icon({icon_name: icons[entry.id] ?? 'application-x-addon-symbolic', icon_size: 16}));
             if (entry.id === 'appbar' && !vertical)
-                content.add_child(new St.Label({text: 'Applications', y_align: Clutter.ActorAlign.CENTER}));
+                content.add_child(new St.Label({text: _('Applications'), y_align: Clutter.ActorAlign.CENTER}));
             const button = new St.Button({child: content, style_class: 'luna-taskbar-edit-handle',
                 x_expand: entry.actor.x_expand, y_expand: entry.actor.y_expand,
                 x_align: Clutter.ActorAlign.FILL, can_focus: true, track_hover: true,
-                accessible_name: `Move ${entry.label}; use arrow keys`});
+                accessible_name: formatText(_("Move %s; use arrow keys"), entry.label)});
             const describe = () => { if (this._selection) this._selection.text = entry.label; };
             button.connect('notify::hover', describe);
             button.connect('key-focus-in', describe);
@@ -131,14 +132,14 @@ export class AppletEditor {
                 return Clutter.EVENT_STOP;
             });
         }
-        this._done = new St.Button({label: 'Done', can_focus: true, style_class: 'luna-taskbar-edit-done'});
+        this._done = new St.Button({label: _('Done'), can_focus: true, style_class: 'luna-taskbar-edit-done'});
         this._done.connect('clicked', () => this.stop());
         this._toolbar = new St.BoxLayout({style_class: 'luna-taskbar-edit-toolbar', reactive: true});
         const text = new St.BoxLayout({orientation: Clutter.Orientation.VERTICAL, style_class: 'luna-taskbar-edit-description'});
-        text.add_child(new St.Label({text: 'Arrange your taskbar', style_class: 'luna-taskbar-edit-title'}));
-        this._selection = new St.Label({text: 'Drag a button to move it', style_class: 'luna-taskbar-edit-selection'});
+        text.add_child(new St.Label({text: _('Arrange your taskbar'), style_class: 'luna-taskbar-edit-title'}));
+        this._selection = new St.Label({text: _('Drag a button to move it'), style_class: 'luna-taskbar-edit-selection'});
         text.add_child(this._selection);
-        text.add_child(new St.Label({text: 'Arrow keys to move · Esc to finish', style_class: 'luna-taskbar-edit-hint'}));
+        text.add_child(new St.Label({text: _('Arrow keys to move · Esc to finish'), style_class: 'luna-taskbar-edit-hint'}));
         this._toolbar.add_child(text);
         this._toolbar.add_child(this._done);
         Main.layoutManager.addChrome(this._toolbar, {affectsStruts: false, trackFullscreen: true});

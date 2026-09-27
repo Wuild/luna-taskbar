@@ -11,8 +11,8 @@ export class AppStrip {
         this.actor._delegate = this;
         this.scroll = createHorizontalScroll({x_expand: true, min_width: 0});
         this.scroll.set_child(apps);
-        this.left = this._arrow('pan-start-symbolic', 'Scroll applications left', -1);
-        this.right = this._arrow('pan-end-symbolic', 'Scroll applications right', 1);
+        this.left = this._arrow('pan-start-symbolic', _('Scroll applications left'), -1);
+        this.right = this._arrow('pan-end-symbolic', _('Scroll applications right'), 1);
         this.actor.add_child(this.left);
         this.actor.add_child(this.scroll);
         this.actor.add_child(this.right);

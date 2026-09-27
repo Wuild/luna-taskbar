@@ -26,3 +26,5 @@ try {
 } finally {
     await rm(temp, {recursive: true, force: true});
 }
+
+execFileSync('python3', ['tests/translations.py'], {stdio: 'inherit', timeout: 20000});

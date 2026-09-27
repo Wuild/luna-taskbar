@@ -1,0 +1,1574 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Wuild
+# This file is distributed under the same license as the luna-taskbar package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: luna-taskbar\n"
+"Report-Msgid-Bugs-To: https://github.com/wuild\n"
+"POT-Creation-Date: 2026-09-27 21:22+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+
+#: src/compat/appLabel.js:6 src/compat/searchPanel.js:110
+msgid "Application"
+msgstr ""
+
+#: src/compat/appStrip.js:14
+msgid "Scroll applications left"
+msgstr ""
+
+#: src/compat/appStrip.js:15
+msgid "Scroll applications right"
+msgstr ""
+
+#: src/compat/appletEditor.js:80
+msgid "Applications"
+msgstr ""
+
+#: src/compat/appletEditor.js:84
+#, javascript-format
+msgid "Move %s; use arrow keys"
+msgstr ""
+
+#: src/compat/appletEditor.js:135
+msgid "Done"
+msgstr ""
+
+#: src/compat/appletEditor.js:139
+msgid "Arrange your taskbar"
+msgstr ""
+
+#: src/compat/appletEditor.js:140
+msgid "Drag a button to move it"
+msgstr ""
+
+#: src/compat/appletEditor.js:142
+msgid "Arrow keys to move · Esc to finish"
+msgstr ""
+
+#: src/compat/runtime.js:69
+msgid "Luna - Taskbar taskbar"
+msgstr ""
+
+#: src/compat/runtime.js:113 src/compat/runtime.js:195
+#: src/compat/searchPanel.js:20
+msgid "Search"
+msgstr ""
+
+#: src/compat/runtime.js:142 src/compat/runtime.js:206
+#: src/compat/runtime.js:397 src/compat/runtime.js:407
+#: src/compat/taskMenus.js:110 src/preferences/taskbar.ts:130
+msgid "Show desktop"
+msgstr ""
+
+#: src/compat/runtime.js:194
+msgid "Overview"
+msgstr ""
+
+#: src/compat/runtime.js:194
+msgid "Start"
+msgstr ""
+
+#: src/compat/runtime.js:196 src/compat/weatherApplet.js:21
+#: src/compat/weatherApplet.js:43 src/compat/weatherApplet.js:132
+#: src/preferences/panels.ts:13
+msgid "Weather"
+msgstr ""
+
+#: src/compat/runtime.js:197 src/preferences/taskbar.ts:29
+msgid "Workspaces"
+msgstr ""
+
+#: src/compat/runtime.js:198
+msgid "App bar"
+msgstr ""
+
+#: src/compat/runtime.js:199
+msgid "Application tray"
+msgstr ""
+
+#: src/compat/runtime.js:204
+msgid "Clock"
+msgstr ""
+
+#: src/compat/runtime.js:204
+msgid "System and clock"
+msgstr ""
+
+#: src/compat/runtime.js:204
+msgid "System controls"
+msgstr ""
+
+#: src/compat/runtime.js:205
+msgid "Screen recording"
+msgstr ""
+
+#: src/compat/runtime.js:205
+msgid "Screen sharing"
+msgstr ""
+
+#: src/compat/runtime.js:407
+msgid "Restore windows"
+msgstr ""
+
+#: src/compat/runtime.js:792
+#, javascript-format
+msgid "%s — %d window"
+msgid_plural "%s — %d windows"
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/compat/runtime.js:793 src/compat/windowPreview.js:151
+#: src/compat/windowPreview.js:205
+msgid "Window"
+msgstr ""
+
+#: src/compat/searchPanel.js:27
+msgid "Search apps, files and more…"
+msgstr ""
+
+#: src/compat/searchPanel.js:92
+msgid "Type to search"
+msgstr ""
+
+#: src/compat/searchPanel.js:152
+msgid "No results"
+msgstr ""
+
+#: src/compat/systemPanel.js:42
+msgid "Now Playing"
+msgstr ""
+
+#: src/compat/systemPanel.js:46
+msgid "Quick Settings"
+msgstr ""
+
+#: src/compat/systemPanel.js:47 src/compat/systemPanel.js:319
+msgid "Notifications"
+msgstr ""
+
+#: src/compat/systemPanel.js:77
+msgid "x"
+msgstr ""
+
+#: src/compat/systemPanel.js:78
+msgid "y"
+msgstr ""
+
+#: src/compat/systemPanel.js:319
+msgid "No notifications"
+msgstr ""
+
+#: src/compat/systemPanel.js:341
+msgid "System controls, notifications and calendar"
+msgstr ""
+
+#: src/compat/systemPanel.js:423
+msgid "empty"
+msgstr ""
+
+#: src/compat/systemPanel.js:424
+msgid "can-clear"
+msgstr ""
+
+#: src/compat/taskMenus.js:18
+msgid "Pin to taskbar"
+msgstr ""
+
+#: src/compat/taskMenus.js:18
+msgid "Unpin from taskbar"
+msgstr ""
+
+#: src/compat/taskMenus.js:76
+msgid "Focus window"
+msgstr ""
+
+#: src/compat/taskMenus.js:76
+msgid "Restore window"
+msgstr ""
+
+#: src/compat/taskMenus.js:79
+msgid "Minimize"
+msgstr ""
+
+#: src/compat/taskMenus.js:80
+msgid "Maximize"
+msgstr ""
+
+#: src/compat/taskMenus.js:80
+msgid "Restore size"
+msgstr ""
+
+#: src/compat/taskMenus.js:86 src/compat/windowPreview.js:155
+msgid "Close window"
+msgstr ""
+
+#: src/compat/taskMenus.js:108 src/preferences/taskbar.ts:129
+msgid "Show applications"
+msgstr ""
+
+#: src/compat/taskMenus.js:116
+msgid "Edit taskbar"
+msgstr ""
+
+#: src/compat/taskMenus.js:117 src/preferences/navigation.ts:53
+#: src/preferences/navigation.ts:72
+msgid "Taskbar settings"
+msgstr ""
+
+#: src/compat/tray/legacy.js:26
+msgid "Tray application"
+msgstr ""
+
+#: src/compat/trayDrawer.js:147
+#, javascript-format
+msgid "Application tray — %d hidden icon"
+msgid_plural "Application tray — %d hidden icons"
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/compat/weatherApplet.js:42
+msgid "WEATHER"
+msgstr ""
+
+#: src/compat/weatherApplet.js:45
+msgid "Weather settings"
+msgstr ""
+
+#: src/compat/weatherApplet.js:68 src/compat/weatherApplet.js:133
+msgid "Set your city in Weather settings."
+msgstr ""
+
+#: src/compat/weatherApplet.js:70
+msgid "Open-Meteo"
+msgstr ""
+
+#: src/compat/weatherApplet.js:135
+msgid "Loading weather…"
+msgstr ""
+
+#: src/compat/weatherApplet.js:166
+msgid "Unable to update · showing last weather"
+msgstr ""
+
+#: src/compat/weatherApplet.js:166
+msgid "Weather unavailable · check city or connection"
+msgstr ""
+
+#: src/compat/weatherApplet.js:185
+#, javascript-format
+msgid "Feels like  %s%s"
+msgstr ""
+
+#: src/compat/weatherApplet.js:186
+#, javascript-format
+msgid "Wind  %s km/h"
+msgstr ""
+
+#: src/compat/weatherApplet.js:193
+msgid "Today"
+msgstr ""
+
+#: src/compat/weatherApplet.js:201
+#, javascript-format
+msgid "Updated %s"
+msgstr ""
+
+#: src/compat/weatherModel.js:4
+msgid "Clear night"
+msgstr ""
+
+#: src/compat/weatherModel.js:4
+msgid "Clear sky"
+msgstr ""
+
+#: src/compat/weatherModel.js:6
+msgid "Mostly clear"
+msgstr ""
+
+#: src/compat/weatherModel.js:6
+msgid "Partly cloudy"
+msgstr ""
+
+#: src/compat/weatherModel.js:8
+msgid "Overcast"
+msgstr ""
+
+#: src/compat/weatherModel.js:10
+msgid "Fog"
+msgstr ""
+
+#: src/compat/weatherModel.js:12
+msgid "Drizzle"
+msgstr ""
+
+#: src/compat/weatherModel.js:14
+msgid "Freezing rain"
+msgstr ""
+
+#: src/compat/weatherModel.js:16
+msgid "Rain"
+msgstr ""
+
+#: src/compat/weatherModel.js:18
+msgid "Snow"
+msgstr ""
+
+#: src/compat/weatherModel.js:20
+msgid "Showers"
+msgstr ""
+
+#: src/compat/weatherModel.js:22
+msgid "Thunderstorm"
+msgstr ""
+
+#: src/compat/weatherModel.js:23
+msgid "Unknown conditions"
+msgstr ""
+
+#: src/compat/windowPreview.js:192
+#, javascript-format
+msgid "Activate %s"
+msgstr ""
+
+#: src/compat/workspaceSwitcher.js:60
+#, javascript-format
+msgid "Workspace %s"
+msgstr ""
+
+#: src/compat/workspaceSwitcher.js:79
+#, javascript-format
+msgid "Workspace %s%s"
+msgstr ""
+
+#: src/panels/systemIcons.ts:3
+msgid "Network"
+msgstr ""
+
+#: src/panels/systemIcons.ts:4
+msgid "Volume"
+msgstr ""
+
+#: src/panels/systemIcons.ts:5
+msgid "Microphone"
+msgstr ""
+
+#: src/panels/systemIcons.ts:6
+msgid "Bluetooth"
+msgstr ""
+
+#: src/panels/systemIcons.ts:7
+msgid "Power and battery"
+msgstr ""
+
+#: src/panels/systemIcons.ts:8
+msgid "Power mode"
+msgstr ""
+
+#: src/panels/systemIcons.ts:9
+msgid "Night Light"
+msgstr ""
+
+#: src/panels/systemIcons.ts:10
+msgid "Do Not Disturb"
+msgstr ""
+
+#: src/panels/systemIcons.ts:11
+msgid "Airplane mode"
+msgstr ""
+
+#: src/panels/systemIcons.ts:12
+msgid "Rotation lock"
+msgstr ""
+
+#: src/panels/systemIcons.ts:13
+msgid "Location access"
+msgstr ""
+
+#: src/panels/systemIcons.ts:14
+msgid "Camera access"
+msgstr ""
+
+#: src/panels/systemIcons.ts:15
+msgid "Remote access and sharing"
+msgstr ""
+
+#: src/panels/systemIcons.ts:16
+msgid "Thunderbolt"
+msgstr ""
+
+#: src/preferences/appbar.ts:7
+msgid "Buttons"
+msgstr ""
+
+#: src/preferences/appbar.ts:8 src/preferences/search.ts:15
+msgid "Button width"
+msgstr ""
+
+#: src/preferences/appbar.ts:8 src/preferences/start-menu.ts:15
+msgid "Icon size"
+msgstr ""
+
+#: src/preferences/appbar.ts:8
+msgid "Inner padding"
+msgstr ""
+
+#: src/preferences/appbar.ts:9 src/preferences/search.ts:17
+#: src/preferences/start-menu.ts:17
+msgid "Button margin"
+msgstr ""
+
+#: src/preferences/appbar.ts:9
+msgid "Space between buttons"
+msgstr ""
+
+#: src/preferences/appbar.ts:11
+msgid "Running window indicators"
+msgstr ""
+
+#: src/preferences/appbar.ts:11
+msgid "Show the indicators beneath application icons"
+msgstr ""
+
+#: src/preferences/appbar.ts:12
+msgid "Notification badges"
+msgstr ""
+
+#: src/preferences/appbar.ts:12
+msgid ""
+"Show app-published unread counts, GNOME notification counts and attention "
+"badges"
+msgstr ""
+
+#: src/preferences/appbar.ts:14
+msgid "Animations"
+msgstr ""
+
+#: src/preferences/appbar.ts:15
+msgid "Hover effect"
+msgstr ""
+
+#: src/preferences/appbar.ts:15
+msgid "Lift"
+msgstr ""
+
+#: src/preferences/appbar.ts:15 src/preferences/start-menu.ts:47
+msgid "None"
+msgstr ""
+
+#: src/preferences/appbar.ts:15
+msgid "Zoom"
+msgstr ""
+
+#: src/preferences/appbar.ts:16
+msgid "Duration"
+msgstr ""
+
+#: src/preferences/appbar.ts:16
+msgid "Milliseconds; respects the system animation setting"
+msgstr ""
+
+#: src/preferences/appbar.ts:17
+msgid "Fade in new buttons"
+msgstr ""
+
+#: src/preferences/appbar.ts:18
+msgid "Push while clicking"
+msgstr ""
+
+#: src/preferences/appbar.ts:19
+msgid "Fade out closed buttons"
+msgstr ""
+
+#: src/preferences/appbar.ts:21
+msgid "Preview layout"
+msgstr ""
+
+#: src/preferences/appbar.ts:22
+msgid "Thumbnail width"
+msgstr ""
+
+#: src/preferences/appbar.ts:23
+msgid "Thumbnail aspect ratio"
+msgstr ""
+
+#: src/preferences/appbar.ts:24
+msgid "Fit windows without stretching or cropping"
+msgstr ""
+
+#: src/preferences/appbar.ts:24
+msgid "Match window"
+msgstr ""
+
+#: src/preferences/appbar.ts:25
+msgid "Panel padding"
+msgstr ""
+
+#: src/preferences/appbar.ts:26
+msgid "Space between windows"
+msgstr ""
+
+#: src/preferences/appbar.ts:28
+msgid "Running indicators"
+msgstr ""
+
+#: src/preferences/appbar.ts:29
+msgid "Color source"
+msgstr ""
+
+#: src/preferences/appbar.ts:30
+msgid "App icon dominant color"
+msgstr ""
+
+#: src/preferences/appbar.ts:30
+msgid "Custom color"
+msgstr ""
+
+#: src/preferences/appbar.ts:30
+msgid "Default"
+msgstr ""
+
+#: src/preferences/appbar.ts:31
+msgid "Also used when an app icon has no usable dominant color"
+msgstr ""
+
+#: src/preferences/appbar.ts:31
+msgid "Indicator color"
+msgstr ""
+
+#: src/preferences/controls.ts:26 src/preferences/taskbar.ts:15
+#: src/preferences/taskbar.ts:16 src/preferences/taskbar.ts:19
+#: src/preferences/taskbar.ts:26
+msgid "Logical pixels"
+msgstr ""
+
+#: src/preferences/general.ts:8
+msgid "Reset settings"
+msgstr ""
+
+#: src/preferences/general.ts:9
+msgid ""
+"Restore every Luna - Taskbar setting, including custom app ordering and tray "
+"exceptions. GNOME favorites and other extensions are unchanged."
+msgstr ""
+
+#: src/preferences/general.ts:10 src/preferences/general.ts:18
+msgid "Reset all settings"
+msgstr ""
+
+#: src/preferences/general.ts:11
+msgid "Restore Luna - Taskbar’s defaults"
+msgstr ""
+
+#: src/preferences/general.ts:12
+msgid "Reset…"
+msgstr ""
+
+#: src/preferences/general.ts:15
+msgid "Reset all Luna - Taskbar settings?"
+msgstr ""
+
+#: src/preferences/general.ts:16
+msgid ""
+"This clears your Luna - Taskbar preferences, custom app ordering, and tray "
+"exceptions. This cannot be undone."
+msgstr ""
+
+#: src/preferences/general.ts:17
+msgid "Cancel"
+msgstr ""
+
+#: src/preferences/interactions.ts:7
+msgid "App buttons use the app scrolling action below."
+msgstr ""
+
+#: src/preferences/interactions.ts:7
+msgid "Taskbar scrolling"
+msgstr ""
+
+#: src/preferences/interactions.ts:8
+msgid "Scroll to switch workspaces"
+msgstr ""
+
+#: src/preferences/interactions.ts:8
+msgid ""
+"Up or left goes back; down or right goes forward. Stops at the first and "
+"last workspace."
+msgstr ""
+
+#: src/preferences/interactions.ts:9
+msgid "Application clicks"
+msgstr ""
+
+#: src/preferences/interactions.ts:9
+msgid ""
+"Default: toggle a single window, show previews for multiple windows, or "
+"launch an app that is not running."
+msgstr ""
+
+#: src/preferences/interactions.ts:11
+msgid "Activate window"
+msgstr ""
+
+#: src/preferences/interactions.ts:11
+msgid "Cycle through windows"
+msgstr ""
+
+#: src/preferences/interactions.ts:11
+msgid "Default (toggle or preview)"
+msgstr ""
+
+#: src/preferences/interactions.ts:11 src/preferences/interactions.ts:17
+msgid "Do nothing"
+msgstr ""
+
+#: src/preferences/interactions.ts:11
+msgid "Minimize all windows"
+msgstr ""
+
+#: src/preferences/interactions.ts:11
+msgid "Open context menu"
+msgstr ""
+
+#: src/preferences/interactions.ts:11
+msgid "Open new window"
+msgstr ""
+
+#: src/preferences/interactions.ts:11
+msgid "Show window previews"
+msgstr ""
+
+#: src/preferences/interactions.ts:11
+msgid "Toggle all windows"
+msgstr ""
+
+#: src/preferences/interactions.ts:12
+msgid "Left-click"
+msgstr ""
+
+#: src/preferences/interactions.ts:12
+msgid "Middle-click"
+msgstr ""
+
+#: src/preferences/interactions.ts:13
+msgid "Right-click"
+msgstr ""
+
+#: src/preferences/interactions.ts:13
+msgid "Shift + left-click"
+msgstr ""
+
+#: src/preferences/interactions.ts:15
+msgid "Application scrolling"
+msgstr ""
+
+#: src/preferences/interactions.ts:16
+msgid "Scroll over an app"
+msgstr ""
+
+#: src/preferences/interactions.ts:17
+msgid "Cycle through app windows"
+msgstr ""
+
+#: src/preferences/interactions.ts:17
+msgid "Scroll the app bar"
+msgstr ""
+
+#: src/preferences/interactions.ts:17
+msgid "Switch workspaces"
+msgstr ""
+
+#: src/preferences/interactions.ts:18
+msgid ""
+"Cycling wraps between windows. Up or left goes back; down or right goes "
+"forward."
+msgstr ""
+
+#: src/preferences/interactions.ts:19
+msgid "Window previews"
+msgstr ""
+
+#: src/preferences/interactions.ts:20
+msgid "Click actions are configured separately above"
+msgstr ""
+
+#: src/preferences/interactions.ts:20
+msgid "Show previews on hover"
+msgstr ""
+
+#: src/preferences/interactions.ts:21
+msgid "Milliseconds before a preview appears"
+msgstr ""
+
+#: src/preferences/interactions.ts:21
+msgid "Preview hover delay"
+msgstr ""
+
+#: src/preferences/interactions.ts:22
+msgid "Dismissal delay"
+msgstr ""
+
+#: src/preferences/interactions.ts:22
+msgid "Milliseconds allowed when moving between a button and its preview"
+msgstr ""
+
+#: src/preferences/navigation.ts:34 src/preferences/navigation.ts:148
+msgid "Search settings"
+msgstr ""
+
+#: src/preferences/navigation.ts:53 src/prefs.ts:24
+msgid "Luna - Taskbar"
+msgstr ""
+
+#: src/preferences/navigation.ts:55 src/prefs.ts:26
+msgid "Taskbar"
+msgstr ""
+
+#: src/preferences/navigation.ts:57
+msgid "Show categories"
+msgstr ""
+
+#: src/preferences/navigation.ts:73
+msgid "Settings"
+msgstr ""
+
+#: src/preferences/navigation.ts:76
+msgid "Search results"
+msgstr ""
+
+#: src/preferences/navigation.ts:147
+msgid "No matching settings"
+msgstr ""
+
+#: src/preferences/navigation.ts:147
+#, javascript-format
+msgid "Search results (%s)"
+msgstr ""
+
+#: src/preferences/panels.ts:8 src/preferences/taskbar.ts:32
+msgid "Behavior"
+msgstr ""
+
+#: src/preferences/panels.ts:9
+msgid "Luna - Taskbar applet panels"
+msgstr ""
+
+#: src/preferences/panels.ts:9
+msgid ""
+"Use Luna - Taskbar’s styled calendar, notifications, media and system "
+"controls"
+msgstr ""
+
+#: src/preferences/panels.ts:10
+msgid "Separate applet panels"
+msgstr ""
+
+#: src/preferences/panels.ts:11
+msgid ""
+"Clock opens notifications and calendar; system button opens Quick Settings "
+"and Now Playing. Turn off to open both columns together."
+msgstr ""
+
+#: src/preferences/panels.ts:13
+msgid ""
+"Current conditions and a three-day forecast from Open-Meteo. Weather appears "
+"above Calendar with separate panels, or above Quick Settings with grouped "
+"panels. A separate weather button opens its own panel."
+msgstr ""
+
+#: src/preferences/panels.ts:14
+msgid "Show weather applet"
+msgstr ""
+
+#: src/preferences/panels.ts:15
+msgid "Show current conditions without the three-day forecast"
+msgstr ""
+
+#: src/preferences/panels.ts:15
+msgid "Slim mode"
+msgstr ""
+
+#: src/preferences/panels.ts:16
+msgid "Open weather in its own panel instead of the system panel"
+msgstr ""
+
+#: src/preferences/panels.ts:16
+msgid "Separate weather button"
+msgstr ""
+
+#: src/preferences/panels.ts:18
+msgid "City"
+msgstr ""
+
+#: src/preferences/panels.ts:18
+msgid "Country code (optional, e.g. SE)"
+msgstr ""
+
+#: src/preferences/panels.ts:23
+msgid "Celsius"
+msgstr ""
+
+#: src/preferences/panels.ts:23
+msgid "Fahrenheit"
+msgstr ""
+
+#: src/preferences/panels.ts:23
+msgid "Temperature units"
+msgstr ""
+
+#: src/preferences/panels.ts:24
+msgid "Calendar"
+msgstr ""
+
+#: src/preferences/panels.ts:25
+msgid "Show week numbers"
+msgstr ""
+
+#: src/preferences/panels.ts:26
+msgid "First day of the week"
+msgstr ""
+
+#: src/preferences/panels.ts:27
+msgid "Monday"
+msgstr ""
+
+#: src/preferences/panels.ts:27
+msgid "Sunday"
+msgstr ""
+
+#: src/preferences/panels.ts:27
+msgid "System default"
+msgstr ""
+
+#: src/preferences/panels.ts:28
+msgid "Appearance"
+msgstr ""
+
+#: src/preferences/panels.ts:28 src/preferences/panels.ts:35
+msgid "Shared with taskbar context menus and window previews."
+msgstr ""
+
+#: src/preferences/panels.ts:29 src/preferences/taskbar.ts:108
+#: src/preferences/taskbar.ts:123
+msgid "Override theme color"
+msgstr ""
+
+#: src/preferences/panels.ts:29
+msgid "Use a custom background for panels and menus"
+msgstr ""
+
+#: src/preferences/panels.ts:30
+msgid "Applets, context menus and window previews"
+msgstr ""
+
+#: src/preferences/panels.ts:30 src/preferences/taskbar.ts:109
+#: src/preferences/taskbar.ts:124
+msgid "Background color"
+msgstr ""
+
+#: src/preferences/panels.ts:31
+msgid "Transparency and blur"
+msgstr ""
+
+#: src/preferences/panels.ts:31
+msgid "Turn off for opaque panels"
+msgstr ""
+
+#: src/preferences/panels.ts:32 src/preferences/taskbar.ts:127
+msgid "0 disables blur"
+msgstr ""
+
+#: src/preferences/panels.ts:32 src/preferences/search.ts:63
+#: src/preferences/taskbar.ts:111 src/preferences/taskbar.ts:127
+msgid "Blur strength"
+msgstr ""
+
+#: src/preferences/panels.ts:33 src/preferences/taskbar.ts:28
+#: src/preferences/taskbar.ts:112 src/preferences/taskbar.ts:125
+msgid "0% is transparent; 100% is opaque"
+msgstr ""
+
+#: src/preferences/panels.ts:33 src/preferences/taskbar.ts:112
+#: src/preferences/taskbar.ts:125
+msgid "Opacity"
+msgstr ""
+
+#: src/preferences/panels.ts:34 src/preferences/taskbar.ts:23
+#: src/preferences/taskbar.ts:121
+msgid "Corner radius"
+msgstr ""
+
+#: src/preferences/panels.ts:35
+msgid "Placement"
+msgstr ""
+
+#: src/preferences/panels.ts:36
+msgid "Screen-edge spacing"
+msgstr ""
+
+#: src/preferences/panels.ts:37 src/preferences/search.ts:64
+msgid "Space above taskbar"
+msgstr ""
+
+#: src/preferences/search.ts:11
+msgid "Search button and shortcut"
+msgstr ""
+
+#: src/preferences/search.ts:12
+msgid "Enable search panel"
+msgstr ""
+
+#: src/preferences/search.ts:12
+msgid "Turn off to hide the search button and disable its keyboard shortcut"
+msgstr ""
+
+#: src/preferences/search.ts:13
+msgid "Open a standalone search panel beside Start"
+msgstr ""
+
+#: src/preferences/search.ts:13
+msgid "Search button"
+msgstr ""
+
+#: src/preferences/search.ts:14
+msgid "Button icon size"
+msgstr ""
+
+#: src/preferences/search.ts:14
+msgid "Shared by Search and Overview"
+msgstr ""
+
+#: src/preferences/search.ts:16 src/preferences/start-menu.ts:16
+msgid "Button padding"
+msgstr ""
+
+#: src/preferences/search.ts:18
+msgid "Search keyboard shortcut"
+msgstr ""
+
+#: src/preferences/search.ts:19
+msgid ""
+"Works with the button hidden. Choose a combination not already used by "
+"GNOME. Escape cancels; Backspace clears."
+msgstr ""
+
+#: src/preferences/search.ts:24
+msgid "Disabled"
+msgstr ""
+
+#: src/preferences/search.ts:30
+msgid "Search shortcut"
+msgstr ""
+
+#: src/preferences/search.ts:32
+msgid ""
+"Press a shortcut…\n"
+"Escape to cancel · Backspace to disable"
+msgstr ""
+
+#: src/preferences/search.ts:54
+msgid "Overview button"
+msgstr ""
+
+#: src/preferences/search.ts:55
+msgid "Show Overview button"
+msgstr ""
+
+#: src/preferences/search.ts:56
+msgid "Overview icon"
+msgstr ""
+
+#: src/preferences/search.ts:59
+msgid "Overview appearance"
+msgstr ""
+
+#: src/preferences/search.ts:60
+msgid "Search field and result panels; 0% is transparent, 100% is opaque"
+msgstr ""
+
+#: src/preferences/search.ts:60
+msgid "Search panel opacity"
+msgstr ""
+
+#: src/preferences/search.ts:61
+msgid "Blur wallpaper"
+msgstr ""
+
+#: src/preferences/search.ts:62
+msgid "Opacity (%); also applies when blur is off"
+msgstr ""
+
+#: src/preferences/search.ts:62
+msgid "Wallpaper dimming"
+msgstr ""
+
+#: src/preferences/search.ts:63
+msgid "Only the wallpaper is blurred"
+msgstr ""
+
+#: src/preferences/start-menu.ts:11
+msgid "Launcher"
+msgstr ""
+
+#: src/preferences/start-menu.ts:12
+msgid "Start menu"
+msgstr ""
+
+#: src/preferences/start-menu.ts:13
+msgid "ArcMenu"
+msgstr ""
+
+#: src/preferences/start-menu.ts:13
+msgid "ArcMenu appears beside a separate Overview button."
+msgstr ""
+
+#: src/preferences/start-menu.ts:13
+msgid "GNOME Overview"
+msgstr ""
+
+#: src/preferences/start-menu.ts:14
+msgid "Start button style"
+msgstr ""
+
+#: src/preferences/start-menu.ts:14
+msgid "Used by ArcMenu, or by Overview when it acts as the Start button."
+msgstr ""
+
+#: src/preferences/start-menu.ts:18
+msgid "Start button icon"
+msgstr ""
+
+#: src/preferences/start-menu.ts:19
+msgid "ArcMenu button"
+msgstr ""
+
+#: src/preferences/start-menu.ts:19
+msgid "These controls use ArcMenu’s own settings."
+msgstr ""
+
+#: src/preferences/start-menu.ts:21
+msgid "Open ArcMenu settings"
+msgstr ""
+
+#: src/preferences/start-menu.ts:40
+msgid "ArcMenu button text"
+msgstr ""
+
+#: src/preferences/start-menu.ts:40
+msgid "ArcMenu icon name or path"
+msgstr ""
+
+#: src/preferences/start-menu.ts:47 src/preferences/start-menu.ts:49
+msgid "Icon"
+msgstr ""
+
+#: src/preferences/start-menu.ts:47
+msgid "Icon_Text"
+msgstr ""
+
+#: src/preferences/start-menu.ts:47 src/preferences/start-menu.ts:49
+msgid "Text"
+msgstr ""
+
+#: src/preferences/start-menu.ts:47
+msgid "Text_Icon"
+msgstr ""
+
+#: src/preferences/start-menu.ts:48
+msgid "ArcMenu button appearance"
+msgstr ""
+
+#: src/preferences/start-menu.ts:49
+msgid "Hidden"
+msgstr ""
+
+#: src/preferences/start-menu.ts:49
+msgid "Icon and text"
+msgstr ""
+
+#: src/preferences/start-menu.ts:49
+msgid "Text and icon"
+msgstr ""
+
+#: src/preferences/start-menu.ts:60
+msgid "Icon style"
+msgstr ""
+
+#: src/preferences/start-menu.ts:61
+msgid "Application grid"
+msgstr ""
+
+#: src/preferences/start-menu.ts:61 src/preferences/start-menu.ts:62
+msgid "Custom icon name"
+msgstr ""
+
+#: src/preferences/start-menu.ts:61
+msgid "Distribution logo"
+msgstr ""
+
+#: src/preferences/systray.ts:9
+msgid "Icons and applets"
+msgstr ""
+
+#: src/preferences/systray.ts:10
+msgid ""
+"Sizes apply to application tray icons, clock and system controls. Right-"
+"click the taskbar and choose Edit taskbar to move applets."
+msgstr ""
+
+#: src/preferences/systray.ts:11
+msgid "Keep apps visible when they report no current activity"
+msgstr ""
+
+#: src/preferences/systray.ts:11
+msgid "Show inactive tray icons"
+msgstr ""
+
+#: src/preferences/systray.ts:12
+msgid "Collapse application tray"
+msgstr ""
+
+#: src/preferences/systray.ts:12
+msgid "Show a toggle instead of the icons when the limit is exceeded"
+msgstr ""
+
+#: src/preferences/systray.ts:13
+msgid "Collapse when there are more visible app icons than this"
+msgstr ""
+
+#: src/preferences/systray.ts:13
+msgid "Icon limit"
+msgstr ""
+
+#: src/preferences/systray.ts:14
+msgid "Taskbar icon size"
+msgstr ""
+
+#: src/preferences/systray.ts:15
+msgid "Icon size inside the collapsed application tray"
+msgstr ""
+
+#: src/preferences/systray.ts:15
+msgid "Popup icon size"
+msgstr ""
+
+#: src/preferences/systray.ts:16
+msgid "Text size"
+msgstr ""
+
+#: src/preferences/systray.ts:17
+msgid "Space between application tray icons"
+msgstr ""
+
+#: src/preferences/systray.ts:18
+msgid "Applet button padding"
+msgstr ""
+
+#: src/preferences/systray.ts:18
+msgid "Left and right padding for clock/notifications and system controls"
+msgstr ""
+
+#: src/preferences/systray.ts:19
+msgid "Space between applet blocks"
+msgstr ""
+
+#: src/preferences/systray.ts:20
+msgid "Clock button"
+msgstr ""
+
+#: src/preferences/systray.ts:21 src/preferences/taskbar.ts:12
+msgid "Layout"
+msgstr ""
+
+#: src/preferences/systray.ts:21
+msgid "Single line"
+msgstr ""
+
+#: src/preferences/systray.ts:21
+msgid "Two lines"
+msgstr ""
+
+#: src/preferences/systray.ts:22
+msgid "Display the time and short date stacked or side by side"
+msgstr ""
+
+#: src/preferences/systray.ts:23
+msgid "System button icons"
+msgstr ""
+
+#: src/preferences/systray.ts:24
+msgid ""
+"Choose which status icons may appear. GNOME still controls when each is "
+"relevant. If none are visible, a settings icon keeps the button accessible."
+msgstr ""
+
+#: src/preferences/systray.ts:38
+msgid "Restore default applet order"
+msgstr ""
+
+#: src/preferences/systray.ts:39
+msgid "Application tray, sharing indicators, system controls, then clock"
+msgstr ""
+
+#: src/preferences/systray.ts:40
+msgid "Reset order"
+msgstr ""
+
+#: src/preferences/systray.ts:44
+msgid "Always visible icons"
+msgstr ""
+
+#: src/preferences/systray.ts:44
+msgid ""
+"Keep selected app icons on the taskbar when the tray is collapsed. Apps "
+"appear here after their tray icon has been detected."
+msgstr ""
+
+#: src/preferences/taskbar.ts:12
+msgid "Sizes use logical pixels and follow your display scaling."
+msgstr ""
+
+#: src/preferences/taskbar.ts:13
+msgid "Fixed height in logical pixels; content that exceeds it is clipped"
+msgstr ""
+
+#: src/preferences/taskbar.ts:13
+msgid "Thickness"
+msgstr ""
+
+#: src/preferences/taskbar.ts:14
+msgid "At the far-right edge; click again to restore windows"
+msgstr ""
+
+#: src/preferences/taskbar.ts:14
+msgid "Show desktop button"
+msgstr ""
+
+#: src/preferences/taskbar.ts:15
+msgid "Show desktop button width"
+msgstr ""
+
+#: src/preferences/taskbar.ts:16
+msgid "Space before Show desktop"
+msgstr ""
+
+#: src/preferences/taskbar.ts:17
+msgid "Bottom"
+msgstr ""
+
+#: src/preferences/taskbar.ts:17
+msgid "Left"
+msgstr ""
+
+#: src/preferences/taskbar.ts:17
+msgid "Position"
+msgstr ""
+
+#: src/preferences/taskbar.ts:17
+msgid "Right"
+msgstr ""
+
+#: src/preferences/taskbar.ts:17
+msgid "Top"
+msgstr ""
+
+#: src/preferences/taskbar.ts:18
+msgid "Floating taskbar"
+msgstr ""
+
+#: src/preferences/taskbar.ts:19 src/preferences/taskbar.ts:119
+msgid "Distance from screen edge"
+msgstr ""
+
+#: src/preferences/taskbar.ts:20 src/preferences/taskbar.ts:120
+msgid "Inset at both ends"
+msgstr ""
+
+#: src/preferences/taskbar.ts:20
+msgid "Side gaps on horizontal bars; top and bottom gaps on vertical bars"
+msgstr ""
+
+#: src/preferences/taskbar.ts:21
+msgid "Inside the taskbar: left on horizontal bars, top on vertical bars"
+msgstr ""
+
+#: src/preferences/taskbar.ts:21
+msgid "Space at start"
+msgstr ""
+
+#: src/preferences/taskbar.ts:22
+msgid "Inside the taskbar: right on horizontal bars, bottom on vertical bars"
+msgstr ""
+
+#: src/preferences/taskbar.ts:22
+msgid "Space at end"
+msgstr ""
+
+#: src/preferences/taskbar.ts:23
+msgid "Logical pixels; 0 gives square corners"
+msgstr ""
+
+#: src/preferences/taskbar.ts:24
+msgid "All edges when floating; only the window-facing edge when attached."
+msgstr ""
+
+#: src/preferences/taskbar.ts:24
+msgid "Border"
+msgstr ""
+
+#: src/preferences/taskbar.ts:25
+msgid "Show border"
+msgstr ""
+
+#: src/preferences/taskbar.ts:26
+msgid "Border thickness"
+msgstr ""
+
+#: src/preferences/taskbar.ts:27
+msgid "Border color"
+msgstr ""
+
+#: src/preferences/taskbar.ts:28
+msgid "Border opacity"
+msgstr ""
+
+#: src/preferences/taskbar.ts:30
+msgid "Numbered buttons with the current workspace highlighted"
+msgstr ""
+
+#: src/preferences/taskbar.ts:30
+msgid "Show workspace switcher"
+msgstr ""
+
+#: src/preferences/taskbar.ts:31
+msgid ""
+"Hidden taskbars reappear when the pointer touches the selected screen edge. "
+"Panels and editing keep the taskbar visible."
+msgstr ""
+
+#: src/preferences/taskbar.ts:31
+msgid "Visibility"
+msgstr ""
+
+#: src/preferences/taskbar.ts:33
+msgid "Always visible"
+msgstr ""
+
+#: src/preferences/taskbar.ts:33
+msgid "Auto-hide"
+msgstr ""
+
+#: src/preferences/taskbar.ts:33
+msgid "Hide for maximized windows"
+msgstr ""
+
+#: src/preferences/taskbar.ts:33
+msgid "Hide when a window overlaps"
+msgstr ""
+
+#: src/preferences/taskbar.ts:34
+msgid "Hide delay"
+msgstr ""
+
+#: src/preferences/taskbar.ts:34
+msgid "Milliseconds before sliding out of view"
+msgstr ""
+
+#: src/preferences/taskbar.ts:35
+msgid ""
+"Clock, system controls and application tray stay together on the main "
+"taskbar. Additional taskbars show application buttons."
+msgstr ""
+
+#: src/preferences/taskbar.ts:35
+msgid "Displays"
+msgstr ""
+
+#: src/preferences/taskbar.ts:36
+msgid "Show taskbar on"
+msgstr ""
+
+#: src/preferences/taskbar.ts:37
+msgid "All displays"
+msgstr ""
+
+#: src/preferences/taskbar.ts:37
+msgid "Primary display"
+msgstr ""
+
+#: src/preferences/taskbar.ts:37
+msgid "Specific display"
+msgstr ""
+
+#: src/preferences/taskbar.ts:38
+msgid "Display"
+msgstr ""
+
+#: src/preferences/taskbar.ts:38
+msgid "Loading connected displays…"
+msgstr ""
+
+#: src/preferences/taskbar.ts:41
+msgid "Only show windows on this display"
+msgstr ""
+
+#: src/preferences/taskbar.ts:41
+msgid "Pinned applications remain available on every taskbar"
+msgstr ""
+
+#: src/preferences/taskbar.ts:78
+msgid "Falls back to the primary display when disconnected"
+msgstr ""
+
+#: src/preferences/taskbar.ts:83
+msgid "Connected displays are currently unavailable"
+msgstr ""
+
+#: src/preferences/taskbar.ts:107
+msgid "Taskbar surface"
+msgstr ""
+
+#: src/preferences/taskbar.ts:108
+msgid "Use a custom background color instead of the GNOME Shell theme"
+msgstr ""
+
+#: src/preferences/taskbar.ts:109
+msgid "Opacity is controlled separately below"
+msgstr ""
+
+#: src/preferences/taskbar.ts:110 src/preferences/taskbar.ts:126
+msgid "Background blur"
+msgstr ""
+
+#: src/preferences/taskbar.ts:111
+msgid "0 disables blur; higher values soften the background more"
+msgstr ""
+
+#: src/preferences/taskbar.ts:113
+msgid "Taskbar appearance near windows"
+msgstr ""
+
+#: src/preferences/taskbar.ts:114
+msgid ""
+"Use a separate appearance on each display when windows on the current "
+"workspace meet the condition. Overview uses the regular appearance."
+msgstr ""
+
+#: src/preferences/taskbar.ts:115
+msgid "Change appearance when"
+msgstr ""
+
+#: src/preferences/taskbar.ts:116
+msgid "A window is maximized"
+msgstr ""
+
+#: src/preferences/taskbar.ts:116
+msgid "A window is near the taskbar"
+msgstr ""
+
+#: src/preferences/taskbar.ts:116
+msgid "Either condition is met"
+msgstr ""
+
+#: src/preferences/taskbar.ts:116
+msgid "Never"
+msgstr ""
+
+#: src/preferences/taskbar.ts:117
+msgid "Taskbar layout"
+msgstr ""
+
+#: src/preferences/taskbar.ts:118
+msgid "Attach to screen edge"
+msgstr ""
+
+#: src/preferences/taskbar.ts:118
+msgid "Float"
+msgstr ""
+
+#: src/preferences/taskbar.ts:118
+msgid "Keep normal layout"
+msgstr ""
+
+#: src/preferences/taskbar.ts:119 src/preferences/taskbar.ts:120
+msgid "Used with the Float layout"
+msgstr ""
+
+#: src/preferences/taskbar.ts:121
+msgid ""
+"Used with Attach or Float; Keep normal layout preserves the normal radius"
+msgstr ""
+
+#: src/preferences/taskbar.ts:122
+msgid ""
+"Logical pixels from the top of the taskbar; 0 means touching or overlapping"
+msgstr ""
+
+#: src/preferences/taskbar.ts:122
+msgid "Proximity distance"
+msgstr ""
+
+#: src/preferences/taskbar.ts:128
+msgid "Context menu"
+msgstr ""
+
+#: src/preferences/taskbar.ts:128
+msgid "Edit taskbar and Taskbar settings are always available."
+msgstr ""
+
+#: src/preferences/taskbar.ts:130
+msgid "Application shortcut"
+msgstr ""
+
+#: src/preferences/taskbar.ts:141
+msgid "Shortcut application"
+msgstr ""
+
+#: src/preferences/taskbar.ts:142
+msgid "Replaces System Monitor; the menu uses the selected app’s name"
+msgstr ""
+
+#: src/prefs.ts:27
+msgid "Interactions"
+msgstr ""
+
+#: src/prefs.ts:28
+msgid "App Bar"
+msgstr ""
+
+#: src/prefs.ts:29
+msgid "Start Menu"
+msgstr ""
+
+#: src/prefs.ts:30
+msgid "Search and Overview"
+msgstr ""
+
+#: src/prefs.ts:31
+msgid "System Tray"
+msgstr ""
+
+#: src/prefs.ts:32
+msgid "Panels"
+msgstr ""
+
+#: src/prefs.ts:33
+msgid "General"
+msgstr ""
+
+#: src/start-menu/launcher.ts:13 src/start-menu/launcher.ts:23
+msgid "Start — show overview"
+msgstr ""
+
+#: src/start-menu/launcher.ts:23
+msgid "Task view — show overview"
+msgstr ""

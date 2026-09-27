@@ -1,3 +1,4 @@
+import {_, formatText} from '../i18n.js';
 import Clutter from 'gi://Clutter';
 import Gio from 'gi://Gio';
 import GLib from 'gi://GLib';
@@ -17,7 +18,7 @@ export class WeatherApplet {
         this.editing = editing;
         this.session = new Soup.Session({timeout: 20});
         this.actor = new St.Button({style_class: 'luna-taskbar-system-applet luna-taskbar-weather',
-            accessible_name: 'Weather', can_focus: true, track_hover: true});
+            accessible_name: _('Weather'), can_focus: true, track_hover: true});
         this.contents = new St.BoxLayout({style: 'spacing: 5px;', y_align: Clutter.ActorAlign.CENTER});
         this.icon = new St.Icon({icon_name: 'weather-overcast-symbolic', icon_size: 18});
         this.degrees = new St.Label({text: '—', y_align: Clutter.ActorAlign.CENTER});
@@ -38,10 +39,10 @@ export class WeatherApplet {
         this.body.add_child(header);
         const heading = new St.BoxLayout({orientation: Clutter.Orientation.VERTICAL, x_expand: true});
         header.add_child(heading);
-        this.label('WEATHER', heading, 'luna-weather-eyebrow');
-        this.title = this.label('Weather', heading, 'luna-weather-location');
+        this.label(_('WEATHER'), heading, 'luna-weather-eyebrow');
+        this.title = this.label(_('Weather'), heading, 'luna-weather-location');
         const settingsButton = new St.Button({style_class: 'luna-weather-settings', can_focus: true,
-            accessible_name: 'Weather settings', child: new St.Icon({icon_name: 'emblem-system-symbolic', icon_size: 16})});
+            accessible_name: _('Weather settings'), child: new St.Icon({icon_name: 'emblem-system-symbolic', icon_size: 16})});
         settingsButton.connect('clicked', () => {
             this.menu.close(); this.systemPanel()?.menu.close(); preferences();
         });
@@ -64,9 +65,9 @@ export class WeatherApplet {
         this.body.add_child(this.forecast);
         const footer = new St.BoxLayout({style_class: 'luna-weather-footer'});
         this.body.add_child(footer);
-        this.status = this.label('Set your city in Weather settings.', footer, 'luna-weather-status');
+        this.status = this.label(_('Set your city in Weather settings.'), footer, 'luna-weather-status');
         this.status.x_expand = true;
-        this.label('Open-Meteo', footer, 'luna-weather-credit');
+        this.label(_('Open-Meteo'), footer, 'luna-weather-credit');
         this.backdrop = new PopupBackdrop(this.menu, settings);
         this.restoreAnchor = anchorTaskbarMenu(this.menu, this.actor, settings);
         this.actor.connect('clicked', () => { if (!editing()) this.menu.toggle(); });
@@ -128,10 +129,10 @@ export class WeatherApplet {
         this.hero.hide(); this.details.hide(); this.forecast.hide();
         this.icon.icon_name = 'weather-overcast-symbolic';
         this.forecast.destroy_all_children();
-        this.title.text = 'Weather';
-        this.status.text = 'Set your city in Weather settings.';
+        this.title.text = _('Weather');
+        this.status.text = _('Set your city in Weather settings.');
         if (!this.settings.get_boolean('show-weather') || !this.settings.get_string('weather-city').trim()) return;
-        this.status.text = 'Loading weather…';
+        this.status.text = _('Loading weather…');
         this.timer = GLib.timeout_add(GLib.PRIORITY_DEFAULT, 800, () => {
             this.timer = 0; this.update(); return GLib.SOURCE_REMOVE;
         });
@@ -162,7 +163,7 @@ export class WeatherApplet {
             this.location = location; this.hasData = true;
         } catch (error) {
             if (this.destroyed || generation !== this.generation) return;
-            this.status.text = this.hasData ? 'Unable to update · showing last weather' : 'Weather unavailable · check city or connection';
+            this.status.text = this.hasData ? _('Unable to update · showing last weather') : _('Weather unavailable · check city or connection');
         } finally {
             if (!this.destroyed && generation === this.generation)
                 this.timer = GLib.timeout_add(GLib.PRIORITY_DEFAULT, 900000, () => {
@@ -179,17 +180,17 @@ export class WeatherApplet {
         this.degrees.text = temperature(now.temperature_2m);
         this.icon.icon_name = icon;
         this.current.text = `${this.degrees.text}${unit}`;
-        this.description.text = description;
+        this.description.text = _(description);
         this.heroIcon.icon_name = icon;
-        this.feels.text = `Feels like  ${temperature(now.apparent_temperature)}${unit}`;
-        this.wind.text = `Wind  ${now.wind_speed_10m ?? '—'} km/h`;
+        this.feels.text = formatText(_("Feels like  %s%s"), temperature(now.apparent_temperature), unit);
+        this.wind.text = formatText(_("Wind  %s km/h"), now.wind_speed_10m ?? '—');
         this.hero.show(); this.details.show(); this.forecast.visible = !this.settings.get_boolean('weather-slim');
-        this.actor.accessible_name = `${this.title.text}: ${this.current.text}, ${description}`;
+        this.actor.accessible_name = `${this.title.text}: ${this.current.text}, ${_(description)}`;
         this.forecast.destroy_all_children();
         for (let i = 0; i < Math.min(3, data.daily?.time?.length ?? 0); i++) {
             const column = new St.BoxLayout({orientation: Clutter.Orientation.VERTICAL, style_class: 'luna-weather-day', x_expand: true});
             const date = GLib.DateTime.new_from_iso8601(`${data.daily.time[i]}T12:00:00Z`, null);
-            this.label(i === 0 ? 'Today' : date?.format('%a') ?? '', column, 'luna-weather-day-name');
+            this.label(i === 0 ? _('Today') : date?.format('%a') ?? '', column, 'luna-weather-day-name');
             column.add_child(new St.Icon({icon_name: conditions(data.daily.weather_code[i])[1], icon_size: 24, x_align: Clutter.ActorAlign.CENTER}));
             const temperatures = new St.BoxLayout({style_class: 'luna-weather-range', x_align: Clutter.ActorAlign.CENTER});
             this.label(temperature(data.daily.temperature_2m_max[i]), temperatures, 'luna-weather-high');
@@ -197,7 +198,7 @@ export class WeatherApplet {
             column.add_child(temperatures);
             this.forecast.add_child(column);
         }
-        this.status.text = `Updated ${GLib.DateTime.new_now_local().format('%H:%M')}`;
+        this.status.text = formatText(_("Updated %s"), GLib.DateTime.new_now_local().format('%H:%M'));
     }
     destroy() {
         this.detach();

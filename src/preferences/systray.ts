@@ -1,3 +1,4 @@
+import {_} from '../i18n.js';
 import Adw from 'gi://Adw';
 import Gtk from 'gi://Gtk';
 import type {PreferenceContext} from './controls.js';
@@ -5,24 +6,24 @@ import {SYSTEM_ICONS} from '../compat/systemIconOptions.js';
 
 export function populate(context: PreferenceContext, tray: Adw.PreferencesPage): void {
     const {settings, window, group, toggle, spin, combo} = context;
-    const trayLayout = group(tray, 'Icons and applets',
-        'Sizes apply to application tray icons, clock and system controls. Right-click the taskbar and choose Edit taskbar to move applets.');
-    toggle(trayLayout, 'tray-show-passive', 'Show inactive tray icons', 'Keep apps visible when they report no current activity');
-    toggle(trayLayout, 'tray-collapse-enabled', 'Collapse application tray', 'Show a toggle instead of the icons when the limit is exceeded');
-    spin(trayLayout, 'tray-visible-limit', 'Icon limit', 'Collapse when there are more visible app icons than this', 'tray-collapse-enabled');
-    spin(trayLayout, 'tray-icon-size', 'Taskbar icon size');
-    spin(trayLayout, 'tray-popup-icon-size', 'Popup icon size', 'Icon size inside the collapsed application tray');
-    spin(trayLayout, 'tray-text-size', 'Text size');
-    spin(trayLayout, 'tray-spacing', 'Space between application tray icons');
-    spin(trayLayout, 'applet-padding', 'Applet button padding', 'Left and right padding for clock/notifications and system controls');
-    spin(trayLayout, 'applet-spacing', 'Space between applet blocks');
-    const clockButton = group(tray, 'Clock button');
-    combo(clockButton, 'clock-layout', 'Layout', ['two-line', 'single-line'], ['Two lines', 'Single line'],
-        'Display the time and short date stacked or side by side');
-    const systemIcons = group(tray, 'System button icons',
-        'Choose which status icons may appear. GNOME still controls when each is relevant. If none are visible, a settings icon keeps the button accessible.');
+    const trayLayout = group(tray, _('Icons and applets'),
+        _('Sizes apply to application tray icons, clock and system controls. Right-click the taskbar and choose Edit taskbar to move applets.'));
+    toggle(trayLayout, 'tray-show-passive', _('Show inactive tray icons'), _('Keep apps visible when they report no current activity'));
+    toggle(trayLayout, 'tray-collapse-enabled', _('Collapse application tray'), _('Show a toggle instead of the icons when the limit is exceeded'));
+    spin(trayLayout, 'tray-visible-limit', _('Icon limit'), _('Collapse when there are more visible app icons than this'), 'tray-collapse-enabled');
+    spin(trayLayout, 'tray-icon-size', _('Taskbar icon size'));
+    spin(trayLayout, 'tray-popup-icon-size', _('Popup icon size'), _('Icon size inside the collapsed application tray'));
+    spin(trayLayout, 'tray-text-size', _('Text size'));
+    spin(trayLayout, 'tray-spacing', _('Space between application tray icons'));
+    spin(trayLayout, 'applet-padding', _('Applet button padding'), _('Left and right padding for clock/notifications and system controls'));
+    spin(trayLayout, 'applet-spacing', _('Space between applet blocks'));
+    const clockButton = group(tray, _('Clock button'));
+    combo(clockButton, 'clock-layout', _('Layout'), ['two-line', 'single-line'], [_('Two lines'), _('Single line')],
+        _('Display the time and short date stacked or side by side'));
+    const systemIcons = group(tray, _('System button icons'),
+        _('Choose which status icons may appear. GNOME still controls when each is relevant. If none are visible, a settings icon keeps the button accessible.'));
     for (const [key, , title] of SYSTEM_ICONS) {
-        const row = new Adw.SwitchRow({title, active: !settings.get_strv('system-hidden-icons').includes(key)});
+        const row = new Adw.SwitchRow({title: _(title), active: !settings.get_strv('system-hidden-icons').includes(key)});
         row.connect('notify::active', () => {
             const hidden = new Set(settings.get_strv('system-hidden-icons'));
             if (row.active) hidden.delete(key); else hidden.add(key);
@@ -34,13 +35,13 @@ export function populate(context: PreferenceContext, tray: Adw.PreferencesPage):
         window.connect('close-request', () => { settings.disconnect(id); return false; });
         systemIcons.add(row);
     }
-    const resetOrder = new Adw.ActionRow({title: 'Restore default applet order',
-        subtitle: 'Application tray, sharing indicators, system controls, then clock'});
-    const reset = new Gtk.Button({label: 'Reset order', valign: Gtk.Align.CENTER});
+    const resetOrder = new Adw.ActionRow({title: _('Restore default applet order'),
+        subtitle: _('Application tray, sharing indicators, system controls, then clock')});
+    const reset = new Gtk.Button({label: _('Reset order'), valign: Gtk.Align.CENTER});
     reset.connect('clicked', () => settings.reset('applet-order'));
     resetOrder.add_suffix(reset);
     trayLayout.add(resetOrder);
-    const exceptions = group(tray, 'Always visible icons', 'Keep selected app icons on the taskbar when the tray is collapsed. Apps appear here after their tray icon has been detected.');
+    const exceptions = group(tray, _('Always visible icons'), _('Keep selected app icons on the taskbar when the tray is collapsed. Apps appear here after their tray icon has been detected.'));
     let exceptionRows: Adw.SwitchRow[] = [];
     const updateExceptions = () => {
         exceptionRows.forEach(row => exceptions.remove(row));

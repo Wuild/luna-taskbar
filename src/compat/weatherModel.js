@@ -1,25 +1,26 @@
+import {N_} from '../translatable.js';
 export function conditions(code, day = true) {
     if (code === 0)
-        return [day ? 'Clear sky' : 'Clear night', day ? 'weather-clear-symbolic' : 'weather-clear-night-symbolic'];
+        return [day ? N_('Clear sky') : N_('Clear night'), day ? 'weather-clear-symbolic' : 'weather-clear-night-symbolic'];
     if (code === 1 || code === 2)
-        return [code === 1 ? 'Mostly clear' : 'Partly cloudy', day ? 'weather-few-clouds-symbolic' : 'weather-few-clouds-night-symbolic'];
+        return [code === 1 ? N_('Mostly clear') : N_('Partly cloudy'), day ? 'weather-few-clouds-symbolic' : 'weather-few-clouds-night-symbolic'];
     if (code === 3)
-        return ['Overcast', 'weather-overcast-symbolic'];
+        return [N_('Overcast'), 'weather-overcast-symbolic'];
     if (code === 45 || code === 48)
-        return ['Fog', 'weather-fog-symbolic'];
+        return [N_('Fog'), 'weather-fog-symbolic'];
     if ([51, 53, 55].includes(code))
-        return ['Drizzle', 'weather-showers-scattered-symbolic'];
+        return [N_('Drizzle'), 'weather-showers-scattered-symbolic'];
     if ([56, 57, 66, 67].includes(code))
-        return ['Freezing rain', 'weather-showers-symbolic'];
+        return [N_('Freezing rain'), 'weather-showers-symbolic'];
     if ([61, 63, 65].includes(code))
-        return ['Rain', 'weather-showers-symbolic'];
+        return [N_('Rain'), 'weather-showers-symbolic'];
     if (code >= 71 && code <= 77 || code === 85 || code === 86)
-        return ['Snow', 'weather-snow-symbolic'];
+        return [N_('Snow'), 'weather-snow-symbolic'];
     if (code >= 80 && code <= 82)
-        return ['Showers', 'weather-showers-scattered-symbolic'];
+        return [N_('Showers'), 'weather-showers-scattered-symbolic'];
     if ([95, 96, 99].includes(code))
-        return ['Thunderstorm', 'weather-storm-symbolic'];
-    return ['Unknown conditions', 'weather-overcast-symbolic'];
+        return [N_('Thunderstorm'), 'weather-storm-symbolic'];
+    return [N_('Unknown conditions'), 'weather-overcast-symbolic'];
 }
 export function temperature(value) { return Number.isFinite(value) ? `${Math.round(value)}°` : '—'; }
 export function forecastUrl(location, units) {

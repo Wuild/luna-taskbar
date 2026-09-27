@@ -1,3 +1,4 @@
+import {_} from '../i18n.js';
 import Adw from 'gi://Adw';
 import Gio from 'gi://Gio';
 import Gtk from 'gi://Gtk';
@@ -22,7 +23,7 @@ export function createControls(window: Adw.PreferencesWindow, settings: TaskbarS
         parent.add(row);
         return row;
     };
-    const spin = (parent: Adw.PreferencesGroup, key: KeysOfType<number>, title: string, subtitle = 'Logical pixels', sensitiveKey: KeysOfType<boolean> | null = null) => {
+    const spin = (parent: Adw.PreferencesGroup, key: KeysOfType<number>, title: string, subtitle = _('Logical pixels'), sensitiveKey: KeysOfType<boolean> | null = null) => {
         const [lower, upper] = numericRange(key);
         const row = new Adw.SpinRow({title, subtitle,
             adjustment: new Gtk.Adjustment({lower, upper, step_increment: 1, page_increment: 5})});

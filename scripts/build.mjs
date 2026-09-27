@@ -17,6 +17,7 @@ if (process.argv.includes('--clean')) {
         if (file.endsWith('.xml')) await cp(path.join(root, 'schemas', file), path.join(dist, 'schemas', file));
     }
     await cp(path.join(root, 'src/compat/tray/x11.py'), path.join(dist, 'compat/tray/x11.py'));
+    execFileSync('python3', [path.join(root, 'scripts/translations.py'), 'compile', '--output', path.join(dist, 'locale')], {stdio: 'inherit'});
     execFileSync('glib-compile-schemas', ['--strict', path.join(dist, 'schemas')], {stdio: 'inherit'});
     await writeFile(path.join(dist, 'package.json'), JSON.stringify({type: 'module'}));
     const metadata = JSON.parse(await readFile(path.join(dist, 'metadata.json'), 'utf8'));

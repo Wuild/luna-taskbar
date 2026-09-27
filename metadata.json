@@ -6,5 +6,6 @@
     "50"
   ],
   "settings-schema": "org.gnome.shell.extensions.luna-taskbar",
-  "url": "https://github.com/Wuild/luna-taskbar"
+  "url": "https://github.com/Wuild/luna-taskbar",
+  "gettext-domain": "luna-taskbar"
 }

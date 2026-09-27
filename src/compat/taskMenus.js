@@ -1,3 +1,4 @@
+import {_} from '../i18n.js';
 import {PopupBackdrop} from './popupBackdrop.js';
 import Clutter from 'gi://Clutter';
 import Shell from 'gi://Shell';
@@ -14,7 +15,7 @@ class TaskAppMenu extends AppMenu.AppMenu {
         super._updateFavoriteItem();
         if (this._app && this._toggleFavoriteItem.visible)
             this._toggleFavoriteItem.label.text = this._appFavorites.isFavorite(this._app.get_id())
-                ? 'Unpin from taskbar' : 'Pin to taskbar';
+                ? _('Unpin from taskbar') : _('Pin to taskbar');
     }
 }
 
@@ -72,17 +73,17 @@ export class TaskMenus {
             menu.setApp(app);
         if (window && (task.windows?.length ?? 1) <= 1) {
             const section = new PopupMenu.PopupMenuSection();
-            section.addAction(window.minimized ? 'Restore window' : 'Focus window',
+            section.addAction(window.minimized ? _('Restore window') : _('Focus window'),
                 () => Main.activateWindow(window));
             if (!window.minimized)
-                section.addAction('Minimize', () => window.minimize()).setSensitive(window.can_minimize());
-            section.addAction(window.is_maximized() ? 'Restore size' : 'Maximize', () => {
+                section.addAction(_('Minimize'), () => window.minimize()).setSensitive(window.can_minimize());
+            section.addAction(window.is_maximized() ? _('Restore size') : _('Maximize'), () => {
                 if (window.is_maximized())
                     window.unmaximize();
                 else
                     window.maximize();
             }).setSensitive(window.can_maximize());
-            section.addAction('Close window', () => window.delete(global.get_current_time()));
+            section.addAction(_('Close window'), () => window.delete(global.get_current_time()));
             section.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
             menu.addMenuItem(section, 0);
         }
@@ -104,16 +105,16 @@ export class TaskMenus {
         this._anchor.set_position(x, y);
         const menu = new PopupMenu.PopupMenu(this._anchor, 0, St.Side.BOTTOM);
         if (this._settings.get_boolean('menu-show-applications'))
-            menu.addAction('Show applications', () => Main.overview.showApps());
+            menu.addAction(_('Show applications'), () => Main.overview.showApps());
         if (this._settings.get_boolean('menu-show-desktop'))
-            menu.addAction('Show desktop', this._showDesktop);
+            menu.addAction(_('Show desktop'), this._showDesktop);
         const shortcut = Shell.AppSystem.get_default().lookup_app(this._settings.get_string('menu-shortcut-app'));
         if (this._settings.get_boolean('menu-show-shortcut') && shortcut)
             menu.addAction(shortcut.get_name(), () => shortcut.activate());
         if (menu.numMenuItems > 0)
             menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
-        menu.addAction('Edit taskbar', this._editTaskbar);
-        menu.addAction('Taskbar settings', this._openPreferences);
+        menu.addAction(_('Edit taskbar'), this._editTaskbar);
+        menu.addAction(_('Taskbar settings'), this._openPreferences);
         this._install(menu, this._anchor);
     }
 

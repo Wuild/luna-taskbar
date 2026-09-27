@@ -1,3 +1,4 @@
+import {_} from '../i18n.js';
 import Clutter from 'gi://Clutter';
 import GLib from 'gi://GLib';
 import Gio from 'gi://Gio';
@@ -38,12 +39,12 @@ export class SystemPanel {
             style_class: 'luna-taskbar-center-right', x_expand: true, y_align: Clutter.ActorAlign.END});
         this.columns.add_child(this.left);
         this.columns.add_child(this.right);
-        this.media = this._card('Now Playing', this.left);
+        this.media = this._card(_('Now Playing'), this.left);
         this.media.hide();
         this.weather = this._card(null, this.left);
         this.weather.hide();
-        this.controls = this._card('Quick Settings', this.left);
-        this.notifications = this._card('Notifications', this.right);
+        this.controls = this._card(_('Quick Settings'), this.left);
+        this.notifications = this._card(_('Notifications'), this.right);
         this.notifications.add_style_class_name('luna-taskbar-notifications');
         this.notifications.clip_to_allocation = true;
         this._placeholderVisible = this.date._messageList._placeholder.visible;
@@ -73,8 +74,8 @@ export class SystemPanel {
         this._calendarChildren = new Map(this.date._calendar.get_children().map(child => [child, child.x_expand]));
         expandDays();
         this._controlAllocationId = this.controls.connect('notify::allocation', () => {
-            this.menu._grid.notify('x');
-            this.menu._grid.notify('y');
+            this.menu._grid.notify(_('x'));
+            this.menu._grid.notify(_('y'));
         });
         this.menu.box.add_child(this.columns);
         for (const card of [this.media, this.weather, this.controls, this.notifications, this.calendar]) {
@@ -315,7 +316,7 @@ export class SystemPanel {
         const emptyMinimum = Math.max(160 * scale, headerHeight + emptyHeight + 48 * scale);
         const compactEmpty = !count && available < emptyMinimum;
         this.date._messageList._placeholder.visible = !count && !compactEmpty;
-        this._notificationHeading.text = compactEmpty ? 'No notifications' : 'Notifications';
+        this._notificationHeading.text = compactEmpty ? _('No notifications') : _('Notifications');
         const desired = count ? Math.max(emptyMinimum + 24 * scale, Math.ceil(contentHeight)) : emptyMinimum;
         const target = Math.min(available, desired);
         if (this.notifications.height !== target) this.notifications.set_height(target);
@@ -337,7 +338,7 @@ export class SystemPanel {
         contents.add_child(clock);
         this.quick.add_child(contents);
         this.date.container.hide();
-        this.quick.accessible_name = 'System controls, notifications and calendar';
+        this.quick.accessible_name = _('System controls, notifications and calendar');
     }
 
     _restoreCombinedButton() {
@@ -419,8 +420,8 @@ export class SystemPanel {
         // Remove only the media rows, leaving notification groups and their model intact.
         for (const message of view._playerToMessage.values()) message.get_parent().destroy();
         view._playerToMessage.clear();
-        view.notify('empty');
-        view.notify('can-clear');
+        view.notify(_('empty'));
+        view.notify(_('can-clear'));
         view._addPlayer = player => {
             if (this._players.has(player)) return;
             const message = new MessageList.MediaMessage(player);

@@ -1,3 +1,4 @@
+import {_} from '../i18n.js';
 import Adw from 'gi://Adw';
 import Gio from 'gi://Gio';
 import Gtk from 'gi://Gtk';
@@ -8,36 +9,36 @@ type DisplayState = [number, Array<[MonitorSpec, unknown[], Record<string, GLib.
 
 export function populate(context: PreferenceContext, taskbar: Adw.PreferencesPage): void {
     const {settings, window, group, toggle, spin, combo, color} = context;
-    const layout = group(taskbar, 'Layout', 'Sizes use logical pixels and follow your display scaling.');
-    spin(layout, 'taskbar-height', 'Thickness', 'Fixed height in logical pixels; content that exceeds it is clipped');
-    toggle(layout, 'show-desktop-button', 'Show desktop button', 'At the far-right edge; click again to restore windows');
-    spin(layout, 'show-desktop-width', 'Show desktop button width', 'Logical pixels', 'show-desktop-button');
-    spin(layout, 'show-desktop-margin', 'Space before Show desktop', 'Logical pixels', 'show-desktop-button');
-    combo(layout, 'taskbar-position', 'Position', ['bottom', 'top', 'left', 'right'], ['Bottom', 'Top', 'Left', 'Right']);
-    toggle(layout, 'taskbar-floating', 'Floating taskbar');
-    spin(layout, 'taskbar-edge-gap', 'Distance from screen edge', 'Logical pixels', 'taskbar-floating');
-    spin(layout, 'taskbar-end-gap', 'Inset at both ends', 'Side gaps on horizontal bars; top and bottom gaps on vertical bars', 'taskbar-floating');
-    spin(layout, 'taskbar-start-padding', 'Space at start', 'Inside the taskbar: left on horizontal bars, top on vertical bars');
-    spin(layout, 'taskbar-end-padding', 'Space at end', 'Inside the taskbar: right on horizontal bars, bottom on vertical bars');
-    spin(layout, 'taskbar-corner-radius', 'Corner radius', 'Logical pixels; 0 gives square corners');
-    const border = group(taskbar, 'Border', 'All edges when floating; only the window-facing edge when attached.');
-    toggle(border, 'taskbar-border-enabled', 'Show border');
-    spin(border, 'taskbar-border-width', 'Border thickness', 'Logical pixels', 'taskbar-border-enabled');
-    color(border, 'taskbar-border-color', 'Border color', '', 'taskbar-border-enabled');
-    spin(border, 'taskbar-border-opacity', 'Border opacity', '0% is transparent; 100% is opaque', 'taskbar-border-enabled');
-    const workspaces = group(taskbar, 'Workspaces');
-    toggle(workspaces, 'show-workspace-switcher', 'Show workspace switcher', 'Numbered buttons with the current workspace highlighted');
-    const visibility = group(taskbar, 'Visibility', 'Hidden taskbars reappear when the pointer touches the selected screen edge. Panels and editing keep the taskbar visible.');
-    combo(visibility, 'visibility-mode', 'Behavior', ['always', 'auto-hide', 'maximized', 'overlap'],
-        ['Always visible', 'Auto-hide', 'Hide for maximized windows', 'Hide when a window overlaps']);
-    spin(visibility, 'hide-delay', 'Hide delay', 'Milliseconds before sliding out of view');
-    const displays = group(taskbar, 'Displays', 'Clock, system controls and application tray stay together on the main taskbar. Additional taskbars show application buttons.');
-    combo(displays, 'monitor-mode', 'Show taskbar on', ['primary', 'all', 'specific'],
-        ['Primary display', 'All displays', 'Specific display']);
-    const displayChoice = new Adw.ComboRow({title: 'Display', subtitle: 'Loading connected displays…',
+    const layout = group(taskbar, _('Layout'), _('Sizes use logical pixels and follow your display scaling.'));
+    spin(layout, 'taskbar-height', _('Thickness'), _('Fixed height in logical pixels; content that exceeds it is clipped'));
+    toggle(layout, 'show-desktop-button', _('Show desktop button'), _('At the far-right edge; click again to restore windows'));
+    spin(layout, 'show-desktop-width', _('Show desktop button width'), _('Logical pixels'), 'show-desktop-button');
+    spin(layout, 'show-desktop-margin', _('Space before Show desktop'), _('Logical pixels'), 'show-desktop-button');
+    combo(layout, 'taskbar-position', _('Position'), ['bottom', 'top', 'left', 'right'], [_('Bottom'), _('Top'), _('Left'), _('Right')]);
+    toggle(layout, 'taskbar-floating', _('Floating taskbar'));
+    spin(layout, 'taskbar-edge-gap', _('Distance from screen edge'), _('Logical pixels'), 'taskbar-floating');
+    spin(layout, 'taskbar-end-gap', _('Inset at both ends'), _('Side gaps on horizontal bars; top and bottom gaps on vertical bars'), 'taskbar-floating');
+    spin(layout, 'taskbar-start-padding', _('Space at start'), _('Inside the taskbar: left on horizontal bars, top on vertical bars'));
+    spin(layout, 'taskbar-end-padding', _('Space at end'), _('Inside the taskbar: right on horizontal bars, bottom on vertical bars'));
+    spin(layout, 'taskbar-corner-radius', _('Corner radius'), _('Logical pixels; 0 gives square corners'));
+    const border = group(taskbar, _('Border'), _('All edges when floating; only the window-facing edge when attached.'));
+    toggle(border, 'taskbar-border-enabled', _('Show border'));
+    spin(border, 'taskbar-border-width', _('Border thickness'), _('Logical pixels'), 'taskbar-border-enabled');
+    color(border, 'taskbar-border-color', _('Border color'), '', 'taskbar-border-enabled');
+    spin(border, 'taskbar-border-opacity', _('Border opacity'), _('0% is transparent; 100% is opaque'), 'taskbar-border-enabled');
+    const workspaces = group(taskbar, _('Workspaces'));
+    toggle(workspaces, 'show-workspace-switcher', _('Show workspace switcher'), _('Numbered buttons with the current workspace highlighted'));
+    const visibility = group(taskbar, _('Visibility'), _('Hidden taskbars reappear when the pointer touches the selected screen edge. Panels and editing keep the taskbar visible.'));
+    combo(visibility, 'visibility-mode', _('Behavior'), ['always', 'auto-hide', 'maximized', 'overlap'],
+        [_('Always visible'), _('Auto-hide'), _('Hide for maximized windows'), _('Hide when a window overlaps')]);
+    spin(visibility, 'hide-delay', _('Hide delay'), _('Milliseconds before sliding out of view'));
+    const displays = group(taskbar, _('Displays'), _('Clock, system controls and application tray stay together on the main taskbar. Additional taskbars show application buttons.'));
+    combo(displays, 'monitor-mode', _('Show taskbar on'), ['primary', 'all', 'specific'],
+        [_('Primary display'), _('All displays'), _('Specific display')]);
+    const displayChoice = new Adw.ComboRow({title: _('Display'), subtitle: _('Loading connected displays…'),
         model: Gtk.StringList.new([]), sensitive: false});
     displays.add(displayChoice);
-    const localWindows = toggle(displays, 'monitor-local-windows', 'Only show windows on this display', 'Pinned applications remain available on every taskbar');
+    const localWindows = toggle(displays, 'monitor-local-windows', _('Only show windows on this display'), _('Pinned applications remain available on every taskbar'));
     let displayCount = 0;
     const updateLocalWindows = () => {
         localWindows.sensitive = settings.get_string('monitor-mode') === 'all' && displayCount > 1;
@@ -74,12 +75,12 @@ export function populate(context: PreferenceContext, taskbar: Adw.PreferencesPag
                 displayChoice.model = Gtk.StringList.new(names);
                 displayChoice.selected = Math.max(0, displayIds.indexOf(settings.get_string('monitor-connector')));
                 displayChoice.sensitive = names.length > 0 && settings.get_string('monitor-mode') === 'specific';
-                displayChoice.subtitle = 'Falls back to the primary display when disconnected';
+                displayChoice.subtitle = _('Falls back to the primary display when disconnected');
             } catch (error) {
                 displayCount = 0;
                 updateLocalWindows();
                 displayChoice.sensitive = false;
-                displayChoice.subtitle = 'Connected displays are currently unavailable';
+                displayChoice.subtitle = _('Connected displays are currently unavailable');
                 console.error(error);
             } finally {
                 updatingDisplays = false;
@@ -103,30 +104,30 @@ export function populate(context: PreferenceContext, taskbar: Adw.PreferencesPag
         return false;
     });
     refreshDisplays();
-    const barSurface = group(taskbar, 'Taskbar surface');
-    toggle(barSurface, 'taskbar-color-override', 'Override theme color', 'Use a custom background color instead of the GNOME Shell theme');
-    color(barSurface, 'taskbar-color', 'Background color', 'Opacity is controlled separately below', 'taskbar-color-override');
-    toggle(barSurface, 'enable-blur', 'Background blur');
-    spin(barSurface, 'taskbar-blur-radius', 'Blur strength', '0 disables blur; higher values soften the background more', 'enable-blur');
-    spin(barSurface, 'taskbar-opacity', 'Opacity', '0% is transparent; 100% is opaque');
-    const adaptive = group(taskbar, 'Taskbar appearance near windows',
-        'Use a separate appearance on each display when windows on the current workspace meet the condition. Overview uses the regular appearance.');
-    combo(adaptive, 'window-appearance-mode', 'Change appearance when', ['disabled', 'near', 'maximized', 'either'],
-        ['Never', 'A window is near the taskbar', 'A window is maximized', 'Either condition is met']);
-    combo(adaptive, 'window-appearance-layout', 'Taskbar layout', ['inherit', 'attached', 'floating'],
-        ['Keep normal layout', 'Attach to screen edge', 'Float']);
-    spin(adaptive, 'window-appearance-edge-gap', 'Distance from screen edge', 'Used with the Float layout');
-    spin(adaptive, 'window-appearance-end-gap', 'Inset at both ends', 'Used with the Float layout');
-    spin(adaptive, 'window-appearance-corner-radius', 'Corner radius', 'Used with Attach or Float; Keep normal layout preserves the normal radius');
-    spin(adaptive, 'window-appearance-distance', 'Proximity distance', 'Logical pixels from the top of the taskbar; 0 means touching or overlapping');
-    toggle(adaptive, 'window-appearance-color-override', 'Override theme color');
-    color(adaptive, 'window-appearance-color', 'Background color', '', 'window-appearance-color-override');
-    spin(adaptive, 'window-appearance-opacity', 'Opacity', '0% is transparent; 100% is opaque');
-    toggle(adaptive, 'window-appearance-blur', 'Background blur');
-    spin(adaptive, 'window-appearance-blur-radius', 'Blur strength', '0 disables blur', 'window-appearance-blur');
-    const menu = group(taskbar, 'Context menu', 'Edit taskbar and Taskbar settings are always available.');
-    for (const [key, title] of [['menu-show-applications', 'Show applications'],
-        ['menu-show-desktop', 'Show desktop'], ['menu-show-shortcut', 'Application shortcut']] as const)
+    const barSurface = group(taskbar, _('Taskbar surface'));
+    toggle(barSurface, 'taskbar-color-override', _('Override theme color'), _('Use a custom background color instead of the GNOME Shell theme'));
+    color(barSurface, 'taskbar-color', _('Background color'), _('Opacity is controlled separately below'), 'taskbar-color-override');
+    toggle(barSurface, 'enable-blur', _('Background blur'));
+    spin(barSurface, 'taskbar-blur-radius', _('Blur strength'), _('0 disables blur; higher values soften the background more'), 'enable-blur');
+    spin(barSurface, 'taskbar-opacity', _('Opacity'), _('0% is transparent; 100% is opaque'));
+    const adaptive = group(taskbar, _('Taskbar appearance near windows'),
+        _('Use a separate appearance on each display when windows on the current workspace meet the condition. Overview uses the regular appearance.'));
+    combo(adaptive, 'window-appearance-mode', _('Change appearance when'), ['disabled', 'near', 'maximized', 'either'],
+        [_('Never'), _('A window is near the taskbar'), _('A window is maximized'), _('Either condition is met')]);
+    combo(adaptive, 'window-appearance-layout', _('Taskbar layout'), ['inherit', 'attached', 'floating'],
+        [_('Keep normal layout'), _('Attach to screen edge'), _('Float')]);
+    spin(adaptive, 'window-appearance-edge-gap', _('Distance from screen edge'), _('Used with the Float layout'));
+    spin(adaptive, 'window-appearance-end-gap', _('Inset at both ends'), _('Used with the Float layout'));
+    spin(adaptive, 'window-appearance-corner-radius', _('Corner radius'), _('Used with Attach or Float; Keep normal layout preserves the normal radius'));
+    spin(adaptive, 'window-appearance-distance', _('Proximity distance'), _('Logical pixels from the top of the taskbar; 0 means touching or overlapping'));
+    toggle(adaptive, 'window-appearance-color-override', _('Override theme color'));
+    color(adaptive, 'window-appearance-color', _('Background color'), '', 'window-appearance-color-override');
+    spin(adaptive, 'window-appearance-opacity', _('Opacity'), _('0% is transparent; 100% is opaque'));
+    toggle(adaptive, 'window-appearance-blur', _('Background blur'));
+    spin(adaptive, 'window-appearance-blur-radius', _('Blur strength'), _('0 disables blur'), 'window-appearance-blur');
+    const menu = group(taskbar, _('Context menu'), _('Edit taskbar and Taskbar settings are always available.'));
+    for (const [key, title] of [['menu-show-applications', _('Show applications')],
+        ['menu-show-desktop', _('Show desktop')], ['menu-show-shortcut', _('Application shortcut')]] as const)
         toggle(menu, key, title);
     const installed = Gio.AppInfo.get_all().filter(app => app.should_show() && app.get_id())
         .sort((a, b) => a.get_display_name().localeCompare(b.get_display_name()));
@@ -137,8 +138,8 @@ export function populate(context: PreferenceContext, taskbar: Adw.PreferencesPag
         appIds.unshift(selected);
         appNames.unshift(`Unavailable: ${selected}`);
     }
-    const shortcut = combo(menu, 'menu-shortcut-app', 'Shortcut application', appIds, appNames,
-        'Replaces System Monitor; the menu uses the selected app’s name');
+    const shortcut = combo(menu, 'menu-shortcut-app', _('Shortcut application'), appIds, appNames,
+        _('Replaces System Monitor; the menu uses the selected app’s name'));
     shortcut.enable_search = true;
     settings.bind('menu-show-shortcut', shortcut, 'sensitive', Gio.SettingsBindFlags.GET);
 

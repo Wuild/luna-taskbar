@@ -1,3 +1,4 @@
+import {_, formatText, ngettext} from '../i18n.js';
 import Clutter from 'gi://Clutter';
 import Gio from 'gi://Gio';
 import GLib from 'gi://GLib';
@@ -143,7 +144,7 @@ export class TrayDrawer {
         }
         this.collapsed = collapsed;
         const hiddenCount = this.overflowBox.get_children().filter(child => child.visible).length;
-        this.button.accessible_name = `Application tray — ${hiddenCount} hidden icons`;
+        this.button.accessible_name = formatText(ngettext('Application tray — %d hidden icon', 'Application tray — %d hidden icons', hiddenCount), hiddenCount);
         this.button.visible = hiddenCount > 0;
         if (!hiddenCount) this.close();
         if (this.menu.isOpen) this._sizePopup();

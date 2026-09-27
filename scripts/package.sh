@@ -7,7 +7,7 @@ out_dir=$(cd "$out_dir" && pwd)
 cd "$project_dir"
 pnpm build
 cd dist
-gnome-extensions pack --extra-source=LICENSE --extra-source=LICENSE-NOTICE --force --out-dir "$out_dir" \
+gnome-extensions pack --podir=../po --extra-source=i18n.js --extra-source=translatable.js --extra-source=LICENSE --extra-source=LICENSE-NOTICE --force --out-dir "$out_dir" \
     --extra-source=appbar --extra-source=compat --extra-source=core \
     --extra-source=panels --extra-source=preferences --extra-source=settings \
     --extra-source=start-menu --extra-source=systray --extra-source=taskbar .

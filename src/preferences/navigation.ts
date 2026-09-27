@@ -1,3 +1,4 @@
+import {_, formatText} from '../i18n.js';
 import Adw from 'gi://Adw';
 import Gtk from 'gi://Gtk';
 import Gdk from 'gi://Gdk?version=4.0';
@@ -30,7 +31,7 @@ export class SettingsNavigation {
             if (page) this.select(page);
             if (this.split.collapsed) this.split.show_sidebar = false;
         });
-        this.search = new Gtk.SearchEntry({placeholder_text: 'Search settings', margin_top: 8,
+        this.search = new Gtk.SearchEntry({placeholder_text: _('Search settings'), margin_top: 8,
             margin_bottom: 8, margin_start: 12, margin_end: 12});
         this.search.connect('search-changed', () => this.filter(this.search.text));
         this.search.connect('activate', () => { if (this.split.collapsed) this.split.show_sidebar = false; });
@@ -49,11 +50,11 @@ export class SettingsNavigation {
         sidebarBox.append(scroll);
         const sidebar = new Adw.ToolbarView({content: sidebarBox});
         const sidebarHeader = new Adw.HeaderBar({show_end_title_buttons: false, show_back_button: false,
-            title_widget: new Adw.WindowTitle({title: 'Luna - Taskbar', subtitle: 'Taskbar settings'})});
+            title_widget: new Adw.WindowTitle({title: _('Luna - Taskbar'), subtitle: _('Taskbar settings')})});
         sidebar.add_top_bar(sidebarHeader);
-        this.title = new Adw.WindowTitle({title: 'Taskbar'});
+        this.title = new Adw.WindowTitle({title: _('Taskbar')});
         const header = new Adw.HeaderBar({title_widget: this.title, show_back_button: false});
-        this.sidebarButton = new Gtk.Button({icon_name: 'sidebar-show-symbolic', tooltip_text: 'Show categories'});
+        this.sidebarButton = new Gtk.Button({icon_name: 'sidebar-show-symbolic', tooltip_text: _('Show categories')});
         this.sidebarButton.connect('clicked', () => { this.split.show_sidebar = true; });
         header.pack_start(this.sidebarButton);
         const content = new Adw.ToolbarView({content: this.stack});
@@ -68,11 +69,11 @@ export class SettingsNavigation {
         window.set_size_request(480, 420);
         window.set_default_size(1080, 760);
         window.search_enabled = false;
-        const root = new Adw.NavigationPage({title: 'Taskbar settings', child: this.split, can_pop: false});
-        window.add(new Adw.PreferencesPage({title: 'Settings'}));
+        const root = new Adw.NavigationPage({title: _('Taskbar settings'), child: this.split, can_pop: false});
+        window.add(new Adw.PreferencesPage({title: _('Settings')}));
         window.push_subpage(root);
         this.results = new Adw.PreferencesPage();
-        this.resultGroup = new Adw.PreferencesGroup({title: 'Search results'});
+        this.resultGroup = new Adw.PreferencesGroup({title: _('Search results')});
         this.results.add(this.resultGroup);
         this.stack.add_named(this.results, 'search');
         this.resultRows = [];
@@ -143,8 +144,8 @@ export class SettingsNavigation {
             };
             visit(page);
         }
-        this.resultGroup.title = this.resultRows.length ? `Search results (${this.resultRows.length})` : 'No matching settings';
-        this.title.title = 'Search settings';
+        this.resultGroup.title = this.resultRows.length ? formatText(_("Search results (%s)"), this.resultRows.length) : _('No matching settings');
+        this.title.title = _('Search settings');
         this.stack.visible_child = this.results;
     }
 }

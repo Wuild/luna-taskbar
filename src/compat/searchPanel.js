@@ -1,3 +1,4 @@
+import {_} from '../i18n.js';
 import Clutter from 'gi://Clutter';
 import Gio from 'gi://Gio';
 import GioUnix from 'gi://GioUnix';
@@ -16,14 +17,14 @@ export class SearchPanel {
         this._rows = [];
         this._searchSettings = new Gio.Settings({schema_id: 'org.gnome.desktop.search-providers'});
         this.actor = new St.Widget({visible: false, reactive: true,
-            accessible_name: 'Search', layout_manager: new Clutter.FixedLayout()});
+            accessible_name: _('Search'), layout_manager: new Clutter.FixedLayout()});
         this.actor.add_constraint(new Clutter.BindConstraint({source: global.stage,
             coordinate: Clutter.BindCoordinate.ALL}));
         Main.uiGroup.add_child(this.actor);
         this.panel = new St.BoxLayout({style_class: 'luna-taskbar-search-panel', reactive: true,
             orientation: Clutter.Orientation.VERTICAL});
         this.actor.add_child(this.panel);
-        this.entry = new St.Entry({hint_text: 'Search apps, files and more…', can_focus: true,
+        this.entry = new St.Entry({hint_text: _('Search apps, files and more…'), can_focus: true,
             style_class: 'luna-taskbar-search-entry', primary_icon: new St.Icon({icon_name: 'edit-find-symbolic', icon_size: 18})});
         this.panel.add_child(this.entry);
         this.scroll = new St.ScrollView({hscrollbar_policy: St.PolicyType.NEVER,
@@ -88,7 +89,7 @@ export class SearchPanel {
         if (!this.actor.visible) return;
         const text = this.entry.get_text().trim();
         if (!text) {
-            this.results.add_child(new St.Label({text: 'Type to search', style_class: 'luna-taskbar-search-hint'}));
+            this.results.add_child(new St.Label({text: _('Type to search'), style_class: 'luna-taskbar-search-hint'}));
             return;
         }
         this._timeout = GLib.timeout_add(GLib.PRIORITY_DEFAULT, 120, () => {
@@ -106,7 +107,7 @@ export class SearchPanel {
         const apps = GioUnix.DesktopAppInfo.search(text).flat().map(id => GioUnix.DesktopAppInfo.new(id))
             .filter(info => info?.should_show() && permitted(info)).slice(0, 8);
         for (const info of apps) {
-            this._addResult(info.get_display_name(), 'Application',
+            this._addResult(info.get_display_name(), _('Application'),
                 new St.Icon({gicon: info.get_icon(), icon_size: 32}), () => {
                     const app = Shell.AppSystem.get_default().lookup_app(info.get_id());
                     if (app) app.activate();
@@ -148,7 +149,7 @@ export class SearchPanel {
                     });
             }
         }
-        if (!this._rows.length) this.results.add_child(new St.Label({text: 'No results', style_class: 'luna-taskbar-search-hint'}));
+        if (!this._rows.length) this.results.add_child(new St.Label({text: _('No results'), style_class: 'luna-taskbar-search-hint'}));
     }
 
     _addResult(title, description, icon, activate) {

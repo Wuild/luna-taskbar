@@ -101,3 +101,7 @@ See the [submission review notes](docs/extension-review.md) for packaging checks
 ## License
 
 Copyright © 2026 Wuild. Licensed under [GPL-2.0-or-later](LICENSE). You are welcome to use, study, modify, and redistribute it under those terms.
+
+## Translations
+
+Preferences and interface strings are gettext-ready, with plural support and compiled locale packaging. English remains the fallback. See [the translation guide](docs/translations.md) to contribute a language or update the catalogs.

@@ -1,3 +1,4 @@
+import {_, formatText} from '../i18n.js';
 import Clutter from 'gi://Clutter';
 import GLib from 'gi://GLib';
 import Shell from 'gi://Shell';
@@ -147,11 +148,11 @@ export class WindowPreview {
         });
         const scale = St.ThemeContext.get_for_stage(global.stage).scale_factor;
         const header = new St.BoxLayout({style_class: 'luna-taskbar-preview-header'});
-        const title = new St.Label({text: window.get_title() || app?.get_name() || 'Window',
+        const title = new St.Label({text: window.get_title() || app?.get_name() || _('Window'),
             x_expand: true, y_align: Clutter.ActorAlign.CENTER});
         title.set_width((this._settings.get_int('preview-width') - 76) * scale);
         const close = new St.Button({style_class: 'luna-taskbar-preview-close', can_focus: true,
-            accessible_name: 'Close window',
+            accessible_name: _('Close window'),
             child: new St.Icon({icon_name: 'window-close-symbolic', icon_size: 16})});
         close.connect('clicked', () => window.delete(global.get_current_time()));
         header.add_child(createTaskIcon(app, window, 20));
@@ -188,7 +189,7 @@ export class WindowPreview {
         }
         const activate = new St.Button({child: thumbnail, can_focus: true,
             style_class: 'luna-taskbar-preview-activate',
-            accessible_name: `Activate ${title.text}`});
+            accessible_name: formatText(_("Activate %s"), title.text)});
         for (const button of [activate, close])
             button.connect('key-focus-in', () => {
                 if (this._scroll)
@@ -201,7 +202,7 @@ export class WindowPreview {
         card.add_child(activate);
         this._connections.push(
             [source, source.connect('notify::allocation', resize)],
-            [window, window.connect('notify::title', () => { title.text = window.get_title() || 'Window'; })],
+            [window, window.connect('notify::title', () => { title.text = window.get_title() || _('Window'); })],
             [window, window.connect('unmanaged', () => this._windowClosed(window))]);
         return card;
     }
