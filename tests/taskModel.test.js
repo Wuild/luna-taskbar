@@ -1,0 +1,23 @@
+import {buildTasks, decodeWindowIcon} from '../taskModel.js';
+function assert(value, message) { if (!value) throw new Error(message); }
+const app = id => ({get_id: () => id});
+const pinned = app('pinned.desktop');
+const other = app('other.desktop');
+const windows = [{id: 1, app: other}, {id: 2, app: pinned}, {id: 3, app: pinned}, {id: 4, app: null}];
+let tasks = buildTasks([pinned], windows, window => window.app);
+assert(tasks.map(task => task.window.id).join() === '2,1,4', 'Pins first, one task per app, unmatched retained');
+assert(tasks[0].windows.map(window => window.id).join() === '2,3', 'Both pinned windows belong to one task');
+const unpinnedGroup = buildTasks([], [windows[0], windows[3], {id: 5, app: other}], window => window.app);
+assert(unpinnedGroup.length === 2 && unpinnedGroup[0].windows.length === 2, 'Unpinned app windows group across intervening tasks');
+const unknown = buildTasks([], [{id: 6}, {id: 7}], window => window.app);
+assert(unknown.length === 2, 'Unidentified windows are not grouped together');
+tasks = buildTasks([pinned], [], window => window.app);
+assert(tasks.length === 1 && tasks[0].window === null, 'Closed pin remains a launcher');
+const icon = decodeWindowIcon('_NET_WM_ICON = 1, 1, 4294901760');
+assert(icon.pixels.join() === '255,0,0,255', 'ARGB converts to RGBA');
+assert(decodeWindowIcon('_NET_WM_ICON = 2, 2, 1') === null, 'Truncated icon rejected');
+assert(decodeWindowIcon('_NET_WM_ICON = 0, 0') === null, 'Empty dimensions rejected');
+assert(decodeWindowIcon('_NET_WM_ICON = 65536, 65536, 0') === null, 'Oversized dimensions rejected');
+assert(decodeWindowIcon('_NET_WM_ICON: not found.') === null, 'Missing property rejected');
+assert(decodeWindowIcon('_NET_WM_ICON = 1, 1, -1') === null, 'Invalid cardinal rejected');
+print('11 task ordering and icon decoding checks passed');

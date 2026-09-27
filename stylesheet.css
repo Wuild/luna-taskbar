@@ -1,0 +1,418 @@
+.luna-taskbar { font-size: 10pt; }
+.luna-taskbar-surface {
+    background-color: rgba(38, 32, 30, 0.56);
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+.luna-taskbar-content { padding: 0; spacing: 3px; }
+.luna-taskbar-apps { spacing: 2px; }
+.luna-taskbar-button {
+    background-color: transparent;
+    width: 46px; padding: 3px; border: 1px solid transparent;
+    border-radius: 2px; transition-duration: 120ms;
+}
+.luna-taskbar-button:hover { background-color: rgba(255, 255, 255, 0.12); }
+.luna-taskbar-button:active { background-color: rgba(255, 255, 255, 0.06); }
+.luna-taskbar-button:focus { border-color: #91c8ff; }
+.luna-taskbar-button.focused { background-color: rgba(255, 255, 255, 0.20); }
+.luna-taskbar-launcher { width: 38px; padding: 0; }
+.luna-taskbar-indicator {
+    width: 8px; height: 3px; margin-top: 0;
+    border-radius: 1px; background-color: #c3b8aa;
+}
+.luna-taskbar-indicator.focused { background-color: #80bfff; }
+.luna-taskbar-indicators { spacing: 3px; height: 3px; margin-top: 0; }
+.luna-taskbar-tray { spacing: 2px; }
+.luna-taskbar-system { spacing: 1px; }
+.luna-taskbar .panel-button, .luna-taskbar-tray-button {
+    -minimum-hpadding: 6px; -natural-hpadding: 8px;
+    padding: 0 6px; border-radius: 3px;
+}
+.luna-taskbar .panel-button:hover, .luna-taskbar-tray-button:hover {
+    background-color: rgba(255, 255, 255, 0.12);
+}
+.luna-taskbar .system-status-icon { icon-size: 16px; }
+.luna-taskbar .panel-status-indicators-box { spacing: 6px; }
+.luna-taskbar .clock { background: transparent; box-shadow: none; }
+.luna-taskbar-sharing-label { padding-right: 6px; }
+.luna-taskbar-tray, .luna-taskbar-system, .luna-taskbar-sharing-label { font-size: 12px; }
+.luna-taskbar-tray StIcon, .luna-taskbar-system StIcon { icon-size: 16px; }
+.luna-taskbar-preview {
+    padding: 6px; spacing: 6px;
+    border-radius: 12px;
+    background-color: transparent; border: none; box-shadow: none;
+}
+.luna-taskbar-preview-header { spacing: 4px; }
+.luna-taskbar-preview-close { padding: 4px; border-radius: 4px; }
+.luna-taskbar-preview-close:hover { background-color: #c42b1c; }
+.luna-taskbar-popup {
+    -arrow-background-color: transparent;
+    -arrow-border-color: transparent;
+    -arrow-border-width: 0px;
+    -arrow-border-radius: 0px;
+    -arrow-base: 0px;
+    -arrow-rise: 0px;
+    -boxpointer-gap: 6px;
+}
+.luna-taskbar-popup .popup-menu-content {
+    background-color: transparent; border: none; box-shadow: none;
+}
+.luna-taskbar-popup-surface {
+    background-color: rgba(38, 32, 30, 0.56);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.16);
+}
+.luna-taskbar-popup-surface.opaque { background-color: #26201e; }
+.luna-taskbar-preview-card {
+    padding: 3px; spacing: 4px; border-radius: 8px;
+    border: 1px solid transparent; transition-duration: 120ms;
+}
+.luna-taskbar-preview-card:hover {
+    background-color: rgba(255, 255, 255, 0.12);
+    border-color: rgba(128, 191, 255, 0.45);
+}
+.luna-taskbar-preview-activate { border-radius: 5px; border: 1px solid transparent; }
+.luna-taskbar-preview-activate:focus { border-color: #80bfff; }
+.luna-taskbar-preview-row { spacing: 6px; }
+.luna-taskbar-drop-space {
+    background-color: rgba(128, 191, 255, 0.08);
+    border-radius: 4px;
+    box-shadow: inset 0 0 0 1px rgba(128, 191, 255, 0.35);
+}
+.luna-taskbar-show-desktop { width: 8px; padding: 0; margin-left: 2px; border-width: 0; }
+.luna-taskbar-show-desktop-divider { width: 1px; margin: 0; background-color: rgba(255, 255, 255, 0.18); }
+.luna-taskbar-show-desktop:hover { background-color: rgba(255, 255, 255, 0.18); }
+.luna-taskbar-show-desktop:focus { background-color: rgba(128, 191, 255, 0.3); }
+.luna-taskbar-notification-badge {
+    background-color: #c92c3a; color: white;
+    font-size: 10px; font-weight: bold; min-width: 10px; height: 16px;
+    padding: 0 3px; text-align: center;
+    border: 1px solid rgba(20, 30, 40, 0.75); border-radius: 9px;
+    box-shadow: none;
+}
+.luna-taskbar-notification-badge-label { padding-top: 1px; }
+.luna-taskbar-notification-badge.attention-dot {
+    min-width: 6px; width: 6px; height: 6px; padding: 0; border-radius: 4px;
+}
+.luna-taskbar-popup .popup-menu-item {
+    background-color: transparent; background-image: none;
+    box-shadow: none; transition-duration: 0ms; border-radius: 5px;
+}
+.luna-taskbar-popup .popup-menu-item:hover,
+.luna-taskbar-popup .popup-menu-item:selected,
+.luna-taskbar-popup .popup-menu-item:active,
+.luna-taskbar-popup .popup-menu-item:focus { background-color: rgba(255, 255, 255, 0.12); }
+.luna-taskbar .panel-button.luna-taskbar-applet-open {
+    background-color: rgba(255, 255, 255, 0.20); border-radius: 4px;
+    box-shadow: inset 0 0 0 1px rgba(128, 191, 255, 0.35);
+}
+.luna-taskbar-edit-handle, .luna-taskbar-edit-done {
+    padding: 4px 8px; margin: 3px 2px;
+    border: 1px solid rgba(128, 191, 255, 0.65); border-radius: 5px;
+    background-color: rgba(128, 191, 255, 0.12); font-size: 12px;
+}
+.luna-taskbar-edit-handle:hover, .luna-taskbar-edit-handle:focus, .luna-taskbar-edit-done:hover {
+    background-color: rgba(128, 191, 255, 0.3);
+}
+.luna-taskbar-edit-done { background-color: rgba(128, 191, 255, 0.3); }
+.luna-taskbar-app-strip { spacing: 0; }
+.luna-taskbar-scroll-arrow {
+    width: 18px; padding: 0; margin: 3px 0;
+    border-radius: 4px; background-color: transparent;
+}
+.luna-taskbar-scroll-arrow:hover, .luna-taskbar-scroll-arrow:focus { background-color: rgba(255, 255, 255, 0.12); }
+.luna-taskbar-tray-toggle { padding: 0 6px; border-radius: 4px; }
+.luna-taskbar-tray-toggle:hover, .luna-taskbar-tray-toggle.luna-taskbar-applet-open { background-color: rgba(255, 255, 255, 0.16); }
+.luna-taskbar-tray-drawer-row { padding: 6px; }
+.luna-taskbar-popup .luna-taskbar-tray { spacing: 4px; font-size: 12px; }
+.luna-taskbar-popup .luna-taskbar-tray StIcon { icon-size: 16px; }
+.luna-taskbar-popup .luna-taskbar-tray-button { padding: 4px 6px; border-radius: 4px; }
+.luna-taskbar-popup .luna-taskbar-tray-button:hover { background-color: rgba(255, 255, 255, 0.12); }
+.luna-taskbar-tooltip {
+    padding: 6px 10px; border-radius: 6px; font-size: 12px; color: #fafafa;
+    background-color: rgba(38, 32, 30, 0.92);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+}
+
+
+
+.luna-taskbar-search-button { padding: 0; }
+.luna-taskbar-search-panel { padding: 12px; spacing: 8px; background: transparent; }
+.luna-taskbar-search-entry { padding: 8px 10px; min-height: 0; font-size: 14px; border-radius: 6px; border-width: 1px; background-color: rgba(255,255,255,0.08); }
+.luna-taskbar-search-entry StIcon { icon-size: 18px; }
+.luna-taskbar-search-results { spacing: 3px; }
+.luna-taskbar-search-result { padding: 9px; border-radius: 9px; background: transparent; }
+.luna-taskbar-search-result:hover, .luna-taskbar-search-result:selected { background-color: rgba(255,255,255,0.14); }
+.luna-taskbar-search-result-content { spacing: 12px; }
+.luna-taskbar-search-description { font-size: 11px; }
+.luna-taskbar-search-hint { padding: 14px; color: rgba(255,255,255,0.65); }
+
+.luna-taskbar-clock-stack { spacing: 0; padding: 0; }
+.luna-taskbar-clock-stack StLabel { padding: 0; margin: 0; text-align: center; }
+
+.luna-taskbar .panel-button.luna-taskbar-clock-button {
+    -minimum-hpadding: 0; -natural-hpadding: 0;
+    padding: 0 6px;
+}
+
+.luna-taskbar-control-center .popup-menu-content { background: transparent; border: none; box-shadow: none; padding: 0; }
+.luna-taskbar-center-columns, .luna-taskbar-center-right { spacing: 12px; }
+.luna-taskbar-center-card { padding: 12px; spacing: 8px; }
+.luna-taskbar-center-heading { font-size: 13px; font-weight: bold; }
+.luna-taskbar-center-card .message-list { width: auto; min-width: 0; margin: 0; padding: 0; border: none; }
+.luna-taskbar-center-card .calendar { margin: 0; padding: 0; }
+.luna-taskbar-center-card .datemenu-today-button { margin: 0; padding: 0; }
+.luna-taskbar-center-card .quick-settings-grid { padding: 0; spacing-rows: 8px; spacing-columns: 8px; }
+
+.luna-taskbar-center-card .datemenu-today-button .day-label { font-size: 12px; font-weight: normal; }
+.luna-taskbar-center-card .datemenu-today-button .date-label { font-size: 15px; font-weight: bold; }
+.luna-taskbar-center-card .calendar-day { padding: 5px; height: 24px; width: 24px; }
+.luna-taskbar-center-card .calendar-change-month-back, .luna-taskbar-center-card .calendar-change-month-forward { padding: 4px; }
+.luna-taskbar-center-header { spacing: 8px; }
+.luna-taskbar-center-header .message-list-clear-button { padding: 3px 8px; font-size: 11px; }
+
+/* A quiet, shared active treatment for the two system-panel entry points. */
+.luna-taskbar .panel-button.luna-taskbar-applet-open,
+.luna-taskbar .panel-button.luna-taskbar-applet-open:active,
+.luna-taskbar .panel-button.luna-taskbar-applet-open:focus,
+.luna-taskbar .panel-button.luna-taskbar-applet-open:checked {
+    background-color: rgba(255, 255, 255, 0.10);
+    background-image: none; border-color: transparent;
+    box-shadow: none !important; border-radius: 4px; transition-duration: 0ms;
+}
+.luna-taskbar .panel-button.luna-taskbar-applet-open:hover { background-color: rgba(255, 255, 255, 0.16); }
+.luna-taskbar-center-card { padding: 14px; spacing: 10px; font-size: 13px; }
+.luna-taskbar-center-heading { font-size: 12px; font-weight: 600; }
+.luna-taskbar-center-card .message-list-placeholder { spacing: 10px; }
+.luna-taskbar-center-card .message-list-placeholder StIcon { icon-size: 36px; }
+.luna-taskbar-center-card .message-list-placeholder StLabel { font-size: 13px; font-weight: normal; }
+.luna-taskbar-center-header .message-list-clear-button { border-radius: 6px; padding: 4px 8px; }
+.luna-taskbar-center-card .quick-toggle { border-radius: 8px; padding: 8px; min-height: 32px; }
+.luna-taskbar-center-card .quick-toggle-title { font-size: 13px; font-weight: 500; }
+.luna-taskbar-center-card .quick-toggle-subtitle { font-size: 11px; font-weight: normal; }
+.luna-taskbar-center-card .quick-toggle-icon { icon-size: 16px; }
+.luna-taskbar-center-card .quick-toggle-menu-button { border-radius: 0 8px 8px 0; padding: 6px; }
+.luna-taskbar-center-card .calendar-day-base { border-radius: 6px; }
+.luna-taskbar-center-card .calendar-day-heading { font-size: 11px; font-weight: normal; }
+.luna-taskbar-center-card .calendar-month-label { font-size: 13px; font-weight: 600; }
+
+.luna-taskbar-center-card .luna-taskbar-media-player { margin: 0; padding: 0; background-color: transparent; border: none; box-shadow: none; }
+.luna-taskbar-center-card .message-media-control { padding: 6px; border-radius: 6px; }
+
+.luna-taskbar-center-card .quick-toggle-has-menu .quick-toggle { border-radius: 8px 0 0 8px !important; }
+.luna-taskbar-center-card .calendar-day { width: auto; }
+
+.luna-taskbar-system-active-group { background-color: rgba(255, 255, 255, 0.12); border-radius: 4px; }
+.luna-taskbar .panel-button.luna-taskbar-system-shared-open,
+.luna-taskbar .panel-button.luna-taskbar-system-shared-open:active,
+.luna-taskbar .panel-button.luna-taskbar-system-shared-open:checked,
+.luna-taskbar .panel-button.luna-taskbar-system-shared-open:focus,
+.luna-taskbar .panel-button.luna-taskbar-system-shared-open:hover {
+    background-color: transparent !important; box-shadow: none !important; border-color: transparent;
+}
+
+.luna-taskbar-center-card .calendar-day { background-color: transparent; border-radius: 6px; }
+.luna-taskbar-center-card .calendar-day:hover { background-color: rgba(128, 128, 128, 0.18); }
+.luna-taskbar-center-card .calendar-today { background-color: -st-accent-color; color: -st-accent-fg-color; }
+
+.luna-taskbar-media-player .message-source-icon { icon-size: 16px; -st-icon-style: regular; }
+
+/* Notification cards share the control center's quiet, translucent surfaces. */
+.luna-taskbar-notifications .message-view { margin: 0; }
+.luna-taskbar-notifications .message-view .message {
+    background-color: rgba(255, 255, 255, 0.055);
+    background-image: none;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 8px;
+    padding: 10px;
+    margin-bottom: 8px !important;
+    box-shadow: none;
+    transition-duration: 0ms;
+}
+.luna-taskbar-notifications .message-view .message:hover {
+    background-color: rgba(255, 255, 255, 0.09);
+}
+.luna-taskbar-notifications .message-view .message:focus {
+    border-color: -st-accent-color;
+}
+.luna-taskbar-notifications .message-view .message:second-in-stack,
+.luna-taskbar-notifications .message-view .message:lower-in-stack {
+    background-color: rgba(255, 255, 255, 0.035);
+    box-shadow: none;
+}
+.luna-taskbar-notifications .message .message-header {
+    padding: 0; spacing: 6px;
+}
+.luna-taskbar-notifications .message .message-header .message-source-icon {
+    icon-size: 16px; -st-icon-style: regular;
+}
+.luna-taskbar-notifications .message .message-header .message-header-content {
+    padding: 0; min-height: 0; spacing: 6px;
+}
+.luna-taskbar-notifications .message .message-source-title {
+    font-size: 12px; font-weight: 500;
+}
+.luna-taskbar-notifications .message .event-time {
+    font-size: 11px;
+}
+.luna-taskbar-notifications .message .message-header .message-close-button,
+.luna-taskbar-notifications .message .message-header .message-expand-button {
+    padding: 5px; margin: 0; border: none; border-radius: 4px;
+    background-color: transparent; background-image: none;
+    box-shadow: none; transition-duration: 0ms;
+}
+.luna-taskbar-notifications .message .message-header .message-close-button:hover,
+.luna-taskbar-notifications .message .message-header .message-expand-button:hover {
+    background-color: rgba(255, 255, 255, 0.12);
+}
+.luna-taskbar-notifications .message .message-header .message-close-button:focus,
+.luna-taskbar-notifications .message .message-header .message-expand-button:focus {
+    background-color: rgba(255, 255, 255, 0.16);
+}
+.luna-taskbar-notifications .message-close-button StIcon,
+.luna-taskbar-notifications .message-expand-button StIcon { icon-size: 12px; }
+.luna-taskbar-notifications .message .message-box { padding: 8px 0 0; spacing: 8px; }
+.luna-taskbar-notifications .message .message-content { spacing: 4px; }
+.luna-taskbar-notifications .message .message-title { font-size: 13px; font-weight: 600; }
+.luna-taskbar-notifications .message .message-body { font-size: 13px; }
+.luna-taskbar-notifications .message .message-action-bin { padding: 8px 0 0; spacing: 6px; }
+.luna-taskbar-notifications .message .message-action-bin .button {
+    padding: 6px 10px; border-radius: 6px; box-shadow: none;
+    background-color: rgba(255, 255, 255, 0.08);
+}
+.luna-taskbar-notifications .message .message-action-bin .button:hover {
+    background-color: rgba(255, 255, 255, 0.14);
+}
+
+/* Glass surfaces keep controls translucent while retaining distinct active states. */
+.luna-taskbar-popup.luna-taskbar-glass .button,
+.luna-taskbar-popup.luna-taskbar-glass .icon-button,
+.luna-taskbar-popup.luna-taskbar-glass .quick-toggle,
+.luna-taskbar-popup.luna-taskbar-glass .quick-toggle-menu-button,
+.luna-taskbar-popup.luna-taskbar-glass .message-list-clear-button {
+    background-color: rgba(128, 128, 128, 0.16);
+    background-image: none;
+    box-shadow: none;
+    transition-duration: 0ms;
+}
+.luna-taskbar-popup.luna-taskbar-glass .button:hover,
+.luna-taskbar-popup.luna-taskbar-glass .icon-button:hover,
+.luna-taskbar-popup.luna-taskbar-glass .quick-toggle:hover,
+.luna-taskbar-popup.luna-taskbar-glass .quick-toggle-menu-button:hover {
+    background-color: rgba(128, 128, 128, 0.28);
+}
+.luna-taskbar-popup.luna-taskbar-glass .button:focus,
+.luna-taskbar-popup.luna-taskbar-glass .icon-button:focus,
+.luna-taskbar-popup.luna-taskbar-glass .quick-toggle:focus,
+.luna-taskbar-popup.luna-taskbar-glass .quick-toggle-menu-button:focus {
+    box-shadow: inset 0 0 0 1px st-transparentize(-st-accent-color, 0.25);
+}
+.luna-taskbar-popup.luna-taskbar-glass .quick-toggle:checked,
+.luna-taskbar-popup.luna-taskbar-glass .quick-toggle-menu-button:checked {
+    background-color: st-transparentize(-st-accent-color, 0.45);
+    color: inherit;
+}
+.luna-taskbar-popup.luna-taskbar-glass .quick-toggle:checked:hover,
+.luna-taskbar-popup.luna-taskbar-glass .quick-toggle-menu-button:checked:hover {
+    background-color: st-transparentize(-st-accent-color, 0.30);
+}
+.luna-taskbar-popup.luna-taskbar-glass .quick-toggle-separator {
+    background-color: rgba(128, 128, 128, 0.20);
+}
+.luna-taskbar-control-center.luna-taskbar-glass .quick-toggle-menu {
+    background-color: rgba(128, 128, 128, 0.14);
+    border: 1px solid rgba(128, 128, 128, 0.18);
+    border-radius: 8px; box-shadow: none;
+}
+.luna-taskbar-popup.luna-taskbar-glass .calendar .calendar-month-label,
+.luna-taskbar-popup.luna-taskbar-glass .calendar .calendar-day-heading {
+    background-color: transparent;
+    box-shadow: none;
+}
+.luna-taskbar-popup.luna-taskbar-glass .calendar .pager-button {
+    background-color: rgba(128, 128, 128, 0.12);
+    border-radius: 6px; box-shadow: none;
+}
+.luna-taskbar-popup.luna-taskbar-glass .calendar .pager-button:hover {
+    background-color: rgba(128, 128, 128, 0.26);
+}
+.luna-taskbar-popup.luna-taskbar-glass .calendar .calendar-week-number {
+    background-color: rgba(128, 128, 128, 0.10);
+}
+.luna-taskbar-popup.luna-taskbar-glass .calendar .calendar-today {
+    background-color: st-transparentize(-st-accent-color, 0.40);
+    color: inherit;
+}
+.luna-taskbar-popup.luna-taskbar-glass .message-list-clear-button:insensitive {
+    background-color: rgba(128, 128, 128, 0.08);
+}
+
+.luna-taskbar-combined-applet { spacing: 12px; }
+
+.luna-taskbar-vertical .panel-button { -minimum-hpadding: 2px; -natural-hpadding: 2px; padding: 2px; }
+.luna-taskbar-vertical .luna-taskbar-edit-handle, .luna-taskbar-vertical .luna-taskbar-edit-done { padding: 4px 1px; margin: 2px 0; font-size: 9px; }
+
+/* Menu state persists independently of hover and pointer press. */
+.luna-taskbar .luna-taskbar-start-open,
+.luna-taskbar .luna-taskbar-context-open {
+    background-color: rgba(255, 255, 255, 0.20);
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.16);
+    border-radius: 3px;
+}
+.luna-taskbar .luna-taskbar-start-open:hover,
+.luna-taskbar .luna-taskbar-context-open:hover {
+    background-color: rgba(255, 255, 255, 0.26);
+}
+
+.luna-taskbar-edit-handle {
+    border: 1px dashed rgba(145, 200, 255, 0.5); border-radius: 7px;
+    background-color: rgba(145, 200, 255, 0.10); color: #dcecff;
+}
+.luna-taskbar-edit-handle-content { spacing: 8px; }
+.luna-taskbar-edit-handle:hover, .luna-taskbar-edit-handle:focus {
+    border-color: #91c8ff; background-color: rgba(145, 200, 255, 0.25);
+}
+.luna-taskbar-edit-toolbar {
+    padding: 16px; spacing: 24px; border-radius: 16px; color: #f4f7fc;
+    background-color: #202735; border: 1px solid rgba(255,255,255,0.16);
+    box-shadow: 0 6px 24px rgba(0,0,0,0.35);
+}
+.luna-taskbar-edit-description { spacing: 5px; }
+.luna-taskbar-edit-title { font-size: 15px; font-weight: bold; }
+.luna-taskbar-edit-selection { font-size: 12px; color: #aacfff; }
+.luna-taskbar-edit-hint { font-size: 11px; color: #aeb8c9; }
+.luna-taskbar-edit-toolbar .luna-taskbar-edit-done {
+    padding: 9px 18px; margin: 12px 0; border-radius: 9px;
+    background-color: #91c8ff; color: #152237; border: none; font-weight: bold;
+}
+.luna-taskbar-edit-toolbar .luna-taskbar-edit-done:hover { background-color: #b5daff; }
+.luna-taskbar-workspaces { spacing: 3px; padding: 2px; }
+.luna-taskbar-workspace-button { min-width: 22px; min-height: 24px; padding: 2px; border-radius: 6px; color: #cbd2df; background-color: rgba(255,255,255,0.06); }
+.luna-taskbar-workspace-button:hover { background-color: rgba(255,255,255,0.16); }
+.luna-taskbar-workspace-button:active { background-color: #91c8ff; color: #152237; }
+
+.luna-taskbar-weather { padding: 0 8px; border-radius: 6px; }
+.luna-taskbar-weather:hover, .luna-taskbar-weather:active { background-color: rgba(255,255,255,0.12); }
+.luna-taskbar-weather-panel { spacing: 10px; padding: 2px; min-width: 290px; }
+.luna-weather-header { spacing: 12px; }
+.luna-weather-eyebrow { font-size: 9px; font-weight: bold; color: rgba(160,190,225,0.9); }
+.luna-weather-location { font-size: 15px; font-weight: 600; }
+.luna-weather-settings { padding: 6px; border-radius: 8px; color: rgba(200,210,225,0.8); }
+.luna-weather-settings:hover, .luna-weather-settings:focus { background-color: rgba(128,128,128,0.2); }
+.luna-weather-hero { spacing: 16px; }
+.luna-weather-temperature { font-size: 36px; font-weight: 600; }
+.luna-weather-condition { font-size: 12px; }
+.luna-weather-condition-icon { color: #a9cfff; padding: 0 8px; }
+.luna-weather-details { spacing: 8px; }
+.luna-weather-detail { font-size: 10px; color: rgba(190,200,215,0.95); }
+.luna-weather-forecast { spacing: 7px; }
+.luna-weather-day { spacing: 5px; padding: 8px; border-radius: 10px; background-color: rgba(128,155,190,0.1); border: 1px solid rgba(160,180,210,0.09); }
+.luna-weather-day-name { text-align: center; font-size: 11px; font-weight: 600; }
+.luna-weather-range { spacing: 7px; font-size: 11px; }
+.luna-weather-high { font-weight: 600; }
+.luna-weather-low { color: rgba(160,175,195,0.95); }
+.luna-weather-footer { spacing: 8px; font-size: 9px; color: rgba(160,175,195,0.85); }
+/* Override ArcMenu theme backgrounds so the shared surface remains visible. */
+.arcmenu-menu.luna-taskbar-popup .popup-menu-content,
+.luna-taskbar-popup .arcmenu-menu-content { background-color: transparent; border: none; box-shadow: none; }
+
+.luna-weather-popup-content { padding: 10px; }

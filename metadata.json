@@ -1,0 +1,11 @@
+{
+  "uuid": "luna-taskbar@wuild",
+  "name": "Luna - Taskbar",
+  "description": "A customizable GNOME taskbar with a start menu, app bar, system tray and integrated panels.",
+  "shell-version": [
+    "50"
+  ],
+  "version": 1,
+  "settings-schema": "org.gnome.shell.extensions.luna-taskbar",
+  "url": "https://github.com/Wuild/luna-taskbar"
+}

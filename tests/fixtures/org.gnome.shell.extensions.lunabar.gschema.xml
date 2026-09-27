@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Test-only fixture representing the separate legacy extension. Never packaged. -->
+<schemalist>
+  <schema id="org.gnome.shell.extensions.lunabar" path="/org/gnome/shell/extensions/lunabar/">
+    <key name="taskbar-height" type="i"><default>46</default></key>
+    <key name="desktop-icons-enabled" type="b"><default>false</default></key>
+  </schema>
+</schemalist>

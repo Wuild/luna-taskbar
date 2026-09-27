@@ -1,0 +1,28 @@
+{
+  "name": "luna-taskbar",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Luna - Taskbar for GNOME Shell",
+  "scripts": {
+    "generate": "python3 scripts/generate-settings.py",
+    "typecheck": "pnpm generate && tsc --noEmit && tsc -p tsconfig.tests.json",
+    "build": "node scripts/build.mjs --clean && pnpm generate && tsc && node scripts/build.mjs",
+    "test": "pnpm build && tsc -p tsconfig.tests.json && node scripts/test.mjs",
+    "pack": "bash scripts/package.sh",
+    "test:edit-drag": "pnpm build && bash scripts/test-shell.sh \"$PWD/tests/edit-drag-shell.js\"",
+    "test:shell": "pnpm build && bash scripts/test-shell.sh",
+    "test:arcmenu": "pnpm build && LUNA_TEST_ARCMENU=1 bash scripts/test-shell.sh \"$PWD/tests/arcmenu-shell-smoke.js\"",
+    "test:interactions": "pnpm build && bash scripts/test-shell.sh \"$PWD/tests/interactions-shell.js\"",
+    "test:panel-hover": "pnpm build && bash scripts/test-shell.sh \"$PWD/tests/panel-hover-shell.js\"",
+    "test:start-style": "pnpm build && LUNA_TEST_ARCMENU=1 bash scripts/test-shell.sh \"$PWD/tests/arcmenu-start-style-shell.js\"",
+    "test:overview-backdrop": "pnpm build && bash scripts/test-shell.sh \"$PWD/tests/overview-backdrop-shell.js\" && python3 tests/overview-backdrop-pixels.py"
+  },
+  "devDependencies": {
+    "@girs/adw-1": "^4.9.0",
+    "@girs/gjs": "^4.9.0",
+    "@girs/gnome-shell": "^50.0.4",
+    "@girs/gtk-4.0": "^4.9.0",
+    "typescript": "^5.9.3"
+  }
+}

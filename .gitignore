@@ -1,0 +1,11 @@
+node_modules/
+dist/
+.dev-config/
+.dev-session
+*.shell-extension.zip
+schemas/gschemas.compiled
+.idea/
+.agents/
+.codex/
+__pycache__/
+*.pyc

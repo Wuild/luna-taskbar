@@ -1,0 +1,512 @@
+<?xml version='1.0' encoding='utf-8'?>
+<schemalist>
+  <schema id="org.gnome.shell.extensions.luna-taskbar" path="/org/gnome/shell/extensions/luna-taskbar/">
+    <key name="taskbar-position" type="s">
+      <choices><choice value="bottom" /><choice value="top" /><choice value="left" /><choice value="right" /></choices>
+      <default>'bottom'</default><summary>Screen edge for the taskbar</summary>
+    </key>
+    <key name="taskbar-border-enabled" type="b"><default>true</default><summary>Show a taskbar border</summary></key>
+    <key name="taskbar-border-width" type="i"><range min="1" max="8" /><default>1</default><summary>Taskbar border thickness</summary></key>
+    <key name="taskbar-border-opacity" type="i"><range min="0" max="100" /><default>30</default><summary>Taskbar border opacity percentage</summary></key>
+    <key name="taskbar-border-color" type="s"><default>'#808080'</default><summary>Taskbar border color</summary></key>
+    <key name="taskbar-floating" type="b"><default>false</default><summary>Float away from the screen edge</summary></key>
+    <key name="window-appearance-layout" type="s">
+      <choices><choice value="inherit" /><choice value="attached" /><choice value="floating" /></choices>
+      <default>'inherit'</default><summary>Layout when window appearance is active</summary>
+    </key>
+    <key name="taskbar-edge-gap" type="i"><range min="0" max="200" /><default>12</default><summary>taskbar edge-gap</summary></key>
+    <key name="taskbar-end-gap" type="i"><range min="0" max="400" /><default>12</default><summary>taskbar end-gap</summary></key>
+    <key name="taskbar-corner-radius" type="i"><range min="0" max="100" /><default>0</default><summary>taskbar corner-radius</summary></key>
+    <key name="window-appearance-edge-gap" type="i"><range min="0" max="200" /><default>12</default><summary>window-appearance edge-gap</summary></key>
+    <key name="window-appearance-end-gap" type="i"><range min="0" max="400" /><default>12</default><summary>window-appearance end-gap</summary></key>
+    <key name="window-appearance-corner-radius" type="i"><range min="0" max="100" /><default>0</default><summary>window-appearance corner-radius</summary></key>
+    <key name="tray-always-visible" type="as">
+      <default>[]</default>
+      <summary>Tray icons kept outside the drawer</summary>
+    </key>
+    <key name="tray-known-items" type="s">
+      <default>'{}'</default>
+      <summary>Discovered tray icon names</summary>
+    </key>
+    <key name="taskbar-color-override" type="b">
+      <default>false</default>
+      <summary>Override theme background color for taskbar</summary>
+    </key>
+    <key name="panel-color-override" type="b">
+      <default>false</default>
+      <summary>Override theme background color for panel</summary>
+    </key>
+    <key name="window-appearance-color-override" type="b">
+      <default>false</default>
+      <summary>Override theme background color for window-appearance</summary>
+    </key>
+    <key name="app-button-width" type="i">
+      <range min="16" max="120" />
+      <default>44</default>
+      <summary>Application button outer width</summary>
+    </key>
+    <key name="launcher-padding" type="i">
+      <range min="0" max="24" />
+      <default>11</default>
+      <summary>Launcher button padding</summary>
+    </key>
+    <key name="launcher-margin" type="i">
+      <range min="0" max="24" />
+      <default>0</default>
+      <summary>Launcher button horizontal margin</summary>
+    </key>
+    <key name="tray-icon-size" type="i">
+      <range min="12" max="48" />
+      <default>16</default>
+      <summary>System tray icon size</summary>
+    </key>
+    <key name="tray-text-size" type="i">
+      <range min="8" max="24" />
+      <default>12</default>
+      <summary>System tray text size</summary>
+    </key>
+    <key name="window-appearance-mode" type="s">
+      <choices>
+        <choice value="disabled" />
+        <choice value="near" />
+        <choice value="maximized" />
+        <choice value="either" />
+      </choices>
+      <default>'disabled'</default>
+      <summary>Trigger for alternate taskbar appearance</summary>
+    </key>
+    <key name="window-appearance-distance" type="i">
+      <range min="0" max="200" />
+      <default>24</default>
+      <summary>Window proximity distance in logical pixels</summary>
+    </key>
+    <key name="window-appearance-color" type="s">
+      <default>'#202020'</default>
+      <summary>Taskbar color near windows</summary>
+    </key>
+    <key name="window-appearance-opacity" type="i">
+      <range min="0" max="100" />
+      <default>90</default>
+      <summary>Taskbar opacity near windows</summary>
+    </key>
+    <key name="window-appearance-blur" type="b">
+      <default>true</default>
+      <summary>Enable blur in alternate appearance</summary>
+    </key>
+    <key name="window-appearance-blur-radius" type="i">
+      <range min="0" max="100" />
+      <default>12</default>
+      <summary>Alternate taskbar blur strength</summary>
+    </key>
+    <key name="taskbar-color" type="s">
+      <default>'#26201e'</default>
+      <summary>Taskbar background color</summary>
+    </key>
+    <key name="panel-color" type="s">
+      <default>'#26201e'</default>
+      <summary>Applet, menu and preview background color</summary>
+    </key>
+    <key name="indicator-color-mode" type="s">
+      <choices>
+        <choice value="default" />
+        <choice value="custom" />
+        <choice value="app" />
+      </choices>
+      <default>'default'</default>
+      <summary>Running indicator color source</summary>
+    </key>
+    <key name="indicator-color" type="s">
+      <default>'#80bfff'</default>
+      <summary>Custom indicator color and app-color fallback</summary>
+    </key>
+    <key name="visibility-mode" type="s">
+      <choices>
+        <choice value="always" />
+        <choice value="auto-hide" />
+        <choice value="maximized" />
+        <choice value="overlap" />
+      </choices>
+      <default>'always'</default>
+      <summary>Taskbar visibility behavior</summary>
+    </key>
+    <key name="hide-delay" type="i">
+      <range min="0" max="2000" />
+      <default>400</default>
+      <summary>Taskbar hide delay in milliseconds</summary>
+    </key>
+    <key name="monitor-mode" type="s">
+      <choices>
+        <choice value="primary" />
+        <choice value="all" />
+        <choice value="specific" />
+      </choices>
+      <default>'primary'</default>
+      <summary>Displays showing taskbars</summary>
+    </key>
+    <key name="monitor-connector" type="s">
+      <default>''</default>
+      <summary>Selected display connector</summary>
+    </key>
+    <key name="monitor-index" type="i">
+      <range min="0" max="15" />
+      <default>0</default>
+      <summary>Selected display index</summary>
+    </key>
+    <key name="remember-window-positions" type="b">
+      <default>false</default>
+      <summary>Remember application window position, size and maximized state</summary>
+    </key>
+    <key name="saved-window-layouts" type="s">
+      <default>'{}'</default>
+      <summary>Saved application window layouts</summary>
+    </key>
+    <key name="monitor-local-windows" type="b">
+      <default>true</default>
+      <summary>Only show windows on each taskbar display</summary>
+    </key>
+    <key name="show-desktop-margin" type="i">
+      <range min="0" max="24" />
+      <default>2</default>
+      <summary>Space before Show desktop divider</summary>
+    </key>
+    <key name="overview-panel-opacity" type="i">
+      <range min="0" max="100" />
+      <default>32</default>
+      <summary>Overview search and result panel opacity</summary>
+    </key>
+    <key name="overview-tint-opacity" type="i">
+      <range min="0" max="80" />
+      <default>25</default>
+      <summary>Overview wallpaper dimming percentage</summary>
+    </key>
+    <key name="overview-taskbar-gap" type="i">
+      <range min="0" max="48" />
+      <default>12</default>
+      <summary>Overview distance above taskbar</summary>
+    </key>
+    <key name="taskbar-height" type="i">
+      <range min="32" max="100" />
+      <default>54</default>
+      <summary>Fixed taskbar height</summary>
+    </key>
+    <key name="app-spacing" type="i">
+      <range min="0" max="24" />
+      <default>2</default>
+      <summary>Space between application buttons</summary>
+    </key>
+    <key name="tray-show-passive" type="b">
+      <default>true</default>
+      <summary>Show inactive application tray icons</summary>
+    </key>
+    <key name="tray-collapse-enabled" type="b">
+      <default>true</default>
+      <summary>Collapse application tray when it exceeds its icon limit</summary>
+    </key>
+    <key name="tray-visible-limit" type="i">
+      <range min="1" max="20" />
+      <default>5</default>
+      <summary>Maximum tray icons before collapsing</summary>
+    </key>
+    <key name="tray-spacing" type="i">
+      <range min="0" max="24" />
+      <default>2</default>
+      <summary>Space between application tray icons</summary>
+    </key>
+    <key name="applet-spacing" type="i">
+      <range min="0" max="24" />
+      <default>1</default>
+      <summary>Space between system applets</summary>
+    </key>
+    <key name="show-desktop-width" type="i">
+      <range min="4" max="32" />
+      <default>8</default>
+      <summary>Show desktop button width</summary>
+    </key>
+    <key name="panel-edge-gap" type="i">
+      <range min="0" max="48" />
+      <default>12</default>
+      <summary>Panel distance from screen edges</summary>
+    </key>
+    <key name="panel-taskbar-gap" type="i">
+      <range min="0" max="32" />
+      <default>6</default>
+      <summary>Panel distance above taskbar</summary>
+    </key>
+    <key name="panel-corner-radius" type="i">
+      <range min="0" max="32" />
+      <default>12</default>
+      <summary>Panel corner radius</summary>
+    </key>
+    <key name="preview-show-delay" type="i">
+      <range min="0" max="1500" />
+      <default>350</default>
+      <summary>Preview hover delay in milliseconds</summary>
+    </key>
+    <key name="preview-hide-delay" type="i">
+      <range min="0" max="1000" />
+      <default>500</default>
+      <summary>Preview dismissal delay in milliseconds</summary>
+    </key>
+    <key name="preview-padding" type="i">
+      <range min="0" max="24" />
+      <default>6</default>
+      <summary>Padding inside preview panels</summary>
+    </key>
+    <key name="preview-card-spacing" type="i">
+      <range min="0" max="24" />
+      <default>6</default>
+      <summary>Space between preview cards</summary>
+    </key>
+    <key name="show-desktop-button" type="b">
+      <default>true</default>
+      <summary>Show the desktop button</summary>
+    </key>
+    <key name="running-indicators" type="b">
+      <default>true</default>
+      <summary>Show running window indicators</summary>
+    </key>
+    <key name="menu-show-applications" type="b">
+      <default>true</default>
+      <summary>Show applications shortcut in taskbar menu</summary>
+    </key>
+    <key name="menu-show-desktop" type="b">
+      <default>true</default>
+      <summary>Show desktop shortcut in taskbar menu</summary>
+    </key>
+    <key name="menu-show-shortcut" type="b">
+      <default>true</default>
+      <summary>Show chosen application shortcut in taskbar menu</summary>
+    </key>
+    <key name="menu-shortcut-app" type="s">
+      <default>'org.gnome.SystemMonitor.desktop'</default>
+      <summary>Application launched from taskbar menu</summary>
+    </key>
+    <key name="calendar-week-numbers" type="b">
+      <default>false</default>
+      <summary>Show calendar week numbers</summary>
+    </key>
+    <key name="calendar-week-start" type="s">
+      <choices>
+        <choice value="system" />
+        <choice value="monday" />
+        <choice value="sunday" />
+      </choices>
+      <default>'system'</default>
+      <summary>First day of the calendar week</summary>
+    </key>
+    <key name="tray-popup-icon-size" type="i">
+      <range min="12" max="48" />
+      <default>16</default>
+      <summary>Collapsed tray popup icon size</summary>
+    </key>
+    <key name="clock-layout" type="s">
+      <choices>
+        <choice value="two-line" />
+        <choice value="single-line" />
+      </choices>
+      <default>'two-line'</default>
+      <summary>Clock button line layout</summary>
+    </key>
+    <key name="system-hidden-icons" type="as">
+      <default>[]</default>
+      <summary>Hidden status icons on the system button</summary>
+    </key>
+    <key name="separate-applet-panels" type="b">
+      <default>false</default>
+      <summary>Open calendar and system controls separately</summary>
+    </key>
+    <key name="unified-system-panel" type="b">
+      <default>true</default>
+      <summary>Combine calendar, notifications and Quick Settings</summary>
+    </key>
+    <key name="applet-padding" type="i">
+      <range min="0" max="24" />
+      <default>10</default>
+      <summary>Clock and system button horizontal padding</summary>
+    </key>
+    <key name="applet-order" type="as">
+      <default>['ArcMenu', 'overview', 'search', 'appbar', 'tray', 'screenSharing', 'screenRecording', 'quickSettings', 'dateMenu', 'showDesktop']</default>
+      <summary>Order of taskbar applet blocks</summary>
+    </key>
+    <key name="show-previews" type="b">
+      <default>true</default>
+      <summary>Show window thumbnails on hover</summary>
+    </key>
+    <key name="enable-blur" type="b">
+      <default>true</default>
+      <summary>Blur the background behind the taskbar</summary>
+    </key>
+    <key name="show-overview-button" type="b">
+      <default>true</default>
+      <summary>Show the Overview button</summary>
+    </key>
+    <key name="overview-button-icon" type="s">
+      <default>'view-paged-symbolic'</default>
+      <summary>Overview button icon when ArcMenu is active</summary>
+    </key>
+    <key name="launcher-menu" type="s">
+      <choices>
+        <choice value="overview" />
+        <choice value="arcmenu" />
+      </choices>
+      <default>'arcmenu'</default>
+      <summary>Start menu provider</summary>
+    </key>
+    <key name="launcher-icon" type="s">
+      <choices>
+        <choice value="grid" />
+        <choice value="distro" />
+        <choice value="custom" />
+      </choices>
+      <default>'distro'</default>
+      <summary>Launcher icon style</summary>
+    </key>
+    <key name="custom-launcher-icon" type="s">
+      <default>'distributor-logo'</default>
+      <summary>Custom themed launcher icon name</summary>
+    </key>
+    <key name="launcher-size" type="i">
+      <range min="20" max="36" />
+      <default>24</default>
+      <summary>Launcher icon size</summary>
+    </key>
+    <key name="overview-blur" type="b">
+      <default>true</default>
+      <summary>Blur overview wallpaper</summary>
+    </key>
+    <key name="app-margin" type="i">
+      <range min="0" max="16" />
+      <default>1</default>
+      <summary>Horizontal space outside app buttons</summary>
+    </key>
+    <key name="app-padding" type="i">
+      <range min="0" max="16" />
+      <default>3</default>
+      <summary>Space inside app buttons</summary>
+    </key>
+    <key name="app-icon-size" type="i">
+      <range min="16" max="64" />
+      <default>24</default>
+      <summary>App icon size</summary>
+    </key>
+    <key name="preview-width" type="i">
+      <range min="160" max="480" />
+      <default>248</default>
+      <summary>Preview thumbnail width</summary>
+    </key>
+    <key name="preview-aspect-ratio" type="s">
+      <choices>
+        <choice value="16:10" />
+        <choice value="16:9" />
+        <choice value="4:3" />
+        <choice value="window" />
+      </choices>
+      <default>'16:10'</default>
+      <summary>Preview thumbnail aspect ratio</summary>
+    </key>
+    <key name="panel-transparency" type="b">
+      <default>true</default>
+      <summary>Use transparent blurred panels and menus</summary>
+    </key>
+    <key name="taskbar-blur-radius" type="i">
+      <range min="0" max="100" />
+      <default>12</default>
+      <summary>Taskbar blur radius</summary>
+    </key>
+    <key name="taskbar-opacity" type="i">
+      <range min="0" max="100" />
+      <default>56</default>
+      <summary>Taskbar background opacity percentage</summary>
+    </key>
+    <key name="panel-blur-radius" type="i">
+      <range min="0" max="100" />
+      <default>12</default>
+      <summary>Panel and preview blur radius</summary>
+    </key>
+    <key name="panel-opacity" type="i">
+      <range min="0" max="100" />
+      <default>56</default>
+      <summary>Panel and preview background opacity percentage</summary>
+    </key>
+    <key name="overview-blur-radius" type="i">
+      <range min="0" max="100" />
+      <default>12</default>
+      <summary>Overview wallpaper blur radius</summary>
+    </key>
+    <key name="notification-badges" type="b">
+      <default>true</default>
+      <summary>Show app notification counts</summary>
+    </key>
+    <key name="search-button-width" type="i">
+      <range min="16" max="120" />
+      <default>36</default>
+      <summary>Search and Overview button width</summary>
+    </key>
+    <key name="search-button-padding" type="i">
+      <range min="0" max="16" />
+      <default>3</default>
+      <summary>Search and Overview button padding</summary>
+    </key>
+    <key name="search-button-margin" type="i">
+      <range min="0" max="16" />
+      <default>1</default>
+      <summary>Search and Overview button margin</summary>
+    </key>
+    <key name="search-icon-size" type="i">
+      <range min="12" max="64" />
+      <default>20</default>
+      <summary>Search and Overview button icon size</summary>
+    </key>
+    <key name="search-shortcut" type="as">
+      <default>['&lt;Control&gt;space']</default>
+      <summary>Open standalone search</summary>
+    </key>
+    <key name="show-search-button" type="b">
+      <default>false</default>
+      <summary>Show standalone search button beside Start</summary>
+    </key>
+    <key name="app-hover-animation" type="s">
+      <choices>
+        <choice value="none" />
+        <choice value="lift" />
+        <choice value="zoom" />
+      </choices>
+      <default>'lift'</default>
+      <summary>Application icon hover effect</summary>
+    </key>
+    <key name="app-animation-duration" type="i">
+      <range min="0" max="500" />
+      <default>160</default>
+      <summary>Application animation duration in milliseconds</summary>
+    </key>
+    <key name="app-appear-animation" type="b">
+      <default>true</default>
+      <summary>Fade in application buttons</summary>
+    </key>
+    <key name="app-launch-animation" type="b">
+      <default>true</default>
+      <summary>Pulse application icon when launching</summary>
+    </key>
+    <key name="app-close-animation" type="b">
+      <default>true</default>
+      <summary>Fade out application buttons</summary>
+    </key>
+    <key name="search-panel-enabled" type="b">
+      <default>true</default>
+      <summary>Enable standalone search panel</summary>
+    </key>
+    <key name="taskbar-scroll-workspaces" type="b"><default>false</default><summary>Scroll taskbar to switch workspaces</summary></key>
+    <key name="show-workspace-switcher" type="b"><default>false</default><summary>Show workspace switcher</summary></key>
+    <key name="app-click-action" type="s"><choices><choice value="default"/><choice value="cycle"/><choice value="activate"/><choice value="toggle-group"/><choice value="minimize"/><choice value="new-window"/><choice value="previews"/><choice value="menu"/><choice value="none"/></choices><default>'default'</default><summary>app click action</summary></key>
+    <key name="app-middle-click-action" type="s"><choices><choice value="default"/><choice value="cycle"/><choice value="activate"/><choice value="toggle-group"/><choice value="minimize"/><choice value="new-window"/><choice value="previews"/><choice value="menu"/><choice value="none"/></choices><default>'new-window'</default><summary>app middle click action</summary></key>
+    <key name="app-right-click-action" type="s"><choices><choice value="default"/><choice value="cycle"/><choice value="activate"/><choice value="toggle-group"/><choice value="minimize"/><choice value="new-window"/><choice value="previews"/><choice value="menu"/><choice value="none"/></choices><default>'menu'</default><summary>app right click action</summary></key>
+    <key name="app-shift-click-action" type="s"><choices><choice value="default"/><choice value="cycle"/><choice value="activate"/><choice value="toggle-group"/><choice value="minimize"/><choice value="new-window"/><choice value="previews"/><choice value="menu"/><choice value="none"/></choices><default>'default'</default><summary>app shift click action</summary></key>
+    <key name="app-scroll-action" type="s"><choices><choice value="strip"/><choice value="cycle"/><choice value="workspaces"/><choice value="none"/></choices><default>'strip'</default><summary>app scroll action</summary></key>
+    <key name="show-weather" type="b"><default>false</default><summary>Show weather applet</summary></key>
+    <key name="weather-separate-button" type="b"><default>false</default><summary>Open weather from a separate taskbar button</summary></key>
+    <key name="weather-slim" type="b"><default>false</default><summary>Hide the three-day weather forecast</summary></key>
+    <key name="weather-city" type="s"><default>''</default><summary>Weather city</summary></key>
+    <key name="weather-country" type="s"><default>''</default><summary>Weather country code</summary></key>
+    <key name="weather-units" type="s"><choices><choice value="celsius"/><choice value="fahrenheit"/></choices><default>'celsius'</default><summary>Temperature units</summary></key>
+  </schema>
+</schemalist>
