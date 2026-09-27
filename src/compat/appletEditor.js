@@ -29,6 +29,10 @@ export class AppletEditor {
         const stored = this.settings.get_strv('applet-order');
         const saved = stored.includes('appbar') ? stored
             : ['ArcMenu', 'overview', 'search', 'appbar', ...stored, 'showDesktop'];
+        if (!saved.includes('workspaces')) {
+            const tray = saved.indexOf('tray');
+            saved.splice(tray < 0 ? saved.indexOf('appbar') + 1 : tray, 0, 'workspaces');
+        }
         if (!saved.includes('weather')) {
             const before = saved.findIndex(id => ['dateMenu', 'quickSettings', 'showDesktop'].includes(id));
             saved.splice(before < 0 ? saved.length : before, 0, 'weather');

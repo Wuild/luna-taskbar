@@ -15,4 +15,10 @@ assert(!check('maximized'), 'Nearby normal windows do not trigger maximized-only
 assert(check('either') && check('either', {...base, maximized: true}), 'Either condition can trigger combined mode');
 assert(!check('disabled', {...base, maximized: true}), 'Disabled mode keeps the regular profile');
 assert(check('near', {...base, frame: {...base.frame, height: 850}}, 0), 'Touching taskbar works at zero threshold');
-print('11 window-appearance checks passed');
+for (const mode of ['near', 'maximized', 'either']) {
+    assert(!check(mode, {...base, snapped: true, maximized: true}), `${mode}: snapped windows keep regular appearance`);
+}
+assert(usesWindowAppearance('maximized', [{...base, snapped: true, maximized: true}, {...base, maximized: true}], bar, 24, 0),
+    'An ordinary maximized window still triggers appearance alongside a snapped window');
+assert(check('maximized', {...base, snapped: false, maximized: true}), 'An unsnapped maximized window triggers appearance again');
+print('Window-appearance checks passed');

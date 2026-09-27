@@ -9,3 +9,5 @@ schemas/gschemas.compiled
 .codex/
 __pycache__/
 *.pyc
+
+*.tgz

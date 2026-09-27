@@ -1,13 +1,13 @@
 import type {SettingsValues} from '../settings/keys.js';
 export interface Rectangle {x: number; y: number; width: number; height: number;}
-export interface AppearanceWindow {minimized: boolean; skipTaskbar: boolean; monitor: number; maximized: boolean; frame: Rectangle;}
+export interface AppearanceWindow {minimized: boolean; skipTaskbar: boolean; monitor: number; maximized: boolean; snapped?: boolean; frame: Rectangle;}
 // Geometry is in compositor pixels. Ignore windows on other displays and those
 // that do not participate in the taskbar; evaluate only the active workspace.
 export function usesWindowAppearance(mode: SettingsValues['window-appearance-mode'], windows: readonly AppearanceWindow[], bar: Rectangle, distance: number, monitorIndex: number | undefined, edge: SettingsValues['taskbar-position'] = 'bottom'): boolean {
     if (mode === 'disabled')
         return false;
     return windows.some(window => {
-        if (window.minimized || window.skipTaskbar || window.monitor !== monitorIndex)
+        if (window.snapped || window.minimized || window.skipTaskbar || window.monitor !== monitorIndex)
             return false;
         const r = window.frame;
         const horizontalOverlap = r.x < bar.x + bar.width && r.x + r.width > bar.x;

@@ -257,6 +257,7 @@ export class SystemPanel {
             this._queueNotificationSize();
         });
         for (const source of Main.messageTray.getSources()) this._watchNotifications(source);
+        this._notificationExpandedId = this._mediaView.connect('notify::expanded-group', () => this._queueNotificationSize());
         this._notificationAllocationId = this._mediaView.connect('notify::allocation', () => this._queueNotificationSize());
         this._position();
     }
@@ -292,6 +293,10 @@ export class SystemPanel {
         const cardNode = this.notifications.get_theme_node();
         const innerWidth = cardNode.adjust_for_width(columnWidth);
         let contentHeight = this._mediaView.get_preferred_height(innerWidth)[1];
+        // GNOME includes scroll overshoot above/below an expanded group. Account
+        // for its full scroll extent so a fitting group does not gain a scrollbar.
+        if (this._mediaView.expandedGroup)
+            contentHeight = Math.max(contentHeight, this._mediaView._scrollViewAdjustment?.upper ?? 0);
         let child = this._mediaView;
         for (let parent = child.get_parent(); parent; child = parent, parent = parent.get_parent()) {
             const node = parent.get_theme_node();
@@ -566,6 +571,7 @@ export class SystemPanel {
         }
         this.controls.disconnect(this._controlAllocationId);
         this._mediaView.disconnect(this._notificationAllocationId);
+        this._mediaView.disconnect(this._notificationExpandedId);
         this._notificationControls.visible = this._notificationControlsVisible;
         this.date._messageList._placeholder.visible = this._placeholderVisible;
         this.date._calendar.disconnect(this._calendarAddedId);

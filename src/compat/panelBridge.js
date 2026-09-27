@@ -1,3 +1,4 @@
+import {AppAnimations} from '../appbar/animations.js';
 import {styleStartButton} from '../start-menu/buttonStyle.js';
 import {anchorTaskbarMenu} from './taskbarMenuAnchor.js';
 import {SystemPanel} from './systemPanel.js';
@@ -17,6 +18,7 @@ export class PanelBridge {
         this._onArcMenuOpenChanged = onArcMenuOpenChanged;
         this._launcher = launcher;
         this._settings = settings;
+        this._animations = new AppAnimations(settings);
         this._tray = tray;
         this._system = system;
         this._quickIndicators = Main.panel.statusArea.quickSettings?._indicators;
@@ -115,7 +117,7 @@ export class PanelBridge {
                 continue;
             let record = this._records.get(actor);
             if (!record) {
-                record = {role, actor, indicator, ...positions.get(actor),
+                record = {role, actor, indicator, isTray: role.startsWith('appindicator-legacy:'), ...positions.get(actor),
                     expand: actor.x_expand, expandSet: actor.x_expand_set, yExpand: actor.y_expand, yExpandSet: actor.y_expand_set};
                 // Native panel buttons request expansion. Their taskbar containers
                 // must stay at natural width, leaving spare space to the app strip.
@@ -135,8 +137,9 @@ export class PanelBridge {
             indicator.menu?.close();
             actor.get_parent().remove_child(actor);
             const useArcMenu = role === 'ArcMenu' && this._settings.get_string('launcher-menu') === 'arcmenu';
-            const destination = useArcMenu ? this._launcher.get_parent() : ['dateMenu', 'quickSettings', 'screenSharing', 'screenRecording'].includes(role)
-                ? this._system : this._tray;
+            // Shell applets (including weather extensions) own panel menus. Keep
+            // their source buttons outside the collapsing application tray.
+            const destination = useArcMenu ? this._launcher.get_parent() : record.isTray ? this._tray : this._system;
             if (role.startsWith('appindicator-legacy:')) {
                 actor._lunaTaskbarTrayKey = `xembed:${indicator._icon?.wm_class || role.slice('appindicator-legacy:'.length)}`;
                 rememberTrayItem(this._settings, actor._lunaTaskbarTrayKey, actor.accessible_name || role);
@@ -187,9 +190,12 @@ export class PanelBridge {
         try {
             for (const record of this._records.values()) {
                 if (!record.arcIcon) continue;
-                if (this._settings.get_string('launcher-menu') === 'arcmenu')
+                if (this._settings.get_string('launcher-menu') === 'arcmenu') {
+                    record.restoreAnimation ??= this._animations.bindButton(record.indicator, record.arcIcon.icon);
                     styleStartButton(this._settings, record.indicator, record.arcIcon.icon);
-                else {
+                } else {
+                    record.restoreAnimation?.();
+                    record.restoreAnimation = null;
                     record.indicator.set_style(record.arcIcon.buttonStyle);
                     record.arcIcon.icon.set_style(record.arcIcon.style);
                     record.arcIcon.icon.icon_size = record.arcIcon.size;
@@ -320,6 +326,7 @@ export class PanelBridge {
                 Main.panel.menuManager.addMenu(indicator.menu);
             }
             record.backdrop?.destroy();
+            record.restoreAnimation?.();
             if (record.arcIcon) {
                 record.arcIcon.icon.disconnect(record.arcIcon.id);
                 indicator.disconnect(record.arcStyleId);

@@ -22,10 +22,25 @@ export class NotificationOrder {
     _watch(group) {
         if (!group || this._groups.has(group)) return;
         const move = group._moveMessage;
+        const fade = group._updateStackedMessagesFade;
+        const contentOpacity = new WeakMap();
+        // Keep the translucent stacked surfaces, but suppress lower cards' text,
+        // icons and controls without changing their measured size.
+        group._updateStackedMessagesFade = () => {
+            fade.call(group);
+            for (const message of group._notificationToMessage.values()) {
+                const content = message.child;
+                if (!contentOpacity.has(content)) contentOpacity.set(content, content.opacity);
+                const stacked = message.has_style_pseudo_class('second-in-stack') ||
+                    message.has_style_pseudo_class('lower-in-stack');
+                content.opacity = stacked ? 0 : contentOpacity.get(content);
+            }
+        };
         group._moveMessage = () => this.sort();
         const added = group.connect('notification-added', () => this.sort());
         const destroyed = group.connect('destroy', () => this._groups.delete(group));
-        this._groups.set(group, {move, added, destroyed});
+        this._groups.set(group, {move, fade, contentOpacity, added, destroyed});
+        group._updateStackedMessagesFade();
     }
 
     sort() {
@@ -59,7 +74,12 @@ export class NotificationOrder {
     destroy() {
         this._view._addNotificationSource = this._addSource;
         this._view._moveMessage = this._move;
-        for (const [group, {move, added, destroyed}] of this._groups) {
+        for (const [group, {move, fade, contentOpacity, added, destroyed}] of this._groups) {
+            group._updateStackedMessagesFade = fade;
+            for (const message of group._notificationToMessage.values()) {
+                const opacity = contentOpacity.get(message.child);
+                if (opacity !== undefined) message.child.opacity = opacity;
+            }
             group._moveMessage = move;
             group.disconnect(added);
             group.disconnect(destroyed);

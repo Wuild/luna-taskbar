@@ -17,6 +17,8 @@ export function populate(context: PreferenceContext, taskbar: Adw.PreferencesPag
     toggle(layout, 'taskbar-floating', 'Floating taskbar');
     spin(layout, 'taskbar-edge-gap', 'Distance from screen edge', 'Logical pixels', 'taskbar-floating');
     spin(layout, 'taskbar-end-gap', 'Inset at both ends', 'Side gaps on horizontal bars; top and bottom gaps on vertical bars', 'taskbar-floating');
+    spin(layout, 'taskbar-start-padding', 'Space at start', 'Inside the taskbar: left on horizontal bars, top on vertical bars');
+    spin(layout, 'taskbar-end-padding', 'Space at end', 'Inside the taskbar: right on horizontal bars, bottom on vertical bars');
     spin(layout, 'taskbar-corner-radius', 'Corner radius', 'Logical pixels; 0 gives square corners');
     const border = group(taskbar, 'Border', 'All edges when floating; only the window-facing edge when attached.');
     toggle(border, 'taskbar-border-enabled', 'Show border');

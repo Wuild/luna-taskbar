@@ -15,6 +15,8 @@
       <default>'inherit'</default><summary>Layout when window appearance is active</summary>
     </key>
     <key name="taskbar-edge-gap" type="i"><range min="0" max="200" /><default>12</default><summary>taskbar edge-gap</summary></key>
+    <key name="taskbar-start-padding" type="i"><range min="0" max="200" /><default>0</default><summary>Space inside the start of the taskbar</summary></key>
+    <key name="taskbar-end-padding" type="i"><range min="0" max="200" /><default>0</default><summary>Space inside the end of the taskbar</summary></key>
     <key name="taskbar-end-gap" type="i"><range min="0" max="400" /><default>12</default><summary>taskbar end-gap</summary></key>
     <key name="taskbar-corner-radius" type="i"><range min="0" max="100" /><default>0</default><summary>taskbar corner-radius</summary></key>
     <key name="window-appearance-edge-gap" type="i"><range min="0" max="200" /><default>12</default><summary>window-appearance edge-gap</summary></key>
@@ -151,14 +153,6 @@
       <range min="0" max="15" />
       <default>0</default>
       <summary>Selected display index</summary>
-    </key>
-    <key name="remember-window-positions" type="b">
-      <default>false</default>
-      <summary>Remember application window position, size and maximized state</summary>
-    </key>
-    <key name="saved-window-layouts" type="s">
-      <default>'{}'</default>
-      <summary>Saved application window layouts</summary>
     </key>
     <key name="monitor-local-windows" type="b">
       <default>true</default>
@@ -325,7 +319,7 @@
       <summary>Clock and system button horizontal padding</summary>
     </key>
     <key name="applet-order" type="as">
-      <default>['ArcMenu', 'overview', 'search', 'appbar', 'tray', 'screenSharing', 'screenRecording', 'quickSettings', 'dateMenu', 'showDesktop']</default>
+      <default>['ArcMenu', 'overview', 'search', 'appbar', 'workspaces', 'tray', 'screenSharing', 'screenRecording', 'quickSettings', 'dateMenu', 'showDesktop']</default>
       <summary>Order of taskbar applet blocks</summary>
     </key>
     <key name="show-previews" type="b">

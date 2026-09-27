@@ -24,6 +24,10 @@ dbus-run-session -- bash -c '
     gsettings set org.gnome.shell enabled-extensions "$LUNA_TEST_EXTENSIONS"
     gsettings set org.gnome.shell disable-user-extensions false
     gsettings set org.gnome.shell welcome-dialog-last-shown-version "50.4"
-    timeout 75s gnome-shell --headless --wayland --no-x11 --virtual-monitor 1280x800 \
+    monitor_args=()
+    for monitor in ${LUNA_TEST_MONITORS:-1280x800}; do
+        monitor_args+=(--virtual-monitor "$monitor")
+    done
+    timeout 75s gnome-shell --headless --wayland --no-x11 "${monitor_args[@]}" \
         --automation-script "$LUNA_SHELL_SCRIPT"
 '

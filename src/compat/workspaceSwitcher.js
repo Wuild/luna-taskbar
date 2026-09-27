@@ -7,11 +7,13 @@ export class WorkspaceSwitcher {
     constructor(bar, settings, editing) {
         this.settings = settings;
         this.editing = editing;
-        this.actor = new St.BoxLayout({style_class: 'luna-taskbar-workspaces', y_align: Clutter.ActorAlign.CENTER});
+        this.actor = new St.BoxLayout({style_class: 'luna-taskbar-workspaces',
+            x_align: Clutter.ActorAlign.CENTER, y_align: Clutter.ActorAlign.CENTER});
         this.signals = [];
         const connect = (object, signal, fn) => this.signals.push([object, object.connect(signal, fn)]);
         connect(global.workspace_manager, 'notify::n-workspaces', () => this.rebuild());
         connect(global.workspace_manager, 'active-workspace-changed', () => this.highlight());
+        connect(global.workspace_manager, 'workspaces-reordered', () => this.highlight());
         connect(settings, 'changed::show-workspace-switcher', () => this.update());
         connect(settings, 'changed::taskbar-position', () => this.update());
         connect(bar, 'scroll-event', (_actor, event) => {
@@ -44,9 +46,23 @@ export class WorkspaceSwitcher {
     rebuild() {
         this.actor.destroy_all_children();
         for (let i = 0; i < global.workspace_manager.n_workspaces; i++) {
-            const button = new St.Button({label: String(i + 1), can_focus: true,
+            const content = new St.BoxLayout({orientation: Clutter.Orientation.VERTICAL,
+                style_class: 'luna-taskbar-workspace-content', x_align: Clutter.ActorAlign.CENTER,
+                y_align: Clutter.ActorAlign.CENTER});
+            const screen = new St.Bin({style_class: 'luna-taskbar-workspace-screen',
+                child: new St.Label({text: String(i + 1), x_align: Clutter.ActorAlign.CENTER,
+                    y_align: Clutter.ActorAlign.CENTER})});
+            content.add_child(screen);
+            content.add_child(new St.Widget({style_class: 'luna-taskbar-workspace-stand',
+                x_align: Clutter.ActorAlign.CENTER}));
+            const button = new St.Button({child: content, can_focus: true, track_hover: true,
                 accessible_name: `Workspace ${i + 1}`, style_class: 'luna-taskbar-workspace-button'});
-            button.connect('clicked', () => Main.wm.actionMoveWorkspace(global.workspace_manager.get_workspace_by_index(i)));
+            button.connect('clicked', () => {
+                if (this.editing()) return;
+                const workspace = global.workspace_manager.get_workspace_by_index(i);
+                if (workspace) Main.wm.actionMoveWorkspace(workspace);
+                this.highlight();
+            });
             this.actor.add_child(button);
         }
         this.update(); this.highlight();
@@ -56,9 +72,10 @@ export class WorkspaceSwitcher {
         this.actor.orientation = ['left', 'right'].includes(this.settings.get_string('taskbar-position')) ? Clutter.Orientation.VERTICAL : Clutter.Orientation.HORIZONTAL;
     }
     highlight() {
+        const active = global.workspace_manager.get_active_workspace_index();
         this.actor.get_children().forEach((button, index) => {
-            if (index === global.workspace_manager.get_active_workspace_index()) button.add_style_pseudo_class('active');
-            else button.remove_style_pseudo_class('active');
+            button.checked = index === active;
+            button.accessible_name = `Workspace ${index + 1}${button.checked ? ', current' : ''}`;
         });
     }
     destroy() { for (const [object, id] of this.signals) object.disconnect(id); this.actor.destroy(); }

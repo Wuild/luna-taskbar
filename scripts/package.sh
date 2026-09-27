@@ -11,3 +11,7 @@ gnome-extensions pack --extra-source=LICENSE --extra-source=LICENSE-NOTICE --for
     --extra-source=appbar --extra-source=compat --extra-source=core \
     --extra-source=panels --extra-source=preferences --extra-source=settings \
     --extra-source=start-menu --extra-source=systray --extra-source=taskbar .
+
+if [[ ${LUNA_PACKAGE_NATIVE:-0} != 1 ]]; then
+    python3 ../scripts/check-package.py "$out_dir/luna-taskbar@wuild.shell-extension.zip"
+fi

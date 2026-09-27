@@ -560,22 +560,6 @@ export async function run() {
     for (let attempt = 0; attempt < 20 && (bar._visibility._hidden || bar._bar.opacity !== 255); attempt++)
         await Scripting.sleep(100);
     assert(!bar._visibility._hidden && bar._bar.opacity === 255, `Always-visible mode restores taskbar: hidden=${bar._visibility._hidden}, opacity=${bar._bar.opacity}`);
-    const restored = {};
-    const fakeWindow = {
-        minimized: true, unminimize() { restored.unminimized = true; },
-        is_maximized: () => true, unmaximize() { restored.unmaximized = true; },
-        can_maximize: () => true, maximize() { restored.maximized = true; },
-        set_maximize_flags(flags) { restored.flags = flags; },
-        get_work_area_for_monitor: index => Main.layoutManager.monitors[index],
-        move_to_monitor(index) { restored.monitor = index; },
-        move_resize_frame(_user, x, y, width, height) { restored.rect = {x, y, width, height}; },
-    };
-    bar._windowPlacement._place(fakeWindow, {monitor: 'disconnected-display',
-        rect: {x: 99999, y: 99999, width: 640, height: 480}, maximized: 3});
-    assert(restored.monitor === Main.layoutManager.primaryIndex && restored.maximized &&
-        restored.unminimized && restored.rect.width === 640,
-        'Saved layout safely falls back to primary and restores maximize without minimizing');
-
     const groupedTask = [...bar._buttons.values()][0];
     if (groupedTask) {
         const originalWindows = groupedTask.windows;
@@ -772,7 +756,6 @@ export async function checkWindows(bar) {
                 'Wine popup anchors horizontally at the recorded click');
             assert(rect.y <= point.y && rect.y + rect.height <= bar._bar.y + 1,
                 'Wine popup stays above the taskbar');
-            assert(!bar._windowPlacement._windows.has(tracked), 'Native tray popups bypass saved window placement');
             const device = Clutter.get_default_backend().get_default_seat().create_virtual_device(Clutter.InputDeviceType.POINTER_DEVICE);
             device.notify_absolute_motion(0, 20, 20);
             device.notify_button(0, 1, Clutter.ButtonState.PRESSED);

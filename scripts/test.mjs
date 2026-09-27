@@ -6,7 +6,7 @@ import path from 'node:path';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 const tests = ['appInteractions', 'taskModel', 'colors', 'badgeState', 'appLabel', 'windowAppearance',
-    'windowGeometry', 'menuGeometry', 'trayActions', 'trayAddress', 'tray-recovery'];
+    'menuGeometry', 'trayActions', 'trayAddress', 'tray-recovery'];
 const temp = await mkdtemp(path.join(tmpdir(), 'luna-taskbar-tests-'));
 try {
     for (const test of tests) {

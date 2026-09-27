@@ -123,11 +123,14 @@ export class SearchPanel {
                     let attempts = 0;
                     const ready = () => provider.proxy.get_connection() || cancellable.is_cancelled() || ++attempts >= 50;
                     if (ready()) { resolve(); return; }
-                    GLib.timeout_add(GLib.PRIORITY_DEFAULT, 20, () => {
+                    const waits = this._providerWaits ??= new Map();
+                    const id = GLib.timeout_add(GLib.PRIORITY_DEFAULT, 20, () => {
                         if (!ready()) return GLib.SOURCE_CONTINUE;
+                        waits.delete(id);
                         resolve();
                         return GLib.SOURCE_REMOVE;
                     });
+                    waits.set(id, resolve);
                 });
                 if (cancellable.is_cancelled() || !provider.proxy.get_connection()) return {provider, metas: []};
                 const ids = await provider.getInitialResultSet(terms, cancellable);
@@ -185,6 +188,8 @@ export class SearchPanel {
         this._timeout = 0;
         this._cancellable?.cancel();
         this._cancellable = null;
+        for (const [id, resolve] of this._providerWaits ?? []) { GLib.Source.remove(id); resolve(); }
+        this._providerWaits?.clear();
     }
 
     close() {

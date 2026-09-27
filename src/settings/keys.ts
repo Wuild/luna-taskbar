@@ -8,6 +8,8 @@ export interface SettingsValues {
     "taskbar-floating": boolean;
     "window-appearance-layout": "inherit" | "attached" | "floating";
     "taskbar-edge-gap": number;
+    "taskbar-start-padding": number;
+    "taskbar-end-padding": number;
     "taskbar-end-gap": number;
     "taskbar-corner-radius": number;
     "window-appearance-edge-gap": number;
@@ -38,8 +40,6 @@ export interface SettingsValues {
     "monitor-mode": "primary" | "all" | "specific";
     "monitor-connector": string;
     "monitor-index": number;
-    "remember-window-positions": boolean;
-    "saved-window-layouts": string;
     "monitor-local-windows": boolean;
     "show-desktop-margin": number;
     "overview-panel-opacity": number;
@@ -165,6 +165,20 @@ export const settingDefinitions = {
         ]
     },
     "taskbar-edge-gap": {
+        "type": "i",
+        "range": [
+            0,
+            200
+        ]
+    },
+    "taskbar-start-padding": {
+        "type": "i",
+        "range": [
+            0,
+            200
+        ]
+    },
+    "taskbar-end-padding": {
         "type": "i",
         "range": [
             0,
@@ -342,12 +356,6 @@ export const settingDefinitions = {
             0,
             15
         ]
-    },
-    "remember-window-positions": {
-        "type": "b"
-    },
-    "saved-window-layouts": {
-        "type": "s"
     },
     "monitor-local-windows": {
         "type": "b"

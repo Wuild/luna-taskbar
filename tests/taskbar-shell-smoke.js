@@ -22,6 +22,18 @@ export async function run() {
     assert(bar._tray && bar._trayDrawer, 'Tray connected');
     assert(bar._panelBridge._systemPanel, 'System panels connected');
     const settings = bar._settings;
+    settings.set_int('taskbar-start-padding', 17);
+    settings.set_int('taskbar-end-padding', 23);
+    for (const edge of ['bottom', 'left']) {
+        settings.set_string('taskbar-position', edge);
+        await Scripting.sleep(250);
+        const scale = St.ThemeContext.get_for_stage(global.stage).scale_factor;
+        const node = bar._content.get_theme_node();
+        assert(node.get_padding(edge === 'left' ? St.Side.TOP : St.Side.LEFT) === 17 * scale, 'Start spacing follows orientation');
+        assert(node.get_padding(edge === 'left' ? St.Side.BOTTOM : St.Side.RIGHT) === 23 * scale, 'End spacing follows orientation');
+    }
+    for (const key of ['taskbar-start-padding', 'taskbar-end-padding', 'taskbar-position']) settings.reset(key);
+    console.log('LUNA_TASKBAR_PADDING_PASS');
     for (let i = 0; i < 3; i++) {
         settings.set_boolean('separate-applet-panels', false);
         await Scripting.sleep(100);
@@ -116,14 +128,6 @@ export async function run() {
     bar._animations.hover(button, false);
     await Scripting.sleep(220);
     assert(Math.abs(icon.scale_x - 1) < 0.001, 'Typed hover animation restores scale');
-    bar._animations.launch(button);
-    const expectedScale = button.hover ? 1.08 : 1;
-    for (let attempt = 0; attempt < 20; attempt++) {
-        await Scripting.sleep(50);
-        if (Math.abs(icon.scale_x - expectedScale) < 0.001) break;
-    }
-    assert(Math.abs(icon.scale_x - expectedScale) < 0.001,
-        `Launch completion restores hover scale: ${icon.scale_x}, expected ${expectedScale}`);
     button.destroy();
     settings.set_int('hide-delay', 0);
     settings.set_string('visibility-mode', 'auto-hide');

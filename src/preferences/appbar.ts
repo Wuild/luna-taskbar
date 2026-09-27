@@ -14,7 +14,7 @@ export function populate(context: PreferenceContext, appBar: Adw.PreferencesPage
     combo(motion, 'app-hover-animation', 'Hover effect', ['none', 'lift', 'zoom'], ['None', 'Lift', 'Zoom']);
     spin(motion, 'app-animation-duration', 'Duration', 'Milliseconds; respects the system animation setting');
     toggle(motion, 'app-appear-animation', 'Fade in new buttons');
-    toggle(motion, 'app-launch-animation', 'Pulse when launching');
+    toggle(motion, 'app-launch-animation', 'Push while clicking');
     toggle(motion, 'app-close-animation', 'Fade out closed buttons');
 
     const previewLayout = group(appBar, 'Preview layout');

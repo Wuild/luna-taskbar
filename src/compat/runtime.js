@@ -34,7 +34,7 @@ import {usesWindowAppearance} from './windowAppearance.js';
 import {rgbaColor, validColor} from './colors.js';
 import {watchThemeColors, surfaceColor, surfaceText} from './themeColors.js';
 import {IconColors} from './iconColors.js';
-import {WindowPlacement} from './windowPlacement.js';
+import {WindowAnimationBounds} from './windowAnimationBounds.js';
 import {TaskbarVisibility} from './taskbarVisibility.js';
 import {AppletEditor} from './appletEditor.js';
 import {PanelBridge} from './panelBridge.js';
@@ -55,7 +55,7 @@ export default class TaskbarRuntime extends Extension {
         this._settings = this._owner?._settings ?? new TaskbarSettings(this.getSettings());
         this._animations = new AppAnimations(this._settings);
         this._releaseThemeColors = watchThemeColors(() => this._updateSurface());
-        this._windowPlacement = this._secondary ? null : new WindowPlacement(this._settings);
+        this._windowAnimationBounds = this._secondary ? null : new WindowAnimationBounds();
         this._windowSignals = new Map();
         this._buttons = new Map();
         this._iconColors = new IconColors(() => this._updateIndicators());
@@ -104,6 +104,7 @@ export default class TaskbarRuntime extends Extension {
         this._startMenu = new StartMenuLauncher(this._settings);
         const launcher = this._startMenu.actor;
         this._launcher = launcher;
+        this._animations.bindButton(launcher, this._startMenu.icon);
         this._content.add_child(launcher);
         this._searchPanel = new SearchPanel(this._settings);
         this._syncSearchShortcut();
@@ -115,6 +116,7 @@ export default class TaskbarRuntime extends Extension {
             if (this._searchPanel.actor.visible) this._searchButton.add_style_class_name('luna-taskbar-start-open');
             else this._searchButton.remove_style_class_name('luna-taskbar-start-open');
         });
+        this._animations.bindButton(this._searchButton, this._searchButton.child);
         this._searchButton.connect('clicked', () => this._searchPanel.toggle());
         this._content.add_child(this._searchButton);
         this._updateLauncher();
@@ -195,7 +197,7 @@ export default class TaskbarRuntime extends Extension {
             {id: 'appbar', label: 'App bar', actor: this._appStrip.actor},
             ...(this._trayDrawer ? [{id: 'tray', label: 'Application tray', actor: this._trayDrawer.actor, system: true}] : []),
             ...[...this._panelBridge._records.values()]
-                .filter(record => (record.role === 'ArcMenu' || ['dateMenu', 'quickSettings', 'screenSharing', 'screenRecording'].includes(record.role)) &&
+                .filter(record => !record.isTray &&
                     !(record.role === 'dateMenu' && this._panelBridge._systemPanel?._combinedButton))
                 .map(record => ({id: record.role, actor: record.actor, system: record.role !== 'ArcMenu',
                     label: {ArcMenu: 'ArcMenu', dateMenu: 'Clock', quickSettings: this._panelBridge._systemPanel?._combinedButton ? 'System and clock' : 'System controls',
@@ -451,10 +453,16 @@ export default class TaskbarRuntime extends Extension {
             this._settings.get_boolean('taskbar-floating'), this._settings.get_int('taskbar-edge-gap') * scale,
             this._settings.get_int('taskbar-end-gap') * scale);
         const mode = this._settings.get_string('window-appearance-mode');
+        // Group membership also covers tiles using the optional maximized styling.
+        // Read live membership so unsnapping or disabling Desktop clears the exclusion.
+        const groups = Main.extensionManager.lookup('luna-desktop@wuild')?.stateObj?.snapping?.groups;
+        const snapped = new Set();
+        for (const group of groups ?? [])
+            for (const window of group.windows.values()) snapped.add(window);
         const candidates = mode !== 'disabled' && !Main.overview.visible
             ? (windows ?? global.workspace_manager.get_active_workspace().list_windows()).map(window => ({
                 minimized: window.minimized, skipTaskbar: window.skip_taskbar || window.is_override_redirect(),
-                monitor: window.get_monitor(), maximized: window.is_maximized(), frame: window.get_frame_rect(),
+                snapped: snapped.has(window), monitor: window.get_monitor(), maximized: window.is_maximized(), frame: window.get_frame_rect(),
             })) : [];
         const alternate = usesWindowAppearance(mode, candidates,
             base,
@@ -470,6 +478,11 @@ export default class TaskbarRuntime extends Extension {
         this._bar._lunaEdge = edge;
         if (vertical) this._bar.add_style_class_name('luna-taskbar-vertical');
         else this._bar.remove_style_class_name('luna-taskbar-vertical');
+        const startPadding = this._settings.get_int('taskbar-start-padding');
+        const endPadding = this._settings.get_int('taskbar-end-padding');
+        this._content.set_style(vertical
+            ? `padding: ${startPadding}px 0 ${endPadding}px 0;`
+            : `padding: 0 ${endPadding}px 0 ${startPadding}px;`);
         this._content.orientation = vertical ? Clutter.Orientation.VERTICAL : Clutter.Orientation.HORIZONTAL;
         this._appStrip.setVertical(vertical);
         for (const child of this._content.get_children())
@@ -689,7 +702,7 @@ export default class TaskbarRuntime extends Extension {
             this._preview.hide();
             return Clutter.EVENT_PROPAGATE;
         });
-        button.connect('notify::hover', () => this._animations.hover(button, button.hover));
+        this._animations.bindButton(button, icon);
         button.connect('enter-event', () => {
             this._tooltip.schedule(task, button);
             if (!this._taskDrag.dragging && !this._taskMenus.menu?.isOpen &&
@@ -727,7 +740,6 @@ export default class TaskbarRuntime extends Extension {
                 activate: window => Main.activateWindow(window),
                 launch: newWindow => {
                     if (!app || (newWindow && !app.can_open_new_window())) return;
-                    this._animations.launch(button);
                     if (newWindow) app.open_new_window(-1);
                     else app.activate();
                 },
@@ -845,8 +857,8 @@ export default class TaskbarRuntime extends Extension {
         for (const child of this._secondaryBars ?? [])
             child.disable();
         this._secondaryBars = [];
-        this._windowPlacement?.destroy();
-        this._windowPlacement = null;
+        this._windowAnimationBounds?.destroy();
+        this._windowAnimationBounds = null;
         this._iconArtwork?.destroy();
         this._iconArtwork = null;
         this._layoutTransition?.destroy();

@@ -23,6 +23,8 @@ export class NativeTrayMenus {
         this._logger = logger;
         this._popups = new Map();
         this._serial = 0;
+        this._helpers = new Map();
+        this._waits = new Map();
         watchers.add(this);
         this._map = global.window_manager.connect('map', (_wm, actor) => {
             if (this._matches(actor.meta_window)) this._trackPopup(actor.meta_window);
@@ -151,6 +153,7 @@ export class NativeTrayMenus {
     }
 
     async close(resume = true) {
+        if (this._destroyed) return this._serial;
         if (this._dismissing) return this._dismissing;
         this._dismissing = this._dismiss(resume);
         try { return await this._dismissing; }
@@ -178,20 +181,35 @@ export class NativeTrayMenus {
                     Gio.SubprocessFlags.STDOUT_SILENCE | Gio.SubprocessFlags.STDERR_PIPE});
                 launcher.set_environ(global.create_app_launch_context(0, -1).get_environment());
                 const process = launcher.spawnv(['python3', this._helper, 'dismiss', xid, ...(wine ? ['wine'] : [])]);
+                launcher.close();
+                const timeout = GLib.timeout_add_seconds(GLib.PRIORITY_DEFAULT, 2, () => {
+                    this._helpers.delete(process);
+                    process.force_exit();
+                    resolve();
+                    return GLib.SOURCE_REMOVE;
+                });
+                this._helpers.set(process, {timeout, resolve});
                 process.communicate_utf8_async(null, null, (proc, result) => {
                     try {
                         const [, , stderr] = proc.communicate_utf8_finish(result);
-                        if (!proc.get_successful()) this._logger.warn(`Native menu dismissal: ${stderr.trim()}`);
-                    } catch (error) { this._logger.warn(error.message); }
+                        if (!this._destroyed && !proc.get_successful()) this._logger.warn(`Native menu dismissal: ${stderr.trim()}`);
+                    } catch (error) { if (!this._destroyed) this._logger.warn(error.message); }
+                    const pending = this._helpers.get(process);
+                    if (pending) GLib.Source.remove(pending.timeout);
+                    this._helpers.delete(process);
                     resolve();
                 });
             } catch (error) { this._logger.warn(error.message); resolve(); }
         })));
-        for (let attempt = 0; attempt < 10 && serial === this._serial &&
+        for (let attempt = 0; attempt < 10 && !this._destroyed && serial === this._serial &&
             windows.some(window => window.get_compositor_private()?.mapped); attempt++) {
-            await new Promise(resolve => GLib.timeout_add(GLib.PRIORITY_DEFAULT, 25, () => {
-                resolve(); return GLib.SOURCE_REMOVE;
-            }));
+            await new Promise(resolve => {
+                const id = GLib.timeout_add(GLib.PRIORITY_DEFAULT, 25, () => {
+                    this._waits.delete(id);
+                    resolve(); return GLib.SOURCE_REMOVE;
+                });
+                this._waits.set(id, resolve);
+            });
         }
         if (serial === this._serial && !windows.some(window => window.get_compositor_private()?.mapped))
             this._finish(resume);
@@ -206,6 +224,15 @@ export class NativeTrayMenus {
         global.window_manager.disconnect(this._map);
         this._cancellable.cancel();
         global.stage.disconnect(this._press);
-        this.close(false).finally(() => this._finish(false));
+        this._serial++;
+        for (const [id, resolve] of this._waits) { GLib.Source.remove(id); resolve(); }
+        this._waits.clear();
+        for (const [process, {timeout, resolve}] of this._helpers) {
+            GLib.Source.remove(timeout);
+            process.force_exit();
+            resolve();
+        }
+        this._helpers.clear();
+        this._finish(false);
     }
 }

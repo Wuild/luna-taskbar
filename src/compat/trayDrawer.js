@@ -6,7 +6,6 @@ import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 import * as PopupMenu from 'resource:///org/gnome/shell/ui/popupMenu.js';
 import * as BoxPointer from 'resource:///org/gnome/shell/ui/boxpointer.js';
 import {PopupBackdrop} from './popupBackdrop.js';
-import {createHorizontalScroll} from './horizontalScroll.js';
 
 export class TrayDrawer {
     constructor(box, settings, manager) {
@@ -18,7 +17,8 @@ export class TrayDrawer {
         this.actor = new St.BoxLayout({x_expand: false, style_class: 'luna-taskbar-tray-holder'});
         parent.insert_child_at_index(this.actor, index);
         this.actor.add_child(box);
-        this.overflowBox = new St.BoxLayout({style_class: 'luna-taskbar-tray'});
+        this._grid = new Clutter.GridLayout({column_homogeneous: true, row_homogeneous: true});
+        this.overflowBox = new St.Widget({style_class: 'luna-taskbar-tray', layout_manager: this._grid});
         this.button = new St.Button({can_focus: true, visible: false, style_class: 'luna-taskbar-tray-toggle',
             child: new St.Icon({icon_name: 'view-more-symbolic', icon_size: 16})});
         settings.bind('tray-icon-size', this.button.child, 'icon-size', Gio.SettingsBindFlags.GET);
@@ -26,9 +26,14 @@ export class TrayDrawer {
         this.menu = new PopupMenu.PopupMenu(this.button, 0.5, St.Side.BOTTOM);
         Main.uiGroup.add_child(this.menu.actor);
         this.menu.actor.hide();
+        this.menu.actor.add_style_class_name('luna-taskbar-tray-popup');
         this._backdrop = new PopupBackdrop(this.menu, settings);
-        this._scroll = createHorizontalScroll({min_width: 0});
-        this._scroll.set_child(this.overflowBox);
+        this._scroll = new St.ScrollView({hscrollbar_policy: St.PolicyType.NEVER,
+            vscrollbar_policy: St.PolicyType.AUTOMATIC, overlay_scrollbars: true,
+            clip_to_allocation: true});
+        const scrollContent = new St.BoxLayout();
+        scrollContent.add_child(this.overflowBox);
+        this._scroll.set_child(scrollContent);
         const row = new PopupMenu.PopupBaseMenuItem({reactive: false, can_focus: false,
             style_class: 'luna-taskbar-tray-drawer-row'});
         row.add_child(this._scroll);
@@ -77,13 +82,35 @@ export class TrayDrawer {
         if (!monitor)
             return;
         const scale = St.ThemeContext.get_for_stage(global.stage).scale_factor;
-        const width = Math.min(this.overflowBox.get_preferred_width(-1)[1],
-            Math.max(32 * scale, monitor.width - (2 * this.settings.get_int('panel-edge-gap') + 40) * scale));
-        this._scroll.set_size(width, Math.max(32 * scale, this.overflowBox.get_preferred_height(-1)[1]));
+        const children = this.overflowBox.get_children().filter(child => child.visible);
+        const spacing = this.settings.get_int('tray-spacing') * scale;
+        this._grid.column_spacing = spacing;
+        this._grid.row_spacing = spacing;
+        const cell = Math.max(32 * scale, ...children.map(child => Math.max(
+            child.get_preferred_width(-1)[1], child.get_preferred_height(-1)[1])));
+        const availableWidth = Math.max(cell,
+            monitor.width - (2 * this.settings.get_int('panel-edge-gap') + 64) * scale);
+        const columns = Math.max(1, Math.min(Math.ceil(Math.sqrt(children.length)),
+            Math.floor((availableWidth + spacing) / (cell + spacing))));
+        // Hidden actors retain GridLayout coordinates. Reset them too so stale
+        // rows/columns cannot leave blank space after icons disappear.
+        for (const child of this.overflowBox.get_children()) {
+            const meta = this._grid.get_child_meta(this.overflowBox, child);
+            meta.left_attach = 0;
+            meta.top_attach = 0;
+        }
+        children.forEach((child, index) => {
+            const meta = this._grid.get_child_meta(this.overflowBox, child);
+            meta.left_attach = index % columns;
+            meta.top_attach = Math.floor(index / columns);
+        });
+        const rows = Math.ceil(children.length / columns);
+        const width = columns * cell + (columns - 1) * spacing;
+        const height = rows * cell + Math.max(0, rows - 1) * spacing;
+        this._scroll.set_size(width, Math.min(height, Math.max(cell, monitor.height / 2)));
     }
 
     _sync() {
-        this.overflowBox.set_style(`spacing: ${this.settings.get_int('tray-spacing')}px;`);
         const children = [...this._children.keys(), ...this.box.get_children(), ...this.overflowBox.get_children()]
             .filter((child, index, all) => all.indexOf(child) === index && [this.box, this.overflowBox].includes(child.get_parent()));
         for (const [child, ids] of this._children) {

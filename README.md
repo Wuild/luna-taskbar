@@ -10,7 +10,7 @@ A customizable taskbar for GNOME Shell 50 on Wayland, with grouped apps, animate
 
 ## A taskbar that fits your desktop
 
-- **Pick a side.** Place the bar at the bottom, top, left, or right. Float it with rounded corners and breathing room, or attach it to the screen edge.
+- **Pick a side.** Place the bar at the bottom, top, left, or right. Float it with rounded corners and breathing room, or attach it to the screen edge. Set independent **Space at start** and **Space at end** values to add padding inside the bar; vertical bars use top and bottom padding.
 - **Keep your windows together.** Pin favorites, group application windows, and use previews to find the one you want.
 - **Move without losing your place.** Previews fade and slide, with a grace period when crossing the gap or briefly passing over a neighboring app.
 - **Make every click count.** Choose what left-click, middle-click, right-click, Shift-click, and scrolling do on app buttons.
@@ -24,7 +24,11 @@ A customizable taskbar for GNOME Shell 50 on Wayland, with grouped apps, animate
 
 Open calendar, notifications, media controls, and Quick Settings in a shared style. Keep calendar and system panels separate, or bring both columns together. Customize color, transparency, blur, corners, and spacing.
 
+Notification groups keep their translucent card styling. Collapsed stacks show only the top notification’s contents, with the lower cards visible as backgrounds and outlines. Expanding reveals every notification and grows the panel to fit; scrolling appears when the available screen height is exhausted. Collapsing shrinks the panel again.
+
 Add weather for current conditions and a three-day forecast, choose Celsius or Fahrenheit, or use the smaller current-conditions view. Weather can appear in the panels or behind its own taskbar button. It uses Open-Meteo and is off by default.
+
+The collapsed application tray wraps icons into a compact grid and shrinks as icons disappear. Weather and other Shell extension applets stay outside that tray as independently movable taskbar buttons, so opening their menus keeps the source button visible.
 
 ## Arrange it your way
 
@@ -36,7 +40,7 @@ Use the GNOME Overview launcher, or integrate an independently installed **ArcMe
 
 A few things to try:
 
-- Float the bar normally, then attach it when a window is maximized.
+- Float the bar normally, then attach it when a window is maximized. Luna Desktop snap groups retain the normal taskbar appearance.
 - Put the bar vertically beside your workspace.
 - Middle-click to minimize an app group and scroll to cycle its windows.
 - Add a workspace switcher, or switch workspaces by scrolling the taskbar.
@@ -89,6 +93,10 @@ pnpm test:interactions
 Shell tests use a disposable headless GNOME session. [Luna Devkit](https://github.com/Wuild/luna-devkit) provides an interactive test desktop. Build output lives in `dist/`; settings are defined in the XML schema.
 
 [Report an issue or share an idea](https://github.com/Wuild/luna-taskbar/issues). Include your distribution, GNOME version, monitor/scaling setup, enabled extensions, and reproduction steps.
+
+## Extension review
+
+See the [submission review notes](docs/extension-review.md) for packaging checks, lifecycle review, validation steps and remaining reviewer decisions. Passing local checks does not guarantee extensions.gnome.org approval.
 
 ## License
 
