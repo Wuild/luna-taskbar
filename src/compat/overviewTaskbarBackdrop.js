@@ -1,5 +1,6 @@
 import St from 'gi://St';
 import Shell from 'gi://Shell';
+import GLib from 'gi://GLib';
 import * as Background from 'resource:///org/gnome/shell/ui/background.js';
 import {RoundedSurface} from './roundedSurface.js';
 
@@ -23,7 +24,10 @@ export class OverviewTaskbarBackdrop {
             this._monitorKey = key;
             this._manager = new Background.BackgroundManager({container: this._wallpaper,
                 monitorIndex: monitor.index, controlPosition: false, vignette: false});
-            this._manager.connect('changed', () => this._syncEffects());
+            // The manager may emit before the replacement background actor is
+            // in the container. Defer effect discovery until that update has
+            // completed so a newly selected wallpaper is blurred too.
+            this._manager.connect('changed', () => this.refresh());
         }
         this._monitor = monitor;
         this._radius = radius;
@@ -31,6 +35,17 @@ export class OverviewTaskbarBackdrop {
         this.actor.visible = this.active;
         this._syncEffects();
         if (this._geometry) this.updateGeometry(this._geometry);
+    }
+
+    refresh() {
+        if (this._syncIdle)
+            return;
+        this._syncIdle = GLib.idle_add(GLib.PRIORITY_DEFAULT_IDLE, () => {
+            this._syncIdle = 0;
+            this._syncEffects();
+            this.actor.queue_redraw();
+            return GLib.SOURCE_REMOVE;
+        });
     }
 
     _syncEffects() {
@@ -57,6 +72,9 @@ export class OverviewTaskbarBackdrop {
     }
 
     destroy() {
+        if (this._syncIdle)
+            GLib.Source.remove(this._syncIdle);
+        this._syncIdle = 0;
         this._manager?.destroy();
         this._manager = null;
         this.actor.destroy();

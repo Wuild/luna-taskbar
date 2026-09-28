@@ -37,6 +37,14 @@ export async function run() {
             assert(effect?.enabled && effect.mode === Shell.BlurMode.ACTOR, `${edge}: wallpaper uses isolated actor blur`);
         }
         if (edge === 'bottom') {
+            desktop.set_string('primary-color', '#406080');
+            await Scripting.sleep(300);
+            for (const actor of backdrop._wallpaper.get_children()) {
+                const effect = actor.get_effect('luna-taskbar-overview-wallpaper');
+                assert(effect?.enabled, 'Replacement wallpaper actors inherit taskbar blur');
+            }
+        }
+        if (edge === 'bottom') {
             settings.set_int('overview-tint-opacity', 0);
             await Scripting.sleep(200);
             await screenshot('undimmed');

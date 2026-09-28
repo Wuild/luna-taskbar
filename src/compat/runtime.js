@@ -13,6 +13,7 @@ import {TaskbarSettings} from '../settings/settings.js';
 import {appLabel} from './appLabel.js';
 import {isNativeTrayPopup, watchNativeTrayPopups} from './tray/nativeMenu.js';
 import Clutter from 'gi://Clutter';
+import Gio from 'gi://Gio';
 import GLib from 'gi://GLib';
 import Meta from 'gi://Meta';
 import Shell from 'gi://Shell';
@@ -91,6 +92,13 @@ export default class TaskbarRuntime extends Extension {
         this._background.add_effect_with_name('luna-taskbar-rounded', this._roundedSurface);
         this._background.add_effect_with_name('luna-taskbar-backdrop', this._blur);
         this._backdropRepaint = new BackdropRepaint(this._bar, this._blur);
+        this._desktopBackground = new Gio.Settings({schema_id: 'org.gnome.desktop.background'});
+        this._connect(this._desktopBackground, 'changed', () => {
+            // BACKGROUND blur caches the sampled framebuffer. Wallpaper
+            // changes do not otherwise guarantee damage beneath the taskbar.
+            this._backdropRepaint?.refresh();
+            this._overviewBackdrop?.refresh();
+        });
         this._content = new St.BoxLayout({style_class: 'luna-taskbar-content', clip_to_allocation: true,
             x_expand: true, y_expand: true});
         this._roundedContent = new RoundedSurface();
@@ -913,6 +921,7 @@ export default class TaskbarRuntime extends Extension {
         this._tray = this._panelBridge = this._bar = this._apps = null;
         this._trayBox = this._systemBox = this._favorites = this._tracker = null;
         this._background = this._content = this._blur = null;
+        this._desktopBackground = null;
         this._startMenu = null;
         this._launcher = this._searchButton = null;
         this._releaseThemeColors?.();
