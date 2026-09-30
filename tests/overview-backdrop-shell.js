@@ -21,29 +21,18 @@ export async function run() {
     desktop.set_string('primary-color', '#80a0c0');
     desktop.set_string('color-shading-type', 'solid');
     await Scripting.sleep(400);
-    assert(!runtime._overviewBackdrop.actor.visible && runtime._blur.enabled, 'Desktop uses native backdrop blur');
+    const liveBlur = () => runtime._blur.enabled && runtime._blur.mode === Shell.BlurMode.BACKGROUND;
+    settings.set_boolean('enable-blur', true);
+    settings.set_int('taskbar-opacity', 35);
+    assert(liveBlur(), 'Desktop uses native backdrop blur');
     for (const edge of ['bottom', 'top', 'left', 'right']) {
         settings.set_string('taskbar-position', edge);
         await Scripting.sleep(300);
         Main.overview.show();
-        assert(runtime._overviewBackdrop.active && !runtime._blur.enabled, `${edge}: overview never samples animated framebuffer`);
+        assert(liveBlur(),
+            `${edge}: overview keeps sampling the live framebuffer`);
         await Scripting.sleep(450);
-        const backdrop = runtime._overviewBackdrop;
-        assert(backdrop.actor.mapped, `${edge}: wallpaper backdrop is mapped`);
-        assert(backdrop.actor.width === runtime._bar.width && backdrop.actor.height === runtime._bar.height, `${edge}: backdrop fits taskbar`);
-        assert(runtime._bar.get_children().indexOf(backdrop.actor) < runtime._bar.get_children().indexOf(runtime._background), `${edge}: wallpaper stays behind tint and buttons`);
-        for (const actor of backdrop._wallpaper.get_children()) {
-            const effect = actor.get_effect('luna-taskbar-overview-wallpaper');
-            assert(effect?.enabled && effect.mode === Shell.BlurMode.ACTOR, `${edge}: wallpaper uses isolated actor blur`);
-        }
-        if (edge === 'bottom') {
-            desktop.set_string('primary-color', '#406080');
-            await Scripting.sleep(300);
-            for (const actor of backdrop._wallpaper.get_children()) {
-                const effect = actor.get_effect('luna-taskbar-overview-wallpaper');
-                assert(effect?.enabled, 'Replacement wallpaper actors inherit taskbar blur');
-            }
-        }
+        assert(liveBlur(), `${edge}: Overview retains live blur after opening`);
         if (edge === 'bottom') {
             settings.set_int('overview-tint-opacity', 0);
             await Scripting.sleep(200);
@@ -58,9 +47,10 @@ export async function run() {
         }
         Main.overview.hide();
         if (Main.overview.animationInProgress)
-            assert(backdrop.active && !runtime._blur.enabled, `${edge}: exit transition retains stable backdrop`);
+            assert(liveBlur(),
+                `${edge}: exit transition keeps sampling the live framebuffer`);
         await Scripting.sleep(450);
-        assert(!backdrop.actor.visible && runtime._blur.enabled, `${edge}: native blur restored after exit`);
+        assert(liveBlur(), `${edge}: live blur remains after exit`);
     }
     settings.reset('taskbar-position');
     settings.reset('overview-tint-opacity');

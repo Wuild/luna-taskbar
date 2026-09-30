@@ -31,7 +31,6 @@ import {revealInScroll} from './horizontalScroll.js';
 import {BackdropRepaint} from './backdropRepaint.js';
 import {NotificationBadges} from './notificationBadges.js';
 import {OverviewBridge} from './overviewBridge.js';
-import {OverviewTaskbarBackdrop} from './overviewTaskbarBackdrop.js';
 import {usesWindowAppearance} from './windowAppearance.js';
 import {rgbaColor, validColor} from './colors.js';
 import {watchThemeColors, surfaceColor, surfaceText} from './themeColors.js';
@@ -79,7 +78,6 @@ export default class TaskbarRuntime extends Extension {
             this._bar.set_position(geometry.x, geometry.y);
             this._bar.set_size(geometry.width, geometry.height);
             this._roundedSurface.update(geometry.width, geometry.height, geometry.corners);
-            this._overviewBackdrop?.updateGeometry(geometry);
             this._roundedContent?.update(geometry.width, geometry.height, geometry.corners);
             this._styleShowDesktop(geometry);
             const scale = St.ThemeContext.get_for_stage(global.stage).scale_factor;
@@ -97,7 +95,6 @@ export default class TaskbarRuntime extends Extension {
             // BACKGROUND blur caches the sampled framebuffer. Wallpaper
             // changes do not otherwise guarantee damage beneath the taskbar.
             this._backdropRepaint?.refresh();
-            this._overviewBackdrop?.refresh();
         });
         this._content = new St.BoxLayout({style_class: 'luna-taskbar-content', clip_to_allocation: true,
             x_expand: true, y_expand: true});
@@ -105,8 +102,6 @@ export default class TaskbarRuntime extends Extension {
         // Keep BACKGROUND blur outside the content's offscreen mask so it
         // samples the desktop, not a resizing intermediate framebuffer.
         this._content.add_effect_with_name('luna-taskbar-rounded-content', this._roundedContent);
-        this._overviewBackdrop = new OverviewTaskbarBackdrop(this._bar);
-        this._overviewBackdrop.active = Main.overview.visible;
         this._bar.add_child(this._background);
         this._bar.add_child(this._content);
         this._bar.set_text_direction(Clutter.TextDirection.LTR);
@@ -290,7 +285,10 @@ export default class TaskbarRuntime extends Extension {
             this._revealFocusedApp();
         });
         this._connect(Main.overview, 'showing', () => {
-            this._overviewBackdrop.active = true;
+            // Keep the taskbar on BACKGROUND blur during Overview. The
+            // framebuffer is the authoritative source for what is actually
+            // behind the taskbar; the old wallpaper copy could drift in
+            // scale/position while Overview was animating.
             this._updateSurface();
             this._launcher.add_style_class_name('luna-taskbar-start-open');
             this._syncVisibility();
@@ -298,7 +296,6 @@ export default class TaskbarRuntime extends Extension {
         this._connect(Main.overview, 'hiding', () => this._launcher.remove_style_class_name('luna-taskbar-start-open'));
         if (Main.overview.visible) this._launcher.add_style_class_name('luna-taskbar-start-open');
         this._connect(Main.overview, 'hidden', () => {
-            this._overviewBackdrop.active = false;
             this._updateSurface();
             this._syncVisibility();
         });
@@ -515,8 +512,10 @@ export default class TaskbarRuntime extends Extension {
         const color = surfaceColor(this._settings, prefix, 'taskbar', this._settings.get_int(`${prefix}-opacity`) / 100);
         const textColor = surfaceText('taskbar');
         const opacity = this._settings.get_int(`${prefix}-opacity`) / 100;
-        this._overviewBackdrop.sync(monitor, radius, enabled);
-        const nativeBlur = enabled && !this._overviewBackdrop.active;
+        // Always sample the live stage behind the taskbar, including while
+        // Overview is showing. Rendering a second wallpaper actor here
+        // produces a cropped, stale approximation during the transition.
+        const nativeBlur = enabled;
         const surfaceKey = `${radius}:${nativeBlur}:${color}:${opacity}:${textColor}:${corners}`;
         if (surfaceKey !== this._surfaceKey) {
             this._surfaceKey = surfaceKey;
@@ -887,8 +886,6 @@ export default class TaskbarRuntime extends Extension {
         this._searchPanel = null;
         this._overviewBridge?.destroy();
         this._overviewBridge = null;
-        this._overviewBackdrop?.destroy();
-        this._overviewBackdrop = null;
         this._desktopRestore = null;
         this._backdropRepaint?.destroy();
         this._backdropRepaint = null;

@@ -10,7 +10,7 @@ with Image.open('/tmp/luna-overview-undimmed.png') as first, Image.open('/tmp/lu
         before, after = first.getpixel(tuple(point)), second.getpixel(tuple(point))
         delta = max(abs(a - b) for a, b in zip(before, after))
         if name == 'bar':
-            assert delta <= 2, f'Overview dimming changed the taskbar: {before} → {after}'
+            assert delta >= 10 and sum(after) < sum(before), f'Taskbar must reflect live Overview dimming: {before} → {after}'
         else:
             assert delta >= 20, f'The overview itself must still dim: {before} → {after}'
 print('LUNA_OVERVIEW_BACKDROP_PIXELS_PASS')
