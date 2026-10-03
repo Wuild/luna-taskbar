@@ -359,8 +359,8 @@ export class SystemPanel {
         this.date.remove_child(clock);
         this.quick.remove_child(controls);
         const contents = new St.BoxLayout({style_class: 'luna-taskbar-combined-applet', x_expand: false});
-        contents.add_child(clock);
         contents.add_child(controls);
+        contents.add_child(clock);
         this.quick.add_child(contents);
         this.date.container.hide();
         this.quick.accessible_name = _('System controls, notifications and calendar');

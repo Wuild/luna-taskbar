@@ -48,9 +48,9 @@ export async function run() {
             combinedPanel.right.get_children().every((card, index) => card === expectedRight[index]),
             'Combined panel groups calendar content left and notifications above system controls right');
         const combinedContents = combinedPanel.quick.get_first_child();
-        assert(combinedContents.get_children()[0] === combinedPanel._combinedButton.clock &&
-            combinedContents.get_children()[1] === combinedPanel._combinedButton.controls,
-            'Combined taskbar button places the clock before system controls');
+        assert(combinedContents.get_children()[0] === combinedPanel._combinedButton.controls &&
+            combinedContents.get_children()[1] === combinedPanel._combinedButton.clock,
+            'Combined taskbar button places system controls before the clock');
         settings.set_boolean('separate-applet-panels', true);
         await Scripting.sleep(100);
         assert(bar._panelBridge._systemPanel.date.container.visible && bar._panelBridge._systemPanel.date.container.mapped, 'Separate restores visible clock in taskbar');

@@ -1,9 +1,7 @@
 import {_} from '../i18n.js';
-import {PopupBackdrop} from './popupBackdrop.js';
 import Clutter from 'gi://Clutter';
 import Shell from 'gi://Shell';
 import St from 'gi://St';
-import * as BoxPointer from 'resource:///org/gnome/shell/ui/boxpointer.js';
 import * as AppMenu from 'resource:///org/gnome/shell/ui/appMenu.js';
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 import * as WindowMenu from 'resource:///org/gnome/shell/ui/windowMenu.js';
@@ -40,11 +38,9 @@ export class TaskMenus {
             if (menu.isOpen) source.add_style_class_name('luna-taskbar-context-open');
             else source.remove_style_class_name('luna-taskbar-context-open');
         });
-        menu.actor.add_style_class_name('luna-taskbar-popup');
         if (!menu.actor.get_parent())
             Main.uiGroup.add_child(menu.actor);
         menu.actor.hide();
-        this._backdrop = new PopupBackdrop(menu, this._settings);
         this._manager.addMenu(menu);
         this._onOpen();
         // Allocate the invisible anchor before BoxPointer computes its position.
@@ -52,13 +48,12 @@ export class TaskMenus {
         if (source === this._anchor)
             source.allocate(new Clutter.ActorBox({x1: source.x, y1: source.y,
                 x2: source.x + 1, y2: source.y + 1}));
-        menu.open(BoxPointer.PopupAnimation.NONE);
+        menu.open({animate: false});
         menu.actor.opacity = 0;
         menu.actor.connectObject('notify::allocation', () => {
             if (menu.actor.has_allocation()) {
                 menu.actor.disconnectObject(menu);
                 menu.actor.opacity = 255;
-                this._backdrop?._sync();
             }
         }, menu);
     }
@@ -115,10 +110,8 @@ export class TaskMenus {
         this._source = null;
         this.menu.disconnect(this._openStateId);
         this._openStateId = 0;
-        this.menu.close(BoxPointer.PopupAnimation.NONE);
+        this.menu.close({animate: false});
         this._manager.removeMenu(this.menu);
-        this._backdrop?.destroy();
-        this._backdrop = null;
         this.menu.destroy();
         this.menu = null;
     }

@@ -5,6 +5,19 @@ import St from 'gi://St';
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 import * as DND from 'resource:///org/gnome/shell/ui/dnd.js';
 
+const SYSTEM_EDGE_ORDER = ['quickSettings', 'dateMenu'];
+const SHOW_DESKTOP_ID = 'showDesktop';
+
+function normalizeAppletOrder(ids) {
+    const unique = [...new Set(ids)];
+    const fixed = new Set([...SYSTEM_EDGE_ORDER, SHOW_DESKTOP_ID]);
+    return [
+        ...unique.filter(id => !fixed.has(id)),
+        ...SYSTEM_EDGE_ORDER.filter(id => unique.includes(id)),
+        ...(unique.includes(SHOW_DESKTOP_ID) ? [SHOW_DESKTOP_ID] : []),
+    ];
+}
+
 // Edit with labelled handles so clicks cannot activate the underlying applets.
 export class AppletEditor {
     constructor(box, settings, records, closeMenus, repaint, sources = []) {
@@ -24,11 +37,11 @@ export class AppletEditor {
     }
 
     applyOrder() {
-        if (this.active)
+        if (this.active || this._applying)
             return;
         const records = this.records();
         const stored = this.settings.get_strv('applet-order');
-        const saved = stored.includes('appbar') ? stored
+        let saved = stored.includes('appbar') ? [...stored]
             : ['ArcMenu', 'overview', 'search', 'appbar', ...stored, 'showDesktop'];
         if (!saved.includes('workspaces')) {
             const tray = saved.indexOf('tray');
@@ -38,11 +51,17 @@ export class AppletEditor {
             const before = saved.findIndex(id => ['dateMenu', 'quickSettings', 'showDesktop'].includes(id));
             saved.splice(before < 0 ? saved.length : before, 0, 'weather');
         }
+        saved = normalizeAppletOrder([
+            ...saved,
+            ...records.map(record => record.id),
+        ]);
         const ordered = [...records].sort((a, b) => {
             const rank = record => saved.includes(record.id) ? saved.indexOf(record.id) : saved.length + records.indexOf(record);
             return rank(a) - rank(b);
         });
         this._applying = true;
+        if (JSON.stringify(stored) !== JSON.stringify(saved))
+            this.settings.set_strv('applet-order', saved);
         for (const [index, {actor, system}] of ordered.entries()) {
             if (system) actor.add_style_class_name('luna-taskbar-system');
             if (actor.get_parent() !== this.box) {
@@ -51,6 +70,9 @@ export class AppletEditor {
             }
             this.box.set_child_at_index(actor, index);
         }
+        const showDesktop = ordered.find(record => record.id === SHOW_DESKTOP_ID);
+        if (showDesktop)
+            this.box.set_child_above_sibling(showDesktop.actor, null);
         this._applying = false;
     }
 
@@ -127,6 +149,7 @@ export class AppletEditor {
                 const next = Math.max(0, Math.min(this._entries.length - 1, index + (key === Clutter.KEY_Left ? -1 : 1)));
                 this._entries.splice(index, 1);
                 this._entries.splice(next, 0, entry);
+                this._entries = this._normalizeEntries(this._entries);
                 this._syncHandles();
                 this._save();
                 return Clutter.EVENT_STOP;
@@ -185,8 +208,13 @@ export class AppletEditor {
     _save() {
         // Retain IDs of temporarily absent applets for their next appearance.
         const ids = this._entries.map(entry => entry.id);
-        this.settings.set_strv('applet-order', [...ids,
-            ...this.settings.get_strv('applet-order').filter(id => !ids.includes(id))]);
+        this.settings.set_strv('applet-order', normalizeAppletOrder([...ids,
+            ...this.settings.get_strv('applet-order').filter(id => !ids.includes(id))]));
+    }
+
+    _normalizeEntries(entries) {
+        const order = normalizeAppletOrder(entries.map(entry => entry.id));
+        return [...entries].sort((a, b) => order.indexOf(a.id) - order.indexOf(b.id));
     }
 
     _begin(entry) {
@@ -222,6 +250,8 @@ export class AppletEditor {
         this._entries = this._entries.filter(entry => entry !== source);
         const index = this._target ? this._entries.indexOf(this._target) : this._entries.length;
         this._entries.splice(index, 0, source);
+        this._entries = this._normalizeEntries(this._entries);
+        this._syncHandles();
         this._save();
         return true;
     }

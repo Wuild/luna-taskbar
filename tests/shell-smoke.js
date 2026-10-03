@@ -17,6 +17,13 @@ export async function run() {
     await Scripting.sleep(700);
     assert(bar._bar.visible && bar._bar.height > 0, 'Taskbar visible and allocated');
     assert(bar._content.get_last_child() === bar._showDesktopButton, 'Show desktop is at the far right');
+    const taskbarIndex = actor => bar._content.get_children().indexOf(actor);
+    assert(taskbarIndex(Main.panel.statusArea.quickSettings.container) <
+        taskbarIndex(Main.panel.statusArea.dateMenu.container),
+    'System controls are left of the calendar');
+    assert(taskbarIndex(Main.panel.statusArea.dateMenu.container) <
+        taskbarIndex(bar._showDesktopButton),
+    'Calendar is left of Show desktop');
     assert(bar._taskScroll.hscrollbar_policy === St.PolicyType.EXTERNAL,
         'Taskbar overflow scrolls without visible scrollbars');
     assert(bar._preview._backdrop.blur.mode === Shell.BlurMode.BACKGROUND,
@@ -111,10 +118,10 @@ export async function run() {
     sampleIcon.destroy();
     bar._settings.reset('indicator-color-mode');
     bar._settings.reset('indicator-color');
-    assert(Main.panel.statusArea.dateMenu.container.get_parent() === bar._systemBox, 'Calendar on right');
-    assert(Main.panel.statusArea.quickSettings.container.get_parent() === bar._systemBox, 'System controls on right');
-    assert(Main.panel.statusArea.screenSharing.container.get_parent() === bar._systemBox,
-        'Stop-sharing control is separated from application tray');
+    assert(Main.panel.statusArea.dateMenu.container.get_parent() === bar._content, 'Calendar on right');
+    assert(Main.panel.statusArea.quickSettings.container.get_parent() === bar._content, 'System controls on right');
+    assert(Main.panel.statusArea.screenSharing.container.get_parent() === bar._content,
+        'Stop-sharing control is independently ordered outside the application tray');
     assert(![...bar._panelBridge._records.values()].some(record => record.label?.text === 'Stop sharing'),
         'Sharing control retains its native icon without an added text label');
     Main.panel.toggleQuickSettings();
@@ -530,14 +537,20 @@ export async function run() {
         'Applet drag hides its source and reserves a visible drop gap');
     await Scripting.sleep(100);
     editor.handleDragOver(clock, null, -1);
-    assert(editor.acceptDrop(clock, null, -1), 'Applet drop accepted in right section');
+    assert(editor.acceptDrop(clock, null, -1), 'Constrained applet drop accepted');
     editor._finishDrag();
     editor.stop();
-    assert(bar._settings.get_strv('applet-order')[0] === 'dateMenu', 'Applet order saved');
-    assert(bar._systemBox.get_first_child() === clock.actor && clock.actor.visible,
-        'Clock restored in its new position');
+    const constrained = bar._settings.get_strv('applet-order');
+    assert(constrained.indexOf('quickSettings') < constrained.indexOf('dateMenu') &&
+        constrained.indexOf('dateMenu') < constrained.indexOf('showDesktop'),
+    'System controls, calendar, and Show desktop retain their edge order');
+    assert(bar._content.get_last_child() === bar._showDesktopButton && clock.actor.visible,
+        'Clock restores while Show desktop remains at the edge');
     editor.start();
-    assert(editor._entries[0].id === 'dateMenu', 'Reopening edit mode retains order');
+    assert(editor._entries.at(-1).id === 'showDesktop' &&
+        editor._entries.at(-2).id === 'dateMenu' &&
+        editor._entries.at(-3).id === 'quickSettings',
+    'Reopening edit mode retains the constrained edge order');
     editor.stop();
     bar._settings.set_strv('applet-order', previousOrder);
     bar._settings.set_string('monitor-mode', 'all');

@@ -322,7 +322,10 @@ export async function run() {
     settings.set_string('taskbar-position', 'bottom');
     await Scripting.sleep(350);
     const saved = settings.get_strv('applet-order');
-    assert(saved.indexOf('appbar') > saved.indexOf('quickSettings'), 'App bar saved beyond system controls');
+    assert(saved.indexOf('appbar') < saved.indexOf('quickSettings'), 'App bar stays left of system controls');
+    assert(saved.indexOf('quickSettings') < saved.indexOf('dateMenu') &&
+        saved.indexOf('dateMenu') < saved.indexOf('showDesktop'),
+    'System controls, calendar, and Show desktop keep their edge order');
     assert(runtime._appStrip.actor.get_parent() === runtime._content, 'App bar remains attached');
     const order = () => editor.records().sort((a, b) =>
         runtime._content.get_children().indexOf(a.actor) - runtime._content.get_children().indexOf(b.actor))
@@ -341,7 +344,7 @@ export async function run() {
     extension.stateObj.enable();
     await Scripting.sleep(400);
     const reloaded = extension.stateObj.runtime;
-    assert(reloaded._content.get_children().indexOf(reloaded._appStrip.actor) >
+    assert(reloaded._content.get_children().indexOf(reloaded._appStrip.actor) <
         reloaded._content.get_children().indexOf(Main.panel.statusArea.quickSettings.container),
         'Full taskbar order survives extension restart');
     reloaded._settings.reset('applet-order');
