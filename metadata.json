@@ -3,7 +3,7 @@
   "name": "Luna - Taskbar",
   "description": "A customizable GNOME taskbar with a start menu, app bar, system tray and integrated panels. Writes to the clipboard when you activate a search result that provides copyable text.",
   "shell-version": [
-    "50"
+    "51"
   ],
   "settings-schema": "org.gnome.shell.extensions.luna-taskbar",
   "url": "https://github.com/Wuild/luna-taskbar",
