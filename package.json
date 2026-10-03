@@ -12,6 +12,7 @@
     "pack": "bash scripts/package.sh",
     "test:edit-drag": "pnpm build && bash scripts/test-shell.sh \"$PWD/tests/edit-drag-shell.js\"",
     "test:context-actions": "pnpm build && bash scripts/test-shell.sh \"$PWD/tests/context-actions-shell.js\"",
+    "test:popup-mask": "pnpm build && LUNA_SCREENSHOT_DIR=${LUNA_SCREENSHOT_DIR:-/tmp/luna-popup-mask} bash scripts/test-shell.sh \"$PWD/tests/popup-mask-shell.js\" && python3 tests/check-popup-mask.py ${LUNA_SCREENSHOT_DIR:-/tmp/luna-popup-mask}",
     "test:edge-order": "pnpm build && bash scripts/test-shell.sh \"$PWD/tests/edge-order-shell.js\"",
     "test:shell": "pnpm build && bash scripts/test-shell.sh",
     "test:arcmenu": "pnpm build && LUNA_TEST_ARCMENU=1 bash scripts/test-shell.sh \"$PWD/tests/arcmenu-shell-smoke.js\"",

@@ -1,5 +1,6 @@
 import {watchThemeColors, surfaceColor, surfaceText} from './themeColors.js';
 import {BackdropRepaint} from './backdropRepaint.js';
+import {RoundedSurface, StageBackdropBlur} from './roundedSurface.js';
 import Shell from 'gi://Shell';
 import St from 'gi://St';
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
@@ -63,8 +64,15 @@ export class PopupBackdrop {
             this._surfaceGone = true;
             this.destroy();
         });
-        this.blur = new Shell.BlurEffect({mode: Shell.BlurMode.BACKGROUND,
+        this.blur = new StageBackdropBlur({mode: Shell.BlurMode.BACKGROUND,
             radius: 12, brightness: 0.85});
+        this._roundedSurface = new RoundedSurface();
+        this._roundedSurface.liveBackdrop = this.blur;
+        // The blur samples the stage through StageBackdropBlur, then the
+        // outer shader clips both the blurred pixels and the CSS surface to
+        // the same rounded shape. CSS border-radius alone does not clip a
+        // Shell background-blur effect.
+        this.surface.add_effect_with_name('luna-taskbar-popup-rounded', this._roundedSurface);
         this.surface.add_effect_with_name('luna-taskbar-popup-backdrop', this.blur);
         this._repaint = new BackdropRepaint(menu.actor, this.blur);
         for (const actor of new Set([menu.actor, this._panel]))
@@ -123,9 +131,12 @@ export class PopupBackdrop {
         }
         this.surface.set_position(x, y);
         this.surface.set_size(width, height);
+        const scale = St.ThemeContext.get_for_stage(global.stage).scale_factor;
+        this._roundedSurface.update(width, height,
+            (this._settings?.get_int('panel-corner-radius') ?? 12) * scale);
         this.surface.opacity = actor.opacity;
         this.blur.radius = (this._settings?.get_int('panel-blur-radius') ?? 12) *
-            St.ThemeContext.get_for_stage(global.stage).scale_factor;
+            scale;
         if (this.menu.actor.get_parent() === Main.uiGroup)
             Main.uiGroup.set_child_below_sibling(this.surface, this.menu.actor);
     }
@@ -147,6 +158,7 @@ export class PopupBackdrop {
         this._panel.set_style(this._originalStyle);
         this._releaseThemeColors?.();
         this._repaint.destroy();
+        this._roundedSurface = null;
         if (!this._surfaceGone) this.surface.destroy();
         this.surface = null;
     }

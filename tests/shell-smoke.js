@@ -173,6 +173,8 @@ export async function run() {
         'System backdrop tracks the visible panel rather than its zero-sized wrapper');
     assert(quickBackdrop.surface.get_parent() === Main.uiGroup, 'Separate popup backdrop installed');
     assert(quickBackdrop.blur.mode === Shell.BlurMode.BACKGROUND, 'Popup has native backdrop blur');
+    assert(quickBackdrop._roundedSurface.enabled && quickBackdrop._roundedSurface._key,
+        'Popup backdrop blur is clipped by the rounded surface mask');
     bar._settings.set_int('panel-blur-radius', 44);
     bar._settings.set_int('panel-opacity', 70);
     assert(quickBackdrop.blur.radius === 44 * scale && quickBackdrop.surface.style.includes('0.7'),
