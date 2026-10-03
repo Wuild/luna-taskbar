@@ -5,16 +5,15 @@ assert(!hasRemoteMenu('/') && !hasRemoteMenu(null), 'Absent menu paths');
 assert(hasRemoteMenu('/MenuBar'), 'Real menu paths remain supported');
 const calls = [];
 const base = {props: {Id: 'wine-123', Title: 'Battle.net'},
-    invoke: async name => calls.push(name), isCancelled: () => false,
-    restoreWindow: () => calls.push('restore')};
+    invoke: async name => calls.push(name), isCancelled: () => false};
 await activateTrayItem({...base, button: 3});
 assert(calls.splice(0).join() === 'ContextMenu', 'Wine native right click');
 await activateTrayItem({...base, button: 1});
-assert(calls.splice(0).join() === 'Activate,restore', 'Wine activation fallback');
+assert(calls.splice(0).join() === 'Activate', 'Primary click is delegated to the application');
 await activateTrayItem({...base, button: 2});
 assert(calls.splice(0).join() === 'SecondaryActivate', 'Middle click preserves protocol');
 await activateTrayItem({...base, props: {Id: 'native'}, button: 1});
-assert(calls.splice(0).join() === 'Activate', 'Other apps do not use Wine fallback');
+assert(calls.splice(0).join() === 'Activate', 'Other apps receive the standard Activate request');
 await activateTrayItem({...base, button: 3, remoteMenu: {toggle: async () => calls.push('menu')}});
 assert(calls.splice(0).join() === 'menu', 'Working DBusMenu stays in use');
 await activateTrayItem({...base, button: 3, remoteMenu: {toggle: async () => {throw new Error('UnknownMethod');}}});
@@ -32,5 +31,7 @@ assert(resolveMenuAction(freshLayout, [{label: 'Quit', index: 1}]) === null, 'Do
 assert(resolveMenuAction(freshLayout, [{label: 'Deleted', index: 0}]) === null, 'Never run a different action at a reused position');
 
 await activateTrayItem({...base, props: {Id: 'chrome_status_icon_1'}, button: 1});
-assert(calls.splice(0).join() === 'Activate,restore', 'Electron primary click can restore its main window');
+assert(calls.splice(0).join() === 'Activate', 'Electron primary click remains application-controlled');
+await activateTrayItem({...base, props: {Id: 'menu', ItemIsMenu: true}, button: 1});
+assert(calls.splice(0).join() === 'Activate', 'Menu-only tray items do not restore application windows');
 print('TRAY_ACTIONS_PASS');

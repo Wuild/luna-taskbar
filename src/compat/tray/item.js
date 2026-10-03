@@ -3,8 +3,6 @@ import Gio from 'gi://Gio';
 import GLib from 'gi://GLib';
 import GdkPixbuf from 'gi://GdkPixbuf';
 import St from 'gi://St';
-import Meta from 'gi://Meta';
-import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 import {activateTrayItem, hasRemoteMenu} from './actions.js';
 import {call} from './dbus.js';
 import {trayIdentity, rememberTrayItem} from './identity.js';
@@ -45,7 +43,6 @@ export class TrayItem {
                         new GLib.Variant('(ii)', [Math.round(x), Math.round(y)]), this.cancellable);
                 },
                 isCancelled: () => this.cancellable.is_cancelled(),
-                restoreWindow: () => this._restoreWindow(),
             }).catch(error => this._report(error)).finally(() => { this._activating = false; });
         });
         this.button.connect('scroll-event', (_actor, event) => {
@@ -64,27 +61,6 @@ export class TrayItem {
         this.subscription = bus.signal_subscribe(service, null, null, path, null, 0,
             () => this.refresh());
         this.refresh();
-    }
-
-    async _restoreWindow() {
-        const windows = global.display.list_all_windows().filter(window =>
-            window.get_window_type() === Meta.WindowType.NORMAL && !window.skip_taskbar);
-        let matches;
-        if (this.props?.Id?.startsWith('wine-')) {
-            const title = this.props.Title;
-            matches = title ? windows.filter(window => window.get_client_type() === Meta.WindowClientType.X11 &&
-                window.get_title() === title) : [];
-            if (matches.length !== 1) return;
-        } else {
-            const [pid] = await call(this.bus, 'org.freedesktop.DBus', '/org/freedesktop/DBus',
-                'org.freedesktop.DBus', 'GetConnectionUnixProcessID',
-                new GLib.Variant('(s)', [this.service]), this.cancellable);
-            if (this.cancellable.is_cancelled()) return;
-            matches = global.display.list_all_windows().filter(window => window.get_pid() === pid &&
-                window.get_window_type() === Meta.WindowType.NORMAL && !window.skip_taskbar);
-            matches.sort((a, b) => b.get_user_time() - a.get_user_time());
-        }
-        if (matches.length) Main.activateWindow(matches[0]);
     }
 
     _report(error) {

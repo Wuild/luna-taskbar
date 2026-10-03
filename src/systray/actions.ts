@@ -9,9 +9,8 @@ export interface TrayActivation {
     remoteMenu?: {toggle(): Promise<void>} | null;
     invoke(method: 'ContextMenu' | 'SecondaryActivate' | 'Activate'): Promise<unknown>;
     isCancelled(): boolean;
-    restoreWindow(): Promise<unknown>;
 }
-export async function activateTrayItem({button, props, remoteMenu, invoke, isCancelled, restoreWindow}: TrayActivation): Promise<void> {
+export async function activateTrayItem({button, props, remoteMenu, invoke, isCancelled}: TrayActivation): Promise<void> {
     if ((button === 3 || props?.ItemIsMenu) && remoteMenu) {
         try {
             await remoteMenu.toggle();
@@ -25,8 +24,6 @@ export async function activateTrayItem({button, props, remoteMenu, invoke, isCan
     }
     if (isCancelled()) return;
     await invoke(button === 3 ? 'ContextMenu' : button === 2 ? 'SecondaryActivate' : 'Activate');
-    if (button === 1 && (props?.Id?.startsWith('wine-') || props?.Id?.startsWith('chrome_status_icon_')) && !props.ItemIsMenu && !isCancelled())
-        await restoreWindow();
 }
 
 export type MenuLayout = [number, {label?: string; enabled?: boolean; visible?: boolean}, MenuLayout[]];
