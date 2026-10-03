@@ -19,7 +19,8 @@ export class TrayItem {
         this.icon = new St.Icon({icon_name: 'application-x-executable', icon_size: settings?.get_int('tray-icon-size') ?? 16});
         this.button = new St.Button({
             style_class: 'luna-taskbar-tray-button', can_focus: true,
-            child: this.icon, button_mask: St.ButtonMask.ONE | St.ButtonMask.TWO | St.ButtonMask.THREE,
+            child: this.icon,
+            button_mask: St.ButtonMask.PRIMARY | St.ButtonMask.MIDDLE | St.ButtonMask.SECONDARY,
         });
         const resize = () => {
             this.icon.icon_size = settings?.get_int(this._inDrawer ? 'tray-popup-icon-size' : 'tray-icon-size') ?? 16;

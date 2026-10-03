@@ -143,7 +143,7 @@ export default class TaskbarRuntime extends Extension {
         this._systemBox.hide();
         this._showDesktopButton = new St.Button({
             style_class: 'luna-taskbar-show-desktop', can_focus: true,
-            accessible_name: _('Show desktop'), button_mask: St.ButtonMask.ONE,
+            accessible_name: _('Show desktop'), button_mask: St.ButtonMask.PRIMARY,
             // The divider expands inside the button, not across the taskbar.
             x_expand: false,
             y_expand: true, y_align: Clutter.ActorAlign.FILL,
@@ -696,7 +696,7 @@ export default class TaskbarRuntime extends Extension {
         content.add_child(badge);
         const button = new St.Button({
             style_class: 'luna-taskbar-button', can_focus: true, x_expand: false, clip_to_allocation: true,
-            button_mask: St.ButtonMask.ONE | St.ButtonMask.TWO | St.ButtonMask.THREE, child: content,
+            button_mask: St.ButtonMask.PRIMARY | St.ButtonMask.MIDDLE | St.ButtonMask.SECONDARY, child: content,
             track_hover: true,
         });
         content.connect('notify::allocation', () => this._positionBadge(button));
