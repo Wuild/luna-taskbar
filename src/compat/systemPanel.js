@@ -65,6 +65,21 @@ export class SystemPanel {
         this.date._messageList._clearButton.x_expand = false;
         this._move(this.date._date, this.calendar);
         this._move(this.date._calendar, this.calendar);
+        this._calendarVisible = this.date._calendar.visible;
+        this.calendar.remove_child(this.date._date);
+        this.calendarHeader = new St.BoxLayout({style_class: 'luna-taskbar-center-header'});
+        this.calendarHeader.add_child(this.date._date);
+        this.calendarHeader.add_child(new St.Widget({x_expand: true}));
+        this._calendarCollapseIcon = new St.Icon({icon_name: 'pan-up-symbolic', icon_size: 16});
+        this._calendarCollapseButton = new St.Button({
+            style_class: 'button luna-taskbar-calendar-collapse', can_focus: true,
+            child: this._calendarCollapseIcon,
+        });
+        this._calendarCollapseButton.connect('clicked', () =>
+            this._settings.set_boolean('calendar-collapsed', !this._settings.get_boolean('calendar-collapsed')));
+        this.calendarHeader.add_child(this._calendarCollapseButton);
+        this.calendar.insert_child_at_index(this.calendarHeader, 0);
+        this._syncCalendarCollapse();
         this._calendarExpand = this.date._calendar.x_expand;
         this.date._calendar.x_expand = true;
         const expandDays = () => {
@@ -230,7 +245,10 @@ export class SystemPanel {
                 });
             }
         });
-        this._settingsId = settings.connect('changed', () => this._position());
+        this._settingsId = settings.connect('changed', (_settings, key) => {
+            if (key === 'calendar-collapsed') this._syncCalendarCollapse();
+            this._position();
+        });
         this._monitorId = Main.layoutManager.connect('monitors-changed', () => this.menu.close());
         const pointer = this.menu._boxPointer;
         this._reposition = pointer._reposition;
@@ -266,6 +284,13 @@ export class SystemPanel {
     _watchNotifications(source) {
         if (this._notificationSignals.has(source)) return;
         this._notificationSignals.set(source, source.connect('notify::count', () => this._queueNotificationSize()));
+    }
+
+    _syncCalendarCollapse() {
+        const collapsed = this._settings.get_boolean('calendar-collapsed');
+        this.date._calendar.visible = !collapsed;
+        this._calendarCollapseIcon.icon_name = collapsed ? 'pan-down-symbolic' : 'pan-up-symbolic';
+        this._calendarCollapseButton.accessible_name = collapsed ? _('Show full calendar') : _('Minimize calendar');
     }
 
     _queueNotificationSize() {
@@ -334,8 +359,8 @@ export class SystemPanel {
         this.date.remove_child(clock);
         this.quick.remove_child(controls);
         const contents = new St.BoxLayout({style_class: 'luna-taskbar-combined-applet', x_expand: false});
-        contents.add_child(controls);
         contents.add_child(clock);
+        contents.add_child(controls);
         this.quick.add_child(contents);
         this.date.container.hide();
         this.quick.accessible_name = _('System controls, notifications and calendar');
@@ -496,11 +521,22 @@ export class SystemPanel {
 
     _position() {
         this._syncCombinedButton();
-        const weatherParent = this._settings.get_boolean('separate-applet-panels') ? this.right : this.left;
-        const weatherNext = weatherParent === this.right ? this.calendar : this.controls;
-        if (this.weather.get_parent() !== weatherParent) {
-            this.weather.get_parent()?.remove_child(this.weather);
-            weatherParent.insert_child_below(this.weather, weatherNext);
+        const separate = this._settings.get_boolean('separate-applet-panels');
+        const place = (column, cards) => {
+            for (const card of cards) {
+                if (card.get_parent() !== column) {
+                    card.get_parent()?.remove_child(card);
+                    column.add_child(card);
+                }
+            }
+            cards.forEach((card, index) => column.set_child_at_index(card, index));
+        };
+        if (separate) {
+            place(this.left, [this.media, this.controls]);
+            place(this.right, [this.notifications, this.weather, this.calendar]);
+        } else {
+            place(this.left, [this.media, this.weather, this.calendar]);
+            place(this.right, [this.notifications, this.controls]);
         }
         if (this._settings.get_boolean('panel-transparency')) this.menu.actor.add_style_class_name('luna-taskbar-glass');
         else this.menu.actor.remove_style_class_name('luna-taskbar-glass');
@@ -511,7 +547,6 @@ export class SystemPanel {
         this.menu.box.set_style(`padding: 0; margin: 0; width: ${width / scale}px; min-width: ${width / scale}px; max-width: ${width / scale}px;`);
         this.menu._boxPointer.set_style('padding: 0; margin: 0; -arrow-rise: 0; -arrow-base: 0; -arrow-border-width: 0; -arrow-background-color: transparent; -arrow-border-color: transparent;');
         this.columns.set_size(width, height);
-        const separate = this._settings.get_boolean('separate-applet-panels');
         this.left.visible = !separate || this._activeSection !== 'calendar';
         this.right.visible = !separate || this._activeSection === 'calendar';
         const columnWidth = separate ? width / scale : (width / scale - 12) / 2;
@@ -576,6 +611,7 @@ export class SystemPanel {
         this._notificationControls.visible = this._notificationControlsVisible;
         this.date._messageList._placeholder.visible = this._placeholderVisible;
         this.date._calendar.disconnect(this._calendarAddedId);
+        this.date._calendar.visible = this._calendarVisible;
         this.date._calendar.x_expand = this._calendarExpand;
         for (const child of this.date._calendar.get_children())
             child.x_expand = this._calendarChildren.get(child) ?? false;

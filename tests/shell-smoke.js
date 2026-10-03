@@ -400,6 +400,17 @@ export async function run() {
     assert(bar._taskMenus.menu.isOpen, 'Application context menu opens');
     await Scripting.sleep(150);
     bar._taskMenus.close();
+    const actionAppInfo = Shell.AppSystem.get_default().get_installed()
+        .find(candidate => candidate.list_actions().length > 0);
+    const actionApp = actionAppInfo && Shell.AppSystem.get_default().lookup_app(actionAppInfo.get_id());
+    assert(actionAppInfo && actionApp, 'Installed application with desktop actions is available');
+    const actionNames = actionAppInfo.list_actions()
+        .map(action => actionAppInfo.get_action_name(action));
+    bar._taskMenus.openTask({app: actionApp, window: null}, bar._launcher);
+    const actionLabels = bar._taskMenus.menu._getMenuItems().map(item => item.label?.text).filter(Boolean);
+    assert(actionNames.some(name => actionLabels.includes(name)),
+        'Application-provided desktop actions appear in the taskbar context menu');
+    bar._taskMenus.close();
     const itemXml = `<node><interface name="org.kde.StatusNotifierItem">
         <property name="Id" type="s" access="read"/>
         <property name="Title" type="s" access="read"/>
@@ -599,7 +610,11 @@ export async function run() {
         bar._settings.reset('show-previews');
     }
     const drawer = bar._trayDrawer;
-    const trayFixtures = Array.from({length: 6}, () => new St.Button({child: new St.Icon({icon_name: 'folder', icon_size: 16})}));
+    const trayFixtures = Array.from({length: 6}, (_value, index) => {
+        const button = new St.Button({child: new St.Icon({icon_name: 'folder', icon_size: 16})});
+        button._lunaTaskbarTrayKey = `test:sortable-${index}`;
+        return button;
+    });
     trayFixtures.forEach(button => bar._trayBox.add_child(button));
     await Scripting.sleep(150);
     assert(drawer.collapsed && drawer.button.visible && trayFixtures.every(button => button.get_parent() === drawer.overflowBox),
@@ -607,6 +622,24 @@ export async function run() {
     drawer.button.emit('clicked', 1);
     await Scripting.sleep(200);
     assert(drawer.menu.isOpen && drawer.overflowBox.mapped, 'Tray toggle opens the original interactive icons');
+    assert(drawer.overflowBox._delegate.acceptDrop(trayFixtures[5]._delegate, null, -1, -1),
+        'Tray popup accepts an icon reorder');
+    await Scripting.sleep(150);
+    assert(drawer.overflowBox.get_children()[0] === trayFixtures[5] &&
+        bar._settings.get_strv('tray-icon-order')[0] === 'test:sortable-5',
+        'Tray popup order is applied and persisted');
+    assert(bar._trayBox._delegate.acceptDrop(trayFixtures[4]._delegate, null, 10000, 10000),
+        'Tray taskbar accepts an icon from the popup');
+    await Scripting.sleep(150);
+    assert(trayFixtures[4].get_parent() === bar._trayBox &&
+        bar._settings.get_strv('tray-always-visible').includes('test:sortable-4'),
+        'Dragging out of the popup makes an icon always visible');
+    assert(drawer.button._delegate.acceptDrop(trayFixtures[4]._delegate, null, 0, 0),
+        'Tray popup button accepts an inline icon');
+    await Scripting.sleep(150);
+    assert(trayFixtures[4].get_parent() === drawer.overflowBox &&
+        !bar._settings.get_strv('tray-always-visible').includes('test:sortable-4'),
+        'Dropping on the popup button returns an icon to the popup');
     drawer.suspendForNativeMenu();
     assert(drawer.menu.isOpen && drawer._nativeSuspended && drawer.manager.activeMenu !== drawer.menu,
         'Native menus release the drawer input grab without hiding it');
@@ -629,6 +662,7 @@ export async function run() {
     assert(!drawer.collapsed && bar._trayBox.get_parent() === drawer.actor,
         'Disabling tray collapse restores inline icons');
     bar._settings.reset('tray-collapse-enabled');
+    bar._settings.reset('tray-icon-order');
     trayFixtures.forEach(button => button.destroy());
     await Scripting.sleep(150);
     assert(!drawer.collapsed && !drawer.button.visible, 'Tray expands again when the icon count falls below the limit');
@@ -731,6 +765,10 @@ export async function checkWindows(bar) {
         bar._taskMenus.openTask(record, record.button);
         await Scripting.sleep(150);
         assert(bar._taskMenus.menu.isOpen, 'Window context menu opens');
+        const taskMenuLabels = bar._taskMenus.menu._getMenuItems().map(item => item.label?.text).filter(Boolean);
+        assert(!taskMenuLabels.some(label => ['Focus window', 'Restore window', 'Minimize',
+            'Maximize', 'Restore size', 'Close window'].includes(label)),
+        'Taskbar does not inject custom window-management items into the native app menu');
         bar._taskMenus.close();
         const legacy = bar._tray._legacy;
         const icon = [...legacy._icons.keys()].find(candidate => candidate.pid === Number(process.get_identifier()));

@@ -17,6 +17,7 @@
     "test:panel-hover": "pnpm build && bash scripts/test-shell.sh \"$PWD/tests/panel-hover-shell.js\"",
     "test:start-style": "pnpm build && LUNA_TEST_ARCMENU=1 bash scripts/test-shell.sh \"$PWD/tests/arcmenu-start-style-shell.js\"",
     "test:overview-backdrop": "pnpm build && bash scripts/test-shell.sh \"$PWD/tests/overview-backdrop-shell.js\" && python3 tests/overview-backdrop-pixels.py",
+    "test:live-backdrop": "pnpm build && bash scripts/test-shell.sh \"$PWD/tests/live-backdrop-shell.js\" && python3 tests/live-backdrop-pixels.py",
     "test:workspaces": "pnpm build && bash scripts/test-shell.sh \"$PWD/tests/workspace-switcher-shell.js\"",
     "translations:update": "python3 scripts/translations.py update",
     "translations:check": "python3 scripts/translations.py check"

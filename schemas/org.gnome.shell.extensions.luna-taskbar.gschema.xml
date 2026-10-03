@@ -26,6 +26,10 @@
       <default>[]</default>
       <summary>Tray icons kept outside the drawer</summary>
     </key>
+    <key name="tray-icon-order" type="as">
+      <default>[]</default>
+      <summary>Preferred order of application tray icons</summary>
+    </key>
     <key name="tray-known-items" type="s">
       <default>'{}'</default>
       <summary>Discovered tray icon names</summary>
@@ -278,6 +282,10 @@
     <key name="calendar-week-numbers" type="b">
       <default>false</default>
       <summary>Show calendar week numbers</summary>
+    </key>
+    <key name="calendar-collapsed" type="b">
+      <default>false</default>
+      <summary>Show only the calendar card header</summary>
     </key>
     <key name="calendar-week-start" type="s">
       <choices>

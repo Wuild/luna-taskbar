@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: luna-taskbar\n"
 "Report-Msgid-Bugs-To: https://github.com/wuild\n"
-"POT-Creation-Date: 2026-09-27 21:22+0200\n"
+"POT-Creation-Date: 2026-10-03 02:16+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -66,7 +66,7 @@ msgstr ""
 
 #: src/compat/runtime.js:142 src/compat/runtime.js:206
 #: src/compat/runtime.js:397 src/compat/runtime.js:407
-#: src/compat/taskMenus.js:110 src/preferences/taskbar.ts:130
+#: src/compat/taskMenus.js:94 src/preferences/taskbar.ts:130
 msgid "Show desktop"
 msgstr ""
 
@@ -152,31 +152,39 @@ msgstr ""
 msgid "Quick Settings"
 msgstr ""
 
-#: src/compat/systemPanel.js:47 src/compat/systemPanel.js:319
+#: src/compat/systemPanel.js:47 src/compat/systemPanel.js:344
 msgid "Notifications"
 msgstr ""
 
-#: src/compat/systemPanel.js:77
+#: src/compat/systemPanel.js:92
 msgid "x"
 msgstr ""
 
-#: src/compat/systemPanel.js:78
+#: src/compat/systemPanel.js:93
 msgid "y"
 msgstr ""
 
-#: src/compat/systemPanel.js:319
+#: src/compat/systemPanel.js:293
+msgid "Minimize calendar"
+msgstr ""
+
+#: src/compat/systemPanel.js:293
+msgid "Show full calendar"
+msgstr ""
+
+#: src/compat/systemPanel.js:344
 msgid "No notifications"
 msgstr ""
 
-#: src/compat/systemPanel.js:341
+#: src/compat/systemPanel.js:366
 msgid "System controls, notifications and calendar"
 msgstr ""
 
-#: src/compat/systemPanel.js:423
+#: src/compat/systemPanel.js:448
 msgid "empty"
 msgstr ""
 
-#: src/compat/systemPanel.js:424
+#: src/compat/systemPanel.js:449
 msgid "can-clear"
 msgstr ""
 
@@ -188,39 +196,15 @@ msgstr ""
 msgid "Unpin from taskbar"
 msgstr ""
 
-#: src/compat/taskMenus.js:76
-msgid "Focus window"
-msgstr ""
-
-#: src/compat/taskMenus.js:76
-msgid "Restore window"
-msgstr ""
-
-#: src/compat/taskMenus.js:79
-msgid "Minimize"
-msgstr ""
-
-#: src/compat/taskMenus.js:80
-msgid "Maximize"
-msgstr ""
-
-#: src/compat/taskMenus.js:80
-msgid "Restore size"
-msgstr ""
-
-#: src/compat/taskMenus.js:86 src/compat/windowPreview.js:155
-msgid "Close window"
-msgstr ""
-
-#: src/compat/taskMenus.js:108 src/preferences/taskbar.ts:129
+#: src/compat/taskMenus.js:92 src/preferences/taskbar.ts:129
 msgid "Show applications"
 msgstr ""
 
-#: src/compat/taskMenus.js:116
+#: src/compat/taskMenus.js:100
 msgid "Edit taskbar"
 msgstr ""
 
-#: src/compat/taskMenus.js:117 src/preferences/navigation.ts:53
+#: src/compat/taskMenus.js:101 src/preferences/navigation.ts:53
 #: src/preferences/navigation.ts:72
 msgid "Taskbar settings"
 msgstr ""
@@ -229,7 +213,7 @@ msgstr ""
 msgid "Tray application"
 msgstr ""
 
-#: src/compat/trayDrawer.js:147
+#: src/compat/trayDrawer.js:439
 #, javascript-format
 msgid "Application tray — %d hidden icon"
 msgid_plural "Application tray — %d hidden icons"
@@ -333,6 +317,10 @@ msgstr ""
 
 #: src/compat/weatherModel.js:23
 msgid "Unknown conditions"
+msgstr ""
+
+#: src/compat/windowPreview.js:155
+msgid "Close window"
 msgstr ""
 
 #: src/compat/windowPreview.js:192

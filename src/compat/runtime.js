@@ -4,7 +4,7 @@ import {WeatherApplet} from './weatherApplet.js';
 import {performAppAction} from './appInteractions.js';
 import {WorkspaceSwitcher} from './workspaceSwitcher.js';
 import {LayoutTransition} from './layoutTransition.js';
-import {RoundedSurface, TaskbarSurface} from './roundedSurface.js';
+import {RoundedSurface, TaskbarSurface, StageBackdropBlur} from './roundedSurface.js';
 import {taskbarGeometry, reserveGeometry} from '../taskbar/geometry.js';
 import {IconArtwork} from './iconArtwork.js';
 import {StartMenuLauncher} from '../start-menu/launcher.js';
@@ -71,9 +71,10 @@ export default class TaskbarRuntime extends Extension {
         });
         this._background = new St.Widget({style_class: 'luna-taskbar-surface',
             x_expand: true, y_expand: true});
-        this._blur = new Shell.BlurEffect({mode: Shell.BlurMode.BACKGROUND,
+        this._blur = new StageBackdropBlur({mode: Shell.BlurMode.BACKGROUND,
             radius: 12, brightness: 0.85});
         this._roundedSurface = new RoundedSurface();
+        this._roundedSurface.liveBackdrop = this._blur;
         this._layoutTransition = new LayoutTransition(this._bar, geometry => {
             this._bar.set_position(geometry.x, geometry.y);
             this._bar.set_size(geometry.width, geometry.height);

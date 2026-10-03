@@ -37,7 +37,20 @@ export async function run() {
     for (let i = 0; i < 3; i++) {
         settings.set_boolean('separate-applet-panels', false);
         await Scripting.sleep(100);
-        assert(!bar._panelBridge._systemPanel.date.container.visible, 'Combined hides separate clock');
+        const combinedPanel = bar._panelBridge._systemPanel;
+        assert(!combinedPanel.date.container.visible, 'Combined hides separate clock');
+        assert(combinedPanel.columns.get_children()[0] === combinedPanel.left &&
+            combinedPanel.columns.get_children()[1] === combinedPanel.right,
+            'Combined panel keeps its left-to-right column order');
+        const expectedLeft = [combinedPanel.media, combinedPanel.weather, combinedPanel.calendar];
+        const expectedRight = [combinedPanel.notifications, combinedPanel.controls];
+        assert(combinedPanel.left.get_children().every((card, index) => card === expectedLeft[index]) &&
+            combinedPanel.right.get_children().every((card, index) => card === expectedRight[index]),
+            'Combined panel groups calendar content left and notifications above system controls right');
+        const combinedContents = combinedPanel.quick.get_first_child();
+        assert(combinedContents.get_children()[0] === combinedPanel._combinedButton.clock &&
+            combinedContents.get_children()[1] === combinedPanel._combinedButton.controls,
+            'Combined taskbar button places the clock before system controls');
         settings.set_boolean('separate-applet-panels', true);
         await Scripting.sleep(100);
         assert(bar._panelBridge._systemPanel.date.container.visible && bar._panelBridge._systemPanel.date.container.mapped, 'Separate restores visible clock in taskbar');
@@ -51,7 +64,11 @@ export async function run() {
     assert(!weather.actor.visible && panel.weather.visible && weather.body.get_parent() === panel.weather, 'Weather defaults to grouped panel without button');
     settings.set_boolean('separate-applet-panels', false);
     const cards = panel.left.get_children();
-    assert(cards.indexOf(panel.weather) === cards.indexOf(panel.media) + 1 && cards.indexOf(panel.controls) === cards.indexOf(panel.weather) + 1, 'Weather sits between Now Playing and Quick Settings');
+    assert(cards.indexOf(panel.weather) === cards.indexOf(panel.media) + 1 &&
+        cards.indexOf(panel.calendar) === cards.indexOf(panel.weather) + 1,
+        'Weather sits between Now Playing and Calendar in the combined left column');
+    assert(panel.right.get_children()[0] === panel.notifications && panel.right.get_children()[1] === panel.controls,
+        'Combined right column puts notifications above Quick Settings');
     weather.render({name: 'Stockholm', country_code: 'SE'}, {
         current: {temperature_2m: 18, apparent_temperature: 17, weather_code: 2, is_day: 1, wind_speed_10m: 8},
         daily: {time: ['2026-09-27', '2026-09-28', '2026-09-29'], weather_code: [2,3,61], temperature_2m_max: [18,17,16], temperature_2m_min: [10,9,8]},
@@ -113,6 +130,13 @@ export async function run() {
     settings.set_boolean('show-overview-button', true);
     settings.set_boolean('calendar-week-numbers', true);
     assert(bar._panelBridge._systemPanel.date._calendar._useWeekdate, 'Panel setting updates');
+    panel = bar._panelBridge._systemPanel;
+    panel._calendarCollapseButton.emit('clicked', 1);
+    assert(settings.get_boolean('calendar-collapsed') && !panel.date._calendar.visible && panel.calendarHeader.visible,
+        'Calendar header button minimizes the calendar grid');
+    panel._calendarCollapseButton.emit('clicked', 1);
+    assert(!settings.get_boolean('calendar-collapsed') && panel.date._calendar.visible,
+        'Calendar header button restores the full calendar');
     const icon = new St.Icon({icon_name: 'folder', icon_size: 24});
     const content = new St.BoxLayout();
     content.add_child(icon);

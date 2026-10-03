@@ -78,6 +78,16 @@
     border-radius: 4px;
     box-shadow: inset 0 0 0 1px rgba(128, 191, 255, 0.35);
 }
+.luna-taskbar-tray-drop-space {
+    background-color: rgba(128, 191, 255, 0.16);
+    color: rgba(128, 191, 255, 0.9);
+    box-shadow: inset 0 0 0 2px rgba(128, 191, 255, 0.65);
+}
+.luna-taskbar-tray-drag-ghost {
+    padding: 4px; border-radius: 6px;
+    background-color: rgba(38, 45, 58, 0.92);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.45);
+}
 .luna-taskbar-show-desktop { width: 8px; padding: 0; margin-left: 2px; border-width: 0; }
 .luna-taskbar-show-desktop-divider { width: 1px; margin: 0; background-color: rgba(255, 255, 255, 0.18); }
 .luna-taskbar-show-desktop:hover { background-color: rgba(255, 255, 255, 0.18); }
@@ -129,6 +139,9 @@
 .luna-taskbar-popup .luna-taskbar-tray StIcon { icon-size: 16px; }
 .luna-taskbar-popup .luna-taskbar-tray-button { padding: 4px 6px; border-radius: 4px; }
 .luna-taskbar-popup .luna-taskbar-tray-button:hover { background-color: rgba(255, 255, 255, 0.12); }
+.luna-taskbar-tray-dragging .luna-taskbar-tray-button:hover {
+    background-color: transparent;
+}
 .luna-taskbar-tooltip {
     padding: 6px 10px; border-radius: 6px; font-size: 12px; color: #fafafa;
     background-color: rgba(38, 32, 30, 0.92);

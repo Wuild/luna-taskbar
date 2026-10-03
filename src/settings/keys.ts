@@ -16,6 +16,7 @@ export interface SettingsValues {
     "window-appearance-end-gap": number;
     "window-appearance-corner-radius": number;
     "tray-always-visible": string[];
+    "tray-icon-order": string[];
     "tray-known-items": string;
     "taskbar-color-override": boolean;
     "panel-color-override": boolean;
@@ -67,6 +68,7 @@ export interface SettingsValues {
     "menu-show-shortcut": boolean;
     "menu-shortcut-app": string;
     "calendar-week-numbers": boolean;
+    "calendar-collapsed": boolean;
     "calendar-week-start": "system" | "monday" | "sunday";
     "tray-popup-icon-size": number;
     "clock-layout": "two-line" | "single-line";
@@ -221,6 +223,9 @@ export const settingDefinitions = {
         ]
     },
     "tray-always-visible": {
+        "type": "as"
+    },
+    "tray-icon-order": {
         "type": "as"
     },
     "tray-known-items": {
@@ -504,6 +509,9 @@ export const settingDefinitions = {
         "type": "s"
     },
     "calendar-week-numbers": {
+        "type": "b"
+    },
+    "calendar-collapsed": {
         "type": "b"
     },
     "calendar-week-start": {

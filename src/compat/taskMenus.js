@@ -65,28 +65,12 @@ export class TaskMenus {
 
     openTask(task, button) {
         this.close();
-        const {window, app} = task;
+        const {app} = task;
         const menu = app
             ? new TaskAppMenu(button, St.Side.BOTTOM, {favoritesSection: true, showSingleWindows: true})
             : new PopupMenu.PopupMenu(button, 0.5, St.Side.BOTTOM);
         if (app)
             menu.setApp(app);
-        if (window && (task.windows?.length ?? 1) <= 1) {
-            const section = new PopupMenu.PopupMenuSection();
-            section.addAction(window.minimized ? _('Restore window') : _('Focus window'),
-                () => Main.activateWindow(window));
-            if (!window.minimized)
-                section.addAction(_('Minimize'), () => window.minimize()).setSensitive(window.can_minimize());
-            section.addAction(window.is_maximized() ? _('Restore size') : _('Maximize'), () => {
-                if (window.is_maximized())
-                    window.unmaximize();
-                else
-                    window.maximize();
-            }).setSensitive(window.can_maximize());
-            section.addAction(_('Close window'), () => window.delete(global.get_current_time()));
-            section.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
-            menu.addMenuItem(section, 0);
-        }
         this._install(menu, button);
     }
 
