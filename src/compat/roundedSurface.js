@@ -24,7 +24,7 @@ export const StageBackdropBlur = GObject.registerClass(class LunaTaskbarStageBac
 });
 
 // Apply after background blur so its rectangular texture is clipped as well.
-export const RoundedSurface = GObject.registerClass(class LunaTaskbarRoundedSurface extends Shell.GLSLEffect {
+export const RoundedSurface = GObject.registerClass(class LunaTaskbarRoundedSurface extends Clutter.ShaderEffect {
     vfunc_paint(node, context, flags) {
         // OffscreenEffect caches its entire subtree when this actor is clean.
         // A backdrop depends on other actors, so that cache would freeze the
@@ -36,8 +36,9 @@ export const RoundedSurface = GObject.registerClass(class LunaTaskbarRoundedSurf
         }
         super.vfunc_paint(node, context, flags);
     }
-    vfunc_build_pipeline() {
-        this.add_glsl_snippet(Cogl.SnippetHook.FRAGMENT, 'uniform float surface_width; uniform float surface_height; uniform float surface_radius;', `
+    vfunc_get_static_snippet() {
+        return Cogl.Snippet.new(Cogl.SnippetHook.FRAGMENT,
+            'uniform float surface_width; uniform float surface_height; uniform float surface_radius;', `
             vec2 extent = vec2(surface_width, surface_height);
             float radius = min(surface_radius, min(extent.x, extent.y) * 0.5);
             vec2 rounded_extent = floor(extent + vec2(0.5));
@@ -51,7 +52,7 @@ export const RoundedSurface = GObject.registerClass(class LunaTaskbarRoundedSurf
             float distance = length(max(q, vec2(0.0))) + min(max(q.x, q.y), 0.0) - radius;
             float coverage = 1.0 - smoothstep(-0.5, 0.5, distance);
             cogl_color_out *= coverage;
-        `, false);
+        `);
     }
     update(width, height, radius) {
         const key = `${width}:${height}:${radius}`;
@@ -61,7 +62,7 @@ export const RoundedSurface = GObject.registerClass(class LunaTaskbarRoundedSurf
         if (!this.enabled && this.liveBackdrop)
             this.liveBackdrop.sourceFramebuffer = null;
         for (const [name, value] of [['surface_width', width], ['surface_height', height], ['surface_radius', radius]])
-            this.set_uniform_float(this.get_uniform_location(name), 1, [value]);
+            this.set_uniform_float(name, 1, [value]);
     }
 });
 
