@@ -37,9 +37,13 @@ export class TaskDrag {
         let previousX;
         button.connect('notify::allocation', () => {
             const vertical = this.box.orientation === Clutter.Orientation.VERTICAL;
-                const x = vertical ? button.get_allocation_box().y1 : button.get_allocation_box().x1;
+            const x = vertical ? button.get_allocation_box().y1 : button.get_allocation_box().x1;
             const delta = previousX === undefined ? 0 : previousX - x;
             previousX = x;
+            // The dragged button gets a separate animation whose origin is
+            // the released drag actor, not its pre-drag allocation.
+            if (button._lunaDropPending)
+                return;
             if (!delta || !button.mapped || button.opacity === 0)
                 return;
             button[vertical ? 'translation_y' : 'translation_x'] += delta;
@@ -49,7 +53,15 @@ export class TaskDrag {
         });
         const draggable = DND.makeDraggable(button, {restoreOnSuccess: false});
         draggable.connect('drag-begin', () => this._begin(source));
-        draggable.connect('drag-end', () => { this._finish(); this.onChange(); });
+        draggable.connect('drag-end', (_drag, _time, accepted) => {
+            // acceptDrop owns successful completion so the source remains
+            // hidden until its final allocation is ready. Cancelled drags
+            // still restore immediately.
+            if (!accepted || !this._dropAccepted) {
+                this._finish();
+                this.onChange();
+            }
+        });
         button.connect('destroy', () => {
             if (this._source === source)
                 this._finish();
@@ -80,11 +92,11 @@ export class TaskDrag {
         this.onMotion();
     }
 
-    _finish() {
+    _finish(drop = null) {
         this._placeholder?.destroy();
         this._placeholder = null;
         for (const button of this._hidden ?? []) {
-            button.opacity = 255;
+            button.opacity = drop?.source.button === button ? 0 : 255;
             if (button._dragSize) button.set_size(...button._dragSize);
             delete button._dragSize;
             button.clip_to_allocation = false;
@@ -92,6 +104,7 @@ export class TaskDrag {
         this._hidden = [];
         this._source = this._target = null;
         this._hasTarget = false;
+        this._dropAccepted = false;
         this.dragging = false;
         this.onMotion?.();
     }
@@ -145,10 +158,24 @@ export class TaskDrag {
         return DND.DragMotionResult.MOVE_DROP;
     }
 
-    acceptDrop(source, _actor, x, y) {
+    acceptDrop(source, actor, x, y) {
         if (source.owner !== this)
             return false;
         const target = this._destination(source, this.box.orientation === Clutter.Orientation.VERTICAL ? y : x);
+        const [actorX, actorY] = actor.get_transformed_position();
+        const [actorWidth, actorHeight] = actor.get_transformed_size();
+        const [targetX, targetY] = this._placeholder.get_transformed_position();
+        const [targetWidth, targetHeight] = this._placeholder.get_transformed_size();
+        const [pointerX, pointerY] = global.get_pointer();
+        const drop = {
+            source,
+            originX: Number.isFinite(actorX + actorWidth) ? actorX + actorWidth / 2 : pointerX,
+            originY: Number.isFinite(actorY + actorHeight) ? actorY + actorHeight / 2 : pointerY,
+            targetX: targetX + targetWidth / 2,
+            targetY: targetY + targetHeight / 2,
+        };
+        this._dropAccepted = true;
+        source.button._lunaDropPending = true;
         // Defer changes until DND has released the source actor.
         this._idle = GLib.idle_add(GLib.PRIORITY_DEFAULT_IDLE, () => {
             this._idle = 0;
@@ -163,15 +190,58 @@ export class TaskDrag {
                 const position = target ? this.order.indexOf(target.window) : this.order.length;
                 this.order.splice(position < 0 ? this.order.length : position, 0, ...moving);
             }
+            this._finish(drop);
             this.onChange();
+            this._animateDrop(drop);
             return GLib.SOURCE_REMOVE;
         });
         return true;
     }
 
+    _animateDrop(drop) {
+        let attempts = 0;
+        const vertical = this.box.orientation === Clutter.Orientation.VERTICAL;
+        const id = GLib.timeout_add(GLib.PRIORITY_DEFAULT, 16, () => {
+            attempts++;
+            const button = drop.source.button;
+            if (!button.get_parent()) {
+                this._animationSources.delete(id);
+                return GLib.SOURCE_REMOVE;
+            }
+            const [x, y] = button.get_transformed_position();
+            const [width, height] = button.get_transformed_size();
+            const centerX = x + width / 2;
+            const centerY = y + height / 2;
+            const destination = vertical ? drop.targetY : drop.targetX;
+            const current = vertical ? centerY : centerX;
+            // Wait for _syncTasks() to replace the destination placeholder.
+            // The bounded fallback also handles a no-op drop.
+            // Removing the placeholder also removes one box-spacing slot, so
+            // the final center may differ by the configured spacing.
+            if (Math.abs(current - destination) > 4 && attempts < 12)
+                return GLib.SOURCE_CONTINUE;
+            this._animationSources.delete(id);
+            button.remove_transition('translation-x');
+            button.remove_transition('translation-y');
+            button.translation_x = drop.originX - centerX;
+            button.translation_y = drop.originY - centerY;
+            button.opacity = 255;
+            button._lunaDropPending = false;
+            button.ease({translation_x: 0, translation_y: 0, duration: 180,
+                mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+                onStopped: () => this.onMotion()});
+            return GLib.SOURCE_REMOVE;
+        });
+        this._animationSources ??= new Set();
+        this._animationSources.add(id);
+    }
+
     destroy() {
         if (this._idle)
             GLib.Source.remove(this._idle);
+        for (const id of this._animationSources ?? [])
+            GLib.Source.remove(id);
+        this._animationSources?.clear();
         this._finish();
         this.box._delegate = null;
     }
